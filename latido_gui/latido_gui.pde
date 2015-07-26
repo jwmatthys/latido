@@ -2,11 +2,15 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.Image;
 import de.bezier.guido.*;
+import oscP5.*;
+import netP5.*;
 
+OscP5 oscP5tcpClient;
 LaTiDoButton play, stop, pitch, replay;
 
 void setup()
 {
+  oscP5tcpClient = new OscP5(this, "127.0.0.1", 11000, OscP5.TCP);
   PImage icon = loadImage("appbar.futurama.bender.png");
 
   size(800, 600);
