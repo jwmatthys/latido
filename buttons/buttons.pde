@@ -10,16 +10,29 @@ void setup()
   play = new LaTiDoButton (10,10,50,50);
   stop = new LaTiDoButton (10,70,50,50);
   
+  Interactive.on( play, "pressed", this, "playButton" );
+  Interactive.on( stop, "pressed", this, "stopButton" );
 }
 
 void draw()
 {
 }
 
+void playButton ()
+{
+  println("play button pressed");
+}
+
+void stopButton ()
+{
+  println("stop button pressed");
+}
+
+
 public class LaTiDoButton
 {
     float x, y, width, height;
-    boolean on;
+    boolean active;
     
     LaTiDoButton ( float xx, float yy, float w, float h )
     {
@@ -32,13 +45,23 @@ public class LaTiDoButton
     
     void mousePressed () 
     {
-        on = !on;
+        Interactive.send( this, "pressed" );
+    }
+    
+    void mouseEntered ()
+    {
+        active = true;
+    }
+    
+    void mouseExited ()
+    {
+        active = false;
     }
 
     void draw () 
     {
-        if ( on ) fill( 200 );
-        else fill( 100 );
+        if ( active ) fill( 0, 200, 0 );
+        else fill( 200, 0, 0 );
         
         rect(x, y, width, height);
     }
