@@ -4,19 +4,15 @@ void transportButton (int v)
   switch (v)
   {
   case 0:
-    println("play button pressed");
     myMessage.add("play");
     break;
   case 1:
-    println("stop button pressed");
     myMessage.add("stop");
     break;
   case 2:
-    println("pitch button pressed");
     myMessage.add("pitch");
     break;
   case 3:
-    println("replay button pressed");
     myMessage.add("replay");
   }
   oscP5.send(myMessage, latidoPD);
@@ -31,7 +27,6 @@ void volumeSlider (float v)
 
 void tempoSlider (float v)
 {
-  println("tempo: "+v);
   tempoVal = (int)map (v,0,1,TEMPO_LOW,TEMPO_HIGH);
   String l = tempoVal + " BPM";
   tempoLabel.set (l);

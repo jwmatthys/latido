@@ -6,7 +6,8 @@ import oscP5.*;
 import netP5.*;
 
 final float SIDEBAR_WIDTH = 70;
-final float TOPBAR_HEIGHT = 60;
+final float TOPBAR_HEIGHT = 70;
+int PADDING;
 final int TEMPO_LOW = 40;
 final int TEMPO_HIGH = 280;
 int tempoVal = 60;
@@ -20,6 +21,7 @@ MicLevel micLevel;
 VolSlider volume;
 HSlider tempo;
 Label tempoLabel;
+PImage staff;
 
 void setup()
 {
@@ -31,7 +33,8 @@ void setup()
   
   PImage icon = loadImage("appbar.futurama.bender.png");
 
-  size(800, 600);
+  size(1024, 500);
+  smooth();
   if (surface != null) {
     surface.setResizable(true);
   }
@@ -46,12 +49,12 @@ void setup()
 
   Interactive.make(this);
   play = new LaTiDoButton (10, 10, 50, 50, "Play", "appbar.control.play.png", 0);
-  stop = new LaTiDoButton (10, 70, 50, 50, "Stop", "appbar.control.stop.png", 1);
-  pitch = new LaTiDoButton (10, 130, 50, 50, "Pitch", "tuningfork1.png", 2);
-  replay = new LaTiDoButton (10, 190, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
-  volume = new VolSlider (10, height-210, 20, 200);
+  stop = new LaTiDoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
+  pitch = new LaTiDoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
+  replay = new LaTiDoButton (190, 10, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
+  volume = new VolSlider (10, 70, 20, 200);
   volume.set (0.25);
-  micLevel = new MicLevel (40, height-210, 20, 200);
+  micLevel = new MicLevel (40, 70, 20, 200);
   tempo = new HSlider (width-210, 10, 200, 20);
   tempoLabel = new Label (width-210, 50, "Tempo");
   Interactive.on( play, "pressed", this, "transportButton" );
@@ -60,20 +63,30 @@ void setup()
   Interactive.on( replay, "pressed", this, "transportButton" );
   Interactive.on( volume, "valueChanged", this, "volumeSlider");
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
+  
+  staff = loadImage("scores/ex400.gif");
 }
 
 void draw()
 {
+  PADDING = width/20;
   background(255);
   paintSidebar();
   micLevel.draw();
   tempoLabel.draw();
+  paintMusic();
 }
 
 void paintSidebar()
 {
-  fill(150);
+  fill(200);
   noStroke();
   rect(0, 0, SIDEBAR_WIDTH, height);
   rect(70,0, width, TOPBAR_HEIGHT);
+}
+
+void paintMusic()
+{
+  float rescale = (width-SIDEBAR_WIDTH-(2*PADDING))*1.0/staff.width;
+  image (staff, SIDEBAR_WIDTH+PADDING,TOPBAR_HEIGHT+PADDING,staff.width*rescale,staff.height*rescale);
 }

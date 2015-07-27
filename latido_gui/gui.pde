@@ -42,7 +42,7 @@ public class LaTiDoButton
     state = 0;
     img = loadImage(i);
     label = l;
-    font = createFont("Droid Sans",12,true);
+    font = createFont("Droid Sans", 12, true);
     textFont(font);
     textx = x + (width - textWidth(label))/2;
     texty = y + height - textDescent();
@@ -87,15 +87,15 @@ public class LaTiDoButton
       fill( 200, 0, 0 );
     }
     stroke (0);
-    rect(x, y, width, height);
-    if (img != null) image(img, x, y, width, height);
+    rect(x, y, width, height, 3);
     if (font != null)
     {
+      if (img != null) image(img, x+width*0.125, y, width*0.75, height*0.75);
       textFont(font);
       noStroke();
       fill(0);
-      text(label,textx,texty);
-    }
+      text(label, textx, texty);
+    } else if (img != null) image(img, x, y, width, height);
   }
 }
 
@@ -142,7 +142,7 @@ public class HSlider
       Interactive.send( this, "valueChanged", value );
     }
   }
-  
+
   void set (float v)
   {
     value = v;
@@ -156,7 +156,7 @@ public class HSlider
     fill( 10 );
     rect( x, y, width, height );
 
-    fill( on ? 200 : 120 );
+    fill( on ? 220 : 120 );
     rect( valueX, y, height, height );
   }
 }
@@ -229,7 +229,7 @@ public class VolSlider
     width = w; 
     height = h;
 
-    valueY = this.y+height-width;
+    valueY = this.y+height;
 
     Interactive.add( this );
   }
@@ -243,22 +243,22 @@ public class VolSlider
   {
     on = false;
   }
-  
+
   void set (float v)
   {
-    valueY = map (v, 1, 0, y, y+height-width);
+    valueY = map (v, 1, 0, y, y+height);
     value = v;
   }
 
   void mouseDragged ( float mx, float my )
   {
-    valueY = my - width/2;
+    valueY = my;
 
     if ( valueY < y ) valueY = y;
-    if ( valueY > y+height-width ) valueY = y+height-width;
+    if ( valueY > y+height ) valueY = y+height;
 
     float oldval = value;
-    value = map( valueY, y, y+height-width, 1, 0 );
+    value = map( valueY, y, y+height, 1, 0 );
 
     if (value != oldval)
     {
@@ -304,7 +304,7 @@ public class MicLevel
     noStroke();
     fill(0);
     rect(x, y, w, h);
-    fill(20, map(value,0,1,10,100), 200);
+    fill(20, map(value, 0, 1, 10, 100), 200);
     float bar = map(value, 0, 1, 0, h);
     rect (x, y+h-bar, w, bar);
   }
@@ -315,7 +315,7 @@ public class Label
   float x, y;
   String text;
   PFont font;
-  
+
   Label (float x, float y, String text)
   {
     this.x = x;
@@ -324,16 +324,16 @@ public class Label
     font = createFont("Droid Sans Mono", 14, true);
     textFont(font);
   }
-  
+
   void set (String s)
   {
     text = s;
   }
-  
+
   void draw()
   {
     noStroke();
     fill(0);
-    text(text,x,y);
+    text(text, x, y);
   }
 }
