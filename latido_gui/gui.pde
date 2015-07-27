@@ -1,46 +1,23 @@
-void transportButton (int v)
-{
-  OscMessage myMessage = new OscMessage("/latido/transport");
-  switch (v)
-  {
-  case 0:
-    println("play button pressed");
-    myMessage.add("play");
-    break;
-  case 1:
-    println("stop button pressed");
-    myMessage.add("stop");
-    break;
-  case 2:
-    println("pitch button pressed");
-    myMessage.add("pitch");
-    break;
-  case 3:
-    println("replay button pressed");
-    myMessage.add("replay");
-  }
-  oscP5.send(myMessage, latidoPD);
-}
-
-void volumeSlider (float v)
-{
-  OscMessage myMessage = new OscMessage("/latido/vol");
-  myMessage.add(v);
-  oscP5.send(myMessage, latidoPD);  
-}
-
-void tempoSlider (float v)
-{
-  println("tempo: "+v);
-}
-
-
 public class LaTiDoButton
 {
   float x, y, width, height;
+  float textx, texty;
   int value;
   int state;
   PImage img;
+  String label;
+  PFont font;
+
+  LaTiDoButton ( float x, float y, float w, float h, int v)
+  {
+    Interactive.add( this ); // register it with the manager
+    this.x = x; 
+    this.y = y; 
+    width = w; 
+    height = h;
+    value = v;
+    state = 0;
+  }
 
   LaTiDoButton ( float x, float y, float w, float h, String i, int v)
   {
@@ -52,6 +29,23 @@ public class LaTiDoButton
     value = v;
     state = 0;
     img = loadImage(i);
+  }
+
+  LaTiDoButton ( float x, float y, float w, float h, String l, String i, int v)
+  {
+    Interactive.add( this ); // register it with the manager
+    this.x = x; 
+    this.y = y; 
+    width = w; 
+    height = h;
+    value = v;
+    state = 0;
+    img = loadImage(i);
+    label = l;
+    font = createFont("Droid Sans",12,true);
+    textFont(font);
+    textx = x + (width - textWidth(label))/2;
+    texty = y + height - textDescent();
   }
 
   // called by manager
@@ -92,8 +86,16 @@ public class LaTiDoButton
     default:
       fill( 200, 0, 0 );
     }
+    stroke (0);
     rect(x, y, width, height);
-    image(img, x, y, width, height);
+    if (img != null) image(img, x, y, width, height);
+    if (font != null)
+    {
+      textFont(font);
+      noStroke();
+      fill(0);
+      text(label,textx,texty);
+    }
   }
 }
 
@@ -139,6 +141,12 @@ public class HSlider
     {
       Interactive.send( this, "valueChanged", value );
     }
+  }
+  
+  void set (float v)
+  {
+    value = v;
+    valueX = map(v, 0, 1, x, x+width-height);
   }
 
   public void draw ()
@@ -296,8 +304,36 @@ public class MicLevel
     noStroke();
     fill(0);
     rect(x, y, w, h);
-    fill(0, 100, 100);
+    fill(20, map(value,0,1,10,100), 200);
     float bar = map(value, 0, 1, 0, h);
     rect (x, y+h-bar, w, bar);
+  }
+}
+
+public class Label
+{
+  float x, y;
+  String text;
+  PFont font;
+  
+  Label (float x, float y, String text)
+  {
+    this.x = x;
+    this.y = y;
+    this.text = text;
+    font = createFont("Droid Sans Mono", 14, true);
+    textFont(font);
+  }
+  
+  void set (String s)
+  {
+    text = s;
+  }
+  
+  void draw()
+  {
+    noStroke();
+    fill(0);
+    text(text,x,y);
   }
 }
