@@ -45,3 +45,13 @@ public void tempoPD (int t)
   tempoLabel.set(t+" BPM");
   tempo.set(map(t,TEMPO_LOW,TEMPO_HIGH,0,1));
 }
+
+public void metroPD (int b)
+{
+  metro.bang(b);
+}
+
+public void metroStatePD (int s)
+{
+  metro.setState(s);
+}

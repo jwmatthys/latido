@@ -289,6 +289,7 @@ public class MicLevel
 
   MicLevel (float x, float y, float w, float h)
   {
+    Interactive.add( this ); // register it with the manager
     this.x = x;
     this.y = y;
     this.w = w;
@@ -320,6 +321,7 @@ public class Label
 
   Label (float x, float y, String text)
   {
+    Interactive.add( this ); // register it with the manager
     this.x = x;
     this.y = y;
     this.text = text;
@@ -379,6 +381,12 @@ public class MetroButton
     value = (value+1)%beats;
   }
 
+  void bang(int v)
+  {
+    offFrame = frameCount + flashFrames;
+    value = v-1;
+  }
+
   void setState(int s)
   {
     state = s;
@@ -396,23 +404,28 @@ public class MetroButton
 
   void draw () 
   {
-    switch (state)
+    boolean on = (frameCount < offFrame);
+    if (state>0)
     {
-    case 2:
-      fill (100, 255, 100);
-      break;
-    case 1:
-      fill( 255, 50, 50 );
-      break;
-    default:
-      fill(255);
+      switch (state)
+      {
+      case 2:
+        fill (100, 255, 100);
+        break;
+      case 1:
+        fill( 255, 50, 50 );
+        break;
+      default:
+        fill(255);
+      }
+      if (on) fill(0);
+      stroke (0);
+      rect(x, y, width, height, 5);
+      noStroke();
+      fill(on? 255 : 0);
+      textFont(font);
+      textSize(60);
+      text(nf(value+1, 1), textx, texty);
     }
-    stroke (0);
-    rect(x, y, width, height, 5);
-    noStroke();
-    fill(0);
-    textFont(font);
-    textSize(60);
-    text(nf(value+1, 1), textx, texty);
   }
 }

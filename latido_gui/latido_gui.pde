@@ -31,6 +31,8 @@ void setup()
   latidoPD = new NetAddress("127.0.0.1", 12001);
   oscP5.plug(this,"micPD","/mic");
   oscP5.plug(this,"tempoPD","/tempo");
+  oscP5.plug(this,"metroPD","/metro");
+  oscP5.plug(this,"metroStatePD","/metrostate");
   
   PImage icon = loadImage("appbar.futurama.bender.png");
 
@@ -66,7 +68,7 @@ void setup()
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
   
   staff = loadImage("scores/ex400.gif");
-  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 4, 10);
+  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 4, 5);
 }
 
 void draw()
@@ -74,8 +76,6 @@ void draw()
   PADDING = width/20;
   background(255);
   paintSidebar();
-  micLevel.draw();
-  tempoLabel.draw();
   paintMusic();
 }
 
