@@ -28,7 +28,7 @@ Scorecard scorecard;
 void setup()
 {
   oscP5tcpClient = new OscP5(this, "127.0.0.1", 11000, OscP5.TCP);
-  oscP5 = new OscP5 (this, "127.0.0.1", 12000);
+  oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
