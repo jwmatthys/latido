@@ -63,5 +63,5 @@ public void metroStatePD (float f)
 public void scorePD (float f)
 {
   println("Score: "+f);
-  scorecard.active = true;
+  scorecard.setScore(f);
 }

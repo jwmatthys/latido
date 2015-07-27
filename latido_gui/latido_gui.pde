@@ -89,3 +89,8 @@ void paintSidebar()
   rect(0, 0, SIDEBAR_WIDTH, height);
   rect(70, 0, width, TOPBAR_HEIGHT);
 }
+
+void mousePressed()
+{
+  //scorecard.active = !scorecard.active;
+}
