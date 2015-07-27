@@ -6,6 +6,8 @@ public class Scorecard
   int stars;
   PImage star;
   boolean active;
+  float targets[] = {0.2, 0.4, 0.55, 0.7, 0.9 };
+  float score;
 
   Scorecard(float x, float y, float w, float h)
   {
@@ -18,6 +20,24 @@ public class Scorecard
     star = loadImage("star1.png");
     center = x + w/2;
     active = false;
+    score = 0;
+  }
+ 
+  void setScore (float f)
+  {
+    score = f;
+    stars = numStars(score);
+    println("stars: "+stars);
+  }
+  
+  private int numStars (float score)
+  {
+    int stars = 0;
+    for (int i=0; i<targets.length; i++)
+    {
+      if (score >= targets[i]) stars = i+1;
+    }
+    return stars;
   }
 
   void draw()

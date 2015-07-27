@@ -5,6 +5,7 @@ void transportButton (int v)
   {
   case 0:
     myMessage.add("play");
+    scorecard.active = false;
     break;
   case 1:
     myMessage.add("stop");
@@ -57,4 +58,10 @@ public void metroStatePD (float f)
 {
     int s = int(f);
   metro.setState(s);
+}
+
+public void scorePD (float f)
+{
+  println("Score: "+f);
+  scorecard.active = true;
 }
