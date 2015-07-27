@@ -9,6 +9,9 @@ final float SIDEBAR_WIDTH = 70;
 final float TOPBAR_HEIGHT = 40;
 
 OscP5 oscP5tcpClient;
+OscP5 oscP5;
+NetAddress latidoPD;
+
 LaTiDoButton play, stop, pitch, replay;
 MicLevel micLevel;
 VolSlider volume;
@@ -17,6 +20,9 @@ HSlider tempo;
 void setup()
 {
   //oscP5tcpClient = new OscP5(this, "127.0.0.1", 11000, OscP5.TCP);
+  oscP5 = new OscP5 (this, 12000);
+  latidoPD = new NetAddress("127.0.0.1", 12001);
+  
   PImage icon = loadImage("appbar.futurama.bender.png");
 
   size(800, 600);
@@ -38,7 +44,7 @@ void setup()
   pitch = new LaTiDoButton (10, 130, 50, 50, "tuningfork1.png", 2);
   replay = new LaTiDoButton (10, 190, 50, 50, "appbar.social.uservoice.png", 3);
   volume = new VolSlider (10, height-210, 20, 200);
-  volume.set (0.5);
+  volume.set (0.25);
   micLevel = new MicLevel (40, height-210, 20, 200);
   tempo = new HSlider (width-210, 10, 200, 20);
   Interactive.on( play, "pressed", this, "transportButton" );

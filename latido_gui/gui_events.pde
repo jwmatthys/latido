@@ -1,24 +1,32 @@
 void transportButton (int v)
 {
+  OscMessage myMessage = new OscMessage("/latido/transport");
   switch (v)
   {
   case 0:
     println("play button pressed");
+    myMessage.add("play");
     break;
   case 1:
     println("stop button pressed");
+    myMessage.add("stop");
     break;
   case 2:
     println("pitch button pressed");
+    myMessage.add("pitch");
     break;
   case 3:
     println("replay button pressed");
+    myMessage.add("replay");
   }
+  oscP5.send(myMessage, latidoPD);
 }
 
 void volumeSlider (float v)
 {
-  println("vol: "+v);
+  OscMessage myMessage = new OscMessage("/latido/vol");
+  myMessage.add(v);
+  oscP5.send(myMessage, latidoPD);  
 }
 
 void tempoSlider (float v)
