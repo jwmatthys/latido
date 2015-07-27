@@ -40,18 +40,21 @@ public void micPD (float f)
   micLevel.set(sqrt(f*0.01));
 }
 
-public void tempoPD (int t)
+public void tempoPD (float f)
 {
+  int t = int(f);
   tempoLabel.set(t+" BPM");
   tempo.set(map(t,TEMPO_LOW,TEMPO_HIGH,0,1));
 }
 
-public void metroPD (int b)
+public void metroPD (float f)
 {
+  int b = int(f);
   metro.bang(b);
 }
 
-public void metroStatePD (int s)
+public void metroStatePD (float f)
 {
+    int s = int(f);
   metro.setState(s);
 }

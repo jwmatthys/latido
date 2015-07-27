@@ -21,23 +21,26 @@ MicLevel micLevel;
 VolSlider volume;
 HSlider tempo;
 Label tempoLabel;
-PImage staff;
 MetroButton metro;
+ShowMusic music;
+Scorecard scorecard;
 
 void setup()
 {
   //oscP5tcpClient = new OscP5(this, "127.0.0.1", 11000, OscP5.TCP);
   oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
-  oscP5.plug(this,"micPD","/mic");
-  oscP5.plug(this,"tempoPD","/tempo");
-  oscP5.plug(this,"metroPD","/metro");
-  oscP5.plug(this,"metroStatePD","/metrostate");
-  
+  oscP5.plug(this, "micPD", "/mic");
+  oscP5.plug(this, "tempoPD", "/tempo");
+  oscP5.plug(this, "metroPD", "/metro");
+  oscP5.plug(this, "metroStatePD", "/metrostate");
+
   PImage icon = loadImage("appbar.futurama.bender.png");
 
   size(1024, 500);
   smooth();
+  PADDING = width/20;
+
   if (surface != null) {
     surface.setResizable(true);
   }
@@ -66,17 +69,16 @@ void setup()
   Interactive.on( replay, "pressed", this, "transportButton" );
   Interactive.on( volume, "valueChanged", this, "volumeSlider");
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
-  
-  staff = loadImage("scores/ex400.gif");
-  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 4, 5);
+
+  music = new ShowMusic();
+  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 5);
+  scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
 }
 
 void draw()
 {
-  PADDING = width/20;
   background(255);
   paintSidebar();
-  paintMusic();
 }
 
 void paintSidebar()
@@ -84,11 +86,5 @@ void paintSidebar()
   fill(200);
   noStroke();
   rect(0, 0, SIDEBAR_WIDTH, height);
-  rect(70,0, width, TOPBAR_HEIGHT);
-}
-
-void paintMusic()
-{
-  float rescale = (width-SIDEBAR_WIDTH-(2*PADDING))*1.0/staff.width;
-  image (staff, SIDEBAR_WIDTH+PADDING,TOPBAR_HEIGHT+PADDING,staff.width*rescale,staff.height*rescale);
+  rect(70, 0, width, TOPBAR_HEIGHT);
 }

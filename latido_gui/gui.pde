@@ -351,12 +351,11 @@ public class MetroButton
   int state;
   int offFrame;
   int flashFrames;
-  int beats;
   PImage img;
   String label;
   PFont font;
 
-  MetroButton ( float x, float y, float w, float h, int b, int f)
+  MetroButton ( float x, float y, float w, float h, int f)
   {
     Interactive.add( this ); // register it with the manager
     this.x = x; 
@@ -366,19 +365,12 @@ public class MetroButton
     value = 0;
     state = 0;
     offFrame = -1;
-    beats = b;
     flashFrames = f;
     font = createFont("Droid Sans Mono Bold", 60, true);
     textFont(font);
     textSize(60);
     textx = x + (width - textWidth('4'))/2;
     texty = y + (height+textAscent()-textDescent())/2;
-  }
-
-  void bang()
-  {
-    offFrame = frameCount + flashFrames;
-    value = (value+1)%beats;
   }
 
   void bang(int v)
@@ -390,11 +382,6 @@ public class MetroButton
   void setState(int s)
   {
     state = s;
-  }
-
-  void setBeats(int b)
-  {
-    beats = b;
   }
 
   void set (int v)
