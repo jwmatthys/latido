@@ -124,9 +124,13 @@ public class HSlider
     if ( valueX < x ) valueX = x;
     if ( valueX > x+width-height ) valueX = x+width-height;
 
+    float oldval = value;
     value = map( valueX, x, x+width-height, 0, 1 );
 
-    Interactive.send( this, "valueChanged", value );
+    if (value != oldval)
+    {
+      Interactive.send( this, "valueChanged", value );
+    }
   }
 
   public void draw ()
@@ -176,9 +180,12 @@ public class VSlider
     if ( valueY < y ) valueY = y;
     if ( valueY > y+height-width ) valueY = y+height-width;
 
+    float oldval = value;
     value = map( valueY, y, y+height-width, 0, 1 );
-
-    Interactive.send( this, "valueChanged", value );
+    if (value != oldval)
+    {
+      Interactive.send( this, "valueChanged", value );
+    }
   }
 
   public void draw ()
@@ -220,6 +227,12 @@ public class VolSlider
   {
     on = false;
   }
+  
+  void set (float v)
+  {
+    valueY = map (v, 1, 0, y, y+height-width);
+    value = v;
+  }
 
   void mouseDragged ( float mx, float my )
   {
@@ -228,9 +241,13 @@ public class VolSlider
     if ( valueY < y ) valueY = y;
     if ( valueY > y+height-width ) valueY = y+height-width;
 
+    float oldval = value;
     value = map( valueY, y, y+height-width, 1, 0 );
 
-    Interactive.send( this, "valueChanged", value );
+    if (value != oldval)
+    {
+      Interactive.send( this, "valueChanged", value );
+    }
   }
 
   public void draw ()
@@ -240,8 +257,10 @@ public class VolSlider
     fill( 10 );
     rect( x, y, width, height );
 
-    fill( on ? 200 : 120 );
-    rect( x, valueY, width, width );
+    if (!on) fill (120);
+    else
+      fill (255, map(value, 0, 1, 255, 0), 0);
+    rect( x, valueY, width, height+y-valueY );
   }
 }
 
@@ -269,7 +288,7 @@ public class MicLevel
     noStroke();
     fill(0);
     rect(x, y, w, h);
-    fill(0, 0, 100);
+    fill(0, 100, 100);
     float bar = map(value, 0, 1, 0, h);
     rect (x, y+h-bar, w, bar);
   }
