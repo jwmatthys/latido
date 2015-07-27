@@ -44,6 +44,7 @@ public class LaTiDoButton
     label = l;
     font = createFont("Droid Sans", 12, true);
     textFont(font);
+    textSize(12);
     textx = x + (width - textWidth(label))/2;
     texty = y + height - textDescent();
   }
@@ -92,6 +93,7 @@ public class LaTiDoButton
     {
       if (img != null) image(img, x+width*0.125, y, width*0.75, height*0.75);
       textFont(font);
+      textSize(12);
       noStroke();
       fill(0);
       text(label, textx, texty);
@@ -322,7 +324,6 @@ public class Label
     this.y = y;
     this.text = text;
     font = createFont("Droid Sans Mono", 14, true);
-    textFont(font);
   }
 
   void set (String s)
@@ -334,6 +335,84 @@ public class Label
   {
     noStroke();
     fill(0);
+    textFont(font);
+    textSize(14);
     text(text, x, y);
+  }
+}
+
+public class MetroButton
+{
+  float x, y, width, height;
+  float textx, texty;
+  int value;
+  int state;
+  int offFrame;
+  int flashFrames;
+  int beats;
+  PImage img;
+  String label;
+  PFont font;
+
+  MetroButton ( float x, float y, float w, float h, int b, int f)
+  {
+    Interactive.add( this ); // register it with the manager
+    this.x = x; 
+    this.y = y; 
+    width = w; 
+    height = h;
+    value = 0;
+    state = 0;
+    offFrame = -1;
+    beats = b;
+    flashFrames = f;
+    font = createFont("Droid Sans Mono Bold", 60, true);
+    textFont(font);
+    textSize(60);
+    textx = x + (width - textWidth('4'))/2;
+    texty = y + (height+textAscent()-textDescent())/2;
+  }
+
+  void bang()
+  {
+    offFrame = frameCount + flashFrames;
+    value = (value+1)%beats;
+  }
+
+  void setState(int s)
+  {
+    state = s;
+  }
+
+  void setBeats(int b)
+  {
+    beats = b;
+  }
+
+  void set (int v)
+  {
+    value = v-1;
+  }
+
+  void draw () 
+  {
+    switch (state)
+    {
+    case 2:
+      fill (100, 255, 100);
+      break;
+    case 1:
+      fill( 255, 50, 50 );
+      break;
+    default:
+      fill(255);
+    }
+    stroke (0);
+    rect(x, y, width, height, 5);
+    noStroke();
+    fill(0);
+    textFont(font);
+    textSize(60);
+    text(nf(value+1, 1), textx, texty);
   }
 }

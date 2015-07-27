@@ -22,6 +22,7 @@ VolSlider volume;
 HSlider tempo;
 Label tempoLabel;
 PImage staff;
+MetroButton metro;
 
 void setup()
 {
@@ -65,6 +66,7 @@ void setup()
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
   
   staff = loadImage("scores/ex400.gif");
+  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 4, 10);
 }
 
 void draw()
