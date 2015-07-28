@@ -79,13 +79,13 @@ public class LaTiDoButton
     switch (state)
     {
     case 2:
-      fill (255);
+      fill ( #AED288 );
       break;
     case 1:
-      fill( 0, 200, 0 );
+      fill( #00ADEF );
       break;
     default:
-      fill( 200, 0, 0 );
+      fill( #F3DB7B );
     }
     stroke (0);
     rect(x, y, width, height, 3);
@@ -158,7 +158,7 @@ public class HSlider
     fill( 10 );
     rect( x, y, width, height );
 
-    fill( on ? 220 : 120 );
+    fill( on ? 255 : 120 );
     rect( valueX, y, height, height );
   }
 }
@@ -277,7 +277,8 @@ public class VolSlider
 
     if (!on) fill (120);
     else
-      fill (255, map(value, 0, 1, 255, 0), 0);
+      fill ( #ED1B24 );
+      //fill (255, map(value, 0, 1, 255, 0), 0);
     rect( x, valueY, width, height+y-valueY );
   }
 }
@@ -307,7 +308,7 @@ public class MicLevel
     noStroke();
     fill(0);
     rect(x, y, w, h);
-    fill(20, map(value, 0, 1, 10, 100), 200);
+    fill( #2E3192 );
     float bar = map(value, 0, 1, 0, h);
     rect (x, y+h-bar, w, bar);
   }
@@ -397,10 +398,12 @@ public class MetroButton
       switch (state)
       {
       case 2:
-        fill (100, 255, 100);
+        // green
+        fill ( #B1D28B );
         break;
       case 1:
-        fill( 255, 50, 50 );
+      // red
+        fill( #DE6C6C );
         break;
       default:
         fill(255);

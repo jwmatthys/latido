@@ -1,3 +1,16 @@
+void mousePressed()
+{
+  if (music.showBirdie)
+  {
+    music.showBirdie = false;
+  }
+  if (scorecard.active)
+  {
+    scorecard.active = false;
+    music.showBirdie = true;
+  }
+}
+
 void transportButton (int v)
 {
   OscMessage myMessage = new OscMessage("/latido/transport");
@@ -23,12 +36,12 @@ void volumeSlider (float v)
 {
   OscMessage myMessage = new OscMessage("/latido/vol");
   myMessage.add(v);
-  oscP5.send(myMessage, latidoPD);  
+  oscP5.send(myMessage, latidoPD);
 }
 
 void tempoSlider (float v)
 {
-  tempoVal = (int)map (v,0,1,TEMPO_LOW,TEMPO_HIGH);
+  tempoVal = (int)map (v, 0, 1, TEMPO_LOW, TEMPO_HIGH);
   String l = tempoVal + " BPM";
   tempoLabel.set (l);
   OscMessage myMessage = new OscMessage("/latido/tempo");
@@ -45,7 +58,7 @@ public void tempoPD (float f)
 {
   int t = int(f);
   tempoLabel.set(t+" BPM");
-  tempo.set(map(t,TEMPO_LOW,TEMPO_HIGH,0,1));
+  tempo.set(map(t, TEMPO_LOW, TEMPO_HIGH, 0, 1));
 }
 
 public void metroPD (float f)
@@ -56,7 +69,7 @@ public void metroPD (float f)
 
 public void metroStatePD (float f)
 {
-    int s = int(f);
+  int s = int(f);
   metro.setState(s);
 }
 

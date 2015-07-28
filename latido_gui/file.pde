@@ -1,12 +1,13 @@
 class MelodyLibrary
 {
   String[] lines;
-  String indexPath, midiPath, imagePath;
+  String indexPath, midiPath, imagePath, rhythmPath;
   String midiExt, imageExt; // file extensions contained in second line of latido.txt
   String filename;
   int tempo;
   float countin;
   int currentLine;
+  boolean rhythm;
   final int lineOffset = 3;
 
   MelodyLibrary ()
@@ -18,6 +19,7 @@ class MelodyLibrary
     indexPath = path+"/latido.txt";
     midiPath = path+"/midi/";
     imagePath = path+"/image/";
+    rhythmPath = path+"/rhythm/";
     lines = loadStrings(indexPath);
     if (lines==null) return false;
 
@@ -36,6 +38,7 @@ class MelodyLibrary
     filename = current[0];
     tempo = int(current[1]);
     countin = float(current[2]);
+    if (current.length>3) rhythm = true;
   }
 
   String getMidi ()
@@ -46,6 +49,11 @@ class MelodyLibrary
   String getImage ()
   {
     return imagePath+filename+"."+imageExt;
+  }
+  
+  String getRhythm ()
+  {
+    return rhythmPath+filename+".txt";
   }
 
   int getTempo ()

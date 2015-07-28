@@ -1,11 +1,12 @@
-# Melodies from Eyes and Ears by Benjamin Crowell
+Melodies from Eyes and Ears by Benjamin Crowell
 gif midi <--- list file extensions here
 -------------------BLANK LINE--------------------
-intro1 120 4
-intro2 104 4
-intro3 76 2
-intro4 120 4
 027 88 4
 028 120 4
 029 132 2
 030 108 4
+intro1 120 4
+intro2 104 4
+intro3 76 2
+intro4 120 4
+
