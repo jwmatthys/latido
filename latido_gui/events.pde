@@ -42,7 +42,7 @@ void volumeSlider (float v)
 void tempoSlider (float v)
 {
   tempoVal = (int)map (v, 0, 1, TEMPO_LOW, TEMPO_HIGH);
-  String l = tempoVal + " BPM";
+  String l = tempoVal + " bpm";
   tempoLabel.set (l);
   OscMessage myMessage = new OscMessage("/latido/tempo");
   myMessage.add(tempoVal);

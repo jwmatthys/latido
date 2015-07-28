@@ -1,12 +1,16 @@
 How to make your own Latido library
 
-You need 3 folders: image, midi, and rhythms.
+You need 4 folders: image, midi, rhythms, and text.
 
 The midi folder should contain single line midi files with correct meter and no extra rests in the beginning or end.
 
 The image folder should contain image files with the same name as the midi files. For instance, if your midi file is myawesomesong.midi, your image file should be myawesomesong.jpg.
 
 If there is no image file associated with the midi file, Latido will just display the default splash screen (the birdie).
+
+The text folder should contain plain text files ending with .txt with the same name as your midi files. This is the text that will be displayed on the screen above the melody.
+
+If there is no text file associated with the midi file, the text will be ignored.
 
 The rhythms folder contains txt files, each with its own rhythm written in custom Latido rhythm notation. You can read about it in RHYTHMS.md, located in the rhythms folder.
 

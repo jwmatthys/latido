@@ -1,0 +1,6 @@
+Welcome to Latido!
+
+First, let's make sure your microphone
+is working. Press Play to hear your
+starting pitch. Wait for the 4 beat
+count-in, then sing the note for 4 beats.
