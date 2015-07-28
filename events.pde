@@ -62,6 +62,7 @@ void libraryButton (int v)
       music.showBirdie = true;
       goButton.visible = true;
       goButton.active = true;
+      replay.active = false;
 
       if (v==1) library.loadPrevious();
       else library.loadNext();
