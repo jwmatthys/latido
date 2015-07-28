@@ -135,8 +135,15 @@ public void scorePD (float f)
 
 void folderCallback(File f)
 {
-  //println("callback: "+f.getAbsoluteFile().getParent());
-  //if (f == null) library.load("eyes_and_ears");
+  if (f != null)
+  {
   String s = f.getAbsoluteFile().getParent();
   library.load(s);
+  music.load(library.getImage());
+  music.showBirdie = true;
+  music.setText(library.getText());
+  tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+  tempoLabel.set(library.getTempo()+" bpm");
+  notifyPd();
+  }
 }

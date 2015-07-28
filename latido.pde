@@ -95,9 +95,9 @@ void setup()
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
   float buttonXpos = (width+SIDEBAR_WIDTH)/2 - 100 - 40;
   float buttonYpos = height-TOPBAR_HEIGHT-PADDING - 40;
-  previous = new LatidoButton (buttonXpos, buttonYpos, 80, 80, "Previous", "playback.png", 1);
-  redo = new LatidoButton (buttonXpos + 100, buttonYpos, 80, 80, "Redo", "playback.png", 2);
-  next = new LatidoButton (buttonXpos + 200, buttonYpos, 80, 80, "Next", "playback.png", 3);
+  previous = new LatidoButton (buttonXpos, buttonYpos, 80, 80, "Previous", "left-arrow.png", 1);
+  redo = new LatidoButton (buttonXpos + 100, buttonYpos, 80, 80, "Redo", "redo.png", 2);
+  next = new LatidoButton (buttonXpos + 200, buttonYpos, 80, 80, "Next", "right-arrow.png", 3);
   previous.visibility(false);
   redo.visibility(false);
   next.visibility(false);
