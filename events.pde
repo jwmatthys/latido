@@ -40,7 +40,7 @@ void libraryButton (int v)
 {
   if (v==0)
   {
-    selectInput("Choose your latido.txt library file", "folderCallback");
+    selectInput("Choose your latido.txt library file...", "folderCallback");
   } else
   {
     previous.visibility(false);
@@ -73,6 +73,17 @@ void libraryButton (int v)
       tempoLabel.set(library.getTempo()+" bpm");
       notifyPd();
     }
+  }
+}
+
+void userPrefs (int v)
+{
+  if (v == 0)
+  {
+    selectInput("Choose your Latido user progress file...", "loadCallback");
+  } else
+  {
+    selectOutput("Choose where to save your Latido user progress file...", "saveCallback");
   }
 }
 
@@ -130,19 +141,32 @@ public void scorePD (float f)
   previous.active = true;
   redo.active = true;
   next.active = (f >= 0.7);
+  saveProgress.active = (f >= 0.7);
 }
 
 void folderCallback(File f)
 {
   if (f != null)
   {
-  String s = f.getAbsoluteFile().getParent();
-  library.load(s);
-  music.load(library.getImage());
-  music.showBirdie = true;
-  music.setText(library.getText());
-  tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-  tempoLabel.set(library.getTempo()+" bpm");
-  notifyPd();
+    String s = f.getAbsoluteFile().getParent();
+    library.load(s);
+    music.load(library.getImage());
+    music.showBirdie = true;
+    music.setText(library.getText());
+    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+    tempoLabel.set(library.getTempo()+" bpm");
+    notifyPd();
   }
+}
+
+void loadCallback(File f)
+{
+  String s = f.getAbsolutePath();
+  userProgress.loadProgress(s);
+}
+
+void saveCallback(File f)
+{
+  String s = f.getAbsolutePath();
+  userProgress.saveProgress(s);
 }

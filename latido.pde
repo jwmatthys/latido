@@ -20,13 +20,15 @@ LatidoButton play, stop, pitch, replay;
 MicLevel micLevel;
 VolSlider volume;
 HSlider tempo;
-Label tempoLabel;
+Label tempoLabel, userPrefsLabel;
 MetroButton metro;
 ShowMusic music;
 Scorecard scorecard;
 MelodyLibrary library;
 LatidoButton libraryButton, next, previous, redo;
 LatidoButton goButton;
+LatidoButton loadProgress, saveProgress;
+UserProgress userProgress;
 boolean showSplash = true;
 
 void setup()
@@ -60,15 +62,19 @@ void setup()
 
   Interactive.make(this);
   music = new ShowMusic();
-  libraryButton = new LatidoButton (10, height-60, 50, 50, "Load...", "playback.png", 0);
+  libraryButton = new LatidoButton (10, height-80, 50, 50, "Load...", "playback.png", 0);
   play = new LatidoButton (10, 10, 50, 50, "Play", "appbar.control.play.png", 0);
   stop = new LatidoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
   pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
   replay = new LatidoButton (190, 10, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
+  userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.55, 32, "   User\nProgress");
+  loadProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+70,10,50,50, "Load", "", 0);
+  saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130,10,50,50, "Save", "", 1);
   replay.active = false;
   play.active = false;
   pitch.active = false;
   stop.active = false;
+  //saveProgress.active = false;
   volume = new VolSlider (10, 70, 20, 200);
   volume.set (0.25);
   micLevel = new MicLevel (40, 70, 20, 200);
@@ -78,11 +84,13 @@ void setup()
   Interactive.on( stop, "pressed", this, "transportButton" );
   Interactive.on( pitch, "pressed", this, "transportButton" );
   Interactive.on( replay, "pressed", this, "transportButton" );
+  Interactive.on( loadProgress, "pressed", this, "userPrefs" );
+  Interactive.on( saveProgress, "pressed", this, "userPrefs" );
   Interactive.on( volume, "valueChanged", this, "volumeSlider");
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
 
   library = new MelodyLibrary();
-  boolean loaded = library.load("eyes_and_ears");
+  library.load("eyes_and_ears");
 
   music.load(library.getImage());
   music.showBirdie = true;
@@ -90,7 +98,7 @@ void setup()
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
   notifyPd();
-  goButton = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55,height-100, 60, 60, "Go!", "warning.png", 0);
+  goButton = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55,height-120, 90, 90, "Go!", "warning.png", 0);
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
   float buttonXpos = (width+SIDEBAR_WIDTH)/2 - 100 - 40;
@@ -106,6 +114,10 @@ void setup()
   Interactive.on( previous, "pressed", this, "libraryButton");
   Interactive.on( redo, "pressed", this, "libraryButton");
   Interactive.on( next, "pressed", this, "libraryButton");
+  
+  userProgress = new UserProgress();
+  userProgress.updateProgress(0,7);
+  userProgress.updateProgress(4,76);
 }
 
 void draw()
