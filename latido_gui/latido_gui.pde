@@ -24,6 +24,7 @@ Label tempoLabel;
 MetroButton metro;
 ShowMusic music;
 Scorecard scorecard;
+MelodyLibrary library;
 
 void setup()
 {
@@ -37,6 +38,14 @@ void setup()
   oscP5.plug(this, "scorePD", "/score");
 
   PImage icon = loadImage("appbar.futurama.bender.png");
+
+  library = new MelodyLibrary();
+  boolean loaded = library.load("eyes_and_ears");
+  
+  /*while (!loaded)
+  {
+    melody.load(selectFolder());
+  }*/
 
   size(1024, 500);
   smooth();
@@ -72,6 +81,7 @@ void setup()
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
 
   music = new ShowMusic();
+  music.load(library.getImage());
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 5);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
 }
