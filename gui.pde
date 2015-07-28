@@ -1,4 +1,4 @@
-public class LaTiDoButton
+public class LatidoButton
 {
   float x, y, width, height;
   float textx, texty;
@@ -7,8 +7,10 @@ public class LaTiDoButton
   PImage img;
   String label;
   PFont font;
+  boolean active;
+  boolean visible;
 
-  LaTiDoButton ( float x, float y, float w, float h, int v)
+  LatidoButton ( float x, float y, float w, float h, int v)
   {
     Interactive.add( this ); // register it with the manager
     this.x = x; 
@@ -17,9 +19,11 @@ public class LaTiDoButton
     height = h;
     value = v;
     state = 0;
+    active = true;
+    visible = true;
   }
 
-  LaTiDoButton ( float x, float y, float w, float h, String i, int v)
+  LatidoButton ( float x, float y, float w, float h, String i, int v)
   {
     Interactive.add( this ); // register it with the manager
     this.x = x; 
@@ -28,10 +32,12 @@ public class LaTiDoButton
     height = h;
     value = v;
     state = 0;
+    active = true;
+    visible = true;
     img = loadImage(i);
   }
 
-  LaTiDoButton ( float x, float y, float w, float h, String l, String i, int v)
+  LatidoButton ( float x, float y, float w, float h, String l, String i, int v)
   {
     Interactive.add( this ); // register it with the manager
     this.x = x; 
@@ -47,57 +53,75 @@ public class LaTiDoButton
     textSize(12);
     textx = x + (width - textWidth(label))/2;
     texty = y + height - textDescent();
+    active = true;
+    visible = true;
   }
 
   // called by manager
 
   void mousePressed () 
   {
-    fill(255);
-    rect(x, y, width, height);
-    Interactive.send( this, "pressed", value );
-    state = 2;
+    if (active)
+    {
+      fill(255);
+      rect(x, y, width, height);
+      Interactive.send( this, "pressed", value );
+      state = 2;
+    }
   }
 
   void mouseReleased()
   {
-    state = 1;
+    if (active)
+    {
+      state = 1;
+    }
   }
 
   void mouseEntered ()
   {
-    state = 1;
+    if (active)
+    {
+      state = 1;
+    }
   }
 
   void mouseExited ()
   {
-    state = 0;
+    if (active)
+    {
+      state = 0;
+    }
   }
 
   void draw () 
   {
-    switch (state)
+    if (visible)
     {
-    case 2:
-      fill ( #AED288 );
-      break;
-    case 1:
-      fill( #00ADEF );
-      break;
-    default:
-      fill( #F3DB7B );
+      switch (state)
+      {
+      case 2:
+        fill ( #AED288 );
+        break;
+      case 1:
+        fill( #00ADEF );
+        break;
+      default:
+        fill( #F3DB7B );
+      }
+      if (!active) fill (200);
+      stroke (0);
+      rect(x, y, width, height, 3);
+      if (font != null)
+      {
+        if (img != null) image(img, x+width*0.125, y, width*0.75, height*0.75);
+        textFont(font);
+        textSize(12);
+        noStroke();
+        fill(0);
+        text(label, textx, texty);
+      } else if (img != null) image(img, x, y, width, height);
     }
-    stroke (0);
-    rect(x, y, width, height, 3);
-    if (font != null)
-    {
-      if (img != null) image(img, x+width*0.125, y, width*0.75, height*0.75);
-      textFont(font);
-      textSize(12);
-      noStroke();
-      fill(0);
-      text(label, textx, texty);
-    } else if (img != null) image(img, x, y, width, height);
   }
 }
 
@@ -278,7 +302,7 @@ public class VolSlider
     if (!on) fill (120);
     else
       fill ( #ED1B24 );
-      //fill (255, map(value, 0, 1, 255, 0), 0);
+    //fill (255, map(value, 0, 1, 255, 0), 0);
     rect( x, valueY, width, height+y-valueY );
   }
 }
@@ -402,7 +426,7 @@ public class MetroButton
         fill ( #B1D28B );
         break;
       case 1:
-      // red
+        // red
         fill( #DE6C6C );
         break;
       default:

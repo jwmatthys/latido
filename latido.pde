@@ -16,7 +16,7 @@ OscP5 oscP5tcpClient;
 OscP5 oscP5;
 NetAddress latidoPD;
 
-LaTiDoButton play, stop, pitch, replay;
+LatidoButton play, stop, pitch, replay;
 MicLevel micLevel;
 VolSlider volume;
 HSlider tempo;
@@ -25,6 +25,7 @@ MetroButton metro;
 ShowMusic music;
 Scorecard scorecard;
 MelodyLibrary library;
+LatidoButton loadLibrary, next, previous;
 boolean showSplash = true;
 
 void setup()
@@ -39,14 +40,6 @@ void setup()
   oscP5.plug(this, "scorePD", "/score");
 
   PImage icon = loadImage("appbar.futurama.bender.png");
-
-  library = new MelodyLibrary();
-  boolean loaded = library.load("eyes_and_ears");
-  
-  /*while (!loaded)
-  {
-    melody.load(selectFolder());
-  }*/
 
   size(1024, 500);
   smooth();
@@ -65,10 +58,14 @@ void setup()
   );
 
   Interactive.make(this);
-  play = new LaTiDoButton (10, 10, 50, 50, "Play", "appbar.control.play.png", 0);
-  stop = new LaTiDoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
-  pitch = new LaTiDoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
-  replay = new LaTiDoButton (190, 10, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
+  play = new LatidoButton (10, 10, 50, 50, "Play", "appbar.control.play.png", 0);
+  stop = new LatidoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
+  pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
+  replay = new LatidoButton (190, 10, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
+  replay.active = false;
+  play.active = false;
+  pitch.active = false;
+  stop.active = false;
   volume = new VolSlider (10, 70, 20, 200);
   volume.set (0.25);
   micLevel = new MicLevel (40, 70, 20, 200);
@@ -81,11 +78,14 @@ void setup()
   Interactive.on( volume, "valueChanged", this, "volumeSlider");
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
 
+  library = new MelodyLibrary();
+  boolean loaded = library.load("eyes_and_ears");
+  
   music = new ShowMusic();
   music.load(library.getImage());
   music.showBirdie = true;
   music.setText(library.getText());
-  tempo.set(map(library.getTempo(),TEMPO_LOW,TEMPO_HIGH,0,1));
+  tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
   notifyPd();
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);

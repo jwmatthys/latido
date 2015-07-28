@@ -1,13 +1,22 @@
 void mousePressed()
 {
-  if (music.showBirdie)
+  if (mouseButton==RIGHT)
   {
-    music.showBirdie = false;
-  }
-  if (scorecard.active)
-  {
-    scorecard.active = false;
-    music.showBirdie = true;
+    selectInput("Choose your latido.txt library file", "folderCallback");
+  } else {
+    if (music.showBirdie)
+    {
+      music.showBirdie = false;
+      play.active = true;
+      stop.active = true;
+      pitch.active = true;
+      replay.active = true;
+    }
+    if (scorecard.active)
+    {
+      scorecard.active = false;
+      music.showBirdie = true;
+    }
   }
 }
 
@@ -76,5 +85,17 @@ public void metroStatePD (float f)
 public void scorePD (float f)
 {
   println("Score: "+f);
+  play.active = false;
+  stop.active = false;
+  pitch.active = false;
+  replay.active = true;
   scorecard.setScore(f);
+}
+
+void folderCallback(File f)
+{
+  //println("callback: "+f.getAbsoluteFile().getParent());
+  //if (f == null) library.load("eyes_and_ears");
+  String s = f.getAbsoluteFile().getParent();
+  library.load(s);
 }
