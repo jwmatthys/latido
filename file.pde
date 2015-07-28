@@ -17,7 +17,7 @@ class MelodyLibrary
   boolean load (String path)
   {
     indexPath = path+"/latido.txt";
-    midiPath = path+"/midi/";
+    midiPath = dataPath(path)+"/midi/";
     imagePath = path+"/image/";
     rhythmPath = path+"/rhythm/";
     textPath = path+"/text/";
