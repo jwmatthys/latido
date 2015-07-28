@@ -38,7 +38,6 @@ public class Scorecard
   {
     score = f;
     stars = numStars(score);
-    println("stars: "+stars);
     for (int i=0; i<stars; i++)
     {
       starxi[i].value = width;

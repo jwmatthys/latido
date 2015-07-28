@@ -119,7 +119,6 @@ public void metroStatePD (float f)
 
 public void scorePD (float f)
 {
-  println("Score: "+f);
   play.active = false;
   stop.active = false;
   pitch.active = false;
