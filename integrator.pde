@@ -1,7 +1,7 @@
 public class Integrator {
  
   final float DAMPING = 0.7f;
-  final float ATTRACTION = 0.2f;
+  final float ATTRACTION = 0.15f;
  
   float value;
   float vel;

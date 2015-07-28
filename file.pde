@@ -42,6 +42,20 @@ class MelodyLibrary
     countin = float(current[2]);
     if (current.length>3) rhythm = true;
   }
+  
+  void loadNext()
+  {
+    currentLine++;
+    if (currentLine + lineOffset >= lines.length) currentLine--;
+    parse(currentLine);
+  }
+  
+  void loadPrevious()
+  {
+        currentLine--;
+    if (currentLine < lineOffset) currentLine++;
+    parse(currentLine);
+  }
 
   String getMidi ()
   {

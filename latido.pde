@@ -25,7 +25,8 @@ MetroButton metro;
 ShowMusic music;
 Scorecard scorecard;
 MelodyLibrary library;
-LatidoButton loadLibrary, next, previous;
+LatidoButton libraryButton, next, previous, redo;
+LatidoButton goButton;
 boolean showSplash = true;
 
 void setup()
@@ -58,6 +59,8 @@ void setup()
   );
 
   Interactive.make(this);
+  music = new ShowMusic();
+  libraryButton = new LatidoButton (10, height-60, 50, 50, "Load...", "playback.png", 0);
   play = new LatidoButton (10, 10, 50, 50, "Play", "appbar.control.play.png", 0);
   stop = new LatidoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
   pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
@@ -80,16 +83,29 @@ void setup()
 
   library = new MelodyLibrary();
   boolean loaded = library.load("eyes_and_ears");
-  
-  music = new ShowMusic();
+
   music.load(library.getImage());
   music.showBirdie = true;
   music.setText(library.getText());
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
   notifyPd();
+  goButton = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55,height-100, 60, 60, "Go!", "warning.png", 0);
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
+  float buttonXpos = (width+SIDEBAR_WIDTH)/2 - 100 - 40;
+  float buttonYpos = height-TOPBAR_HEIGHT-PADDING - 40;
+  previous = new LatidoButton (buttonXpos, buttonYpos, 80, 80, "Previous", "playback.png", 1);
+  redo = new LatidoButton (buttonXpos + 100, buttonYpos, 80, 80, "Redo", "playback.png", 2);
+  next = new LatidoButton (buttonXpos + 200, buttonYpos, 80, 80, "Next", "playback.png", 3);
+  previous.visibility(false);
+  redo.visibility(false);
+  next.visibility(false);
+  Interactive.on( goButton, "pressed", this, "goButtonPressed");
+  Interactive.on( libraryButton, "pressed", this, "libraryButton");
+  Interactive.on( previous, "pressed", this, "libraryButton");
+  Interactive.on( redo, "pressed", this, "libraryButton");
+  Interactive.on( next, "pressed", this, "libraryButton");
 }
 
 void draw()

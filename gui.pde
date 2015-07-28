@@ -70,6 +70,15 @@ public class LatidoButton
     }
   }
 
+  void visibility (boolean b)
+  {
+    if (b) visible = true;
+    else {
+      visible = false;
+      active = false;
+    }
+  }
+
   void mouseReleased()
   {
     if (active)

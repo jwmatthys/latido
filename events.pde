@@ -1,23 +1,16 @@
 void mousePressed()
 {
-  if (mouseButton==RIGHT)
-  {
-    selectInput("Choose your latido.txt library file", "folderCallback");
-  } else {
-    if (music.showBirdie)
-    {
-      music.showBirdie = false;
-      play.active = true;
-      stop.active = true;
-      pitch.active = true;
-      replay.active = true;
-    }
-    if (scorecard.active)
-    {
-      scorecard.active = false;
-      music.showBirdie = true;
-    }
-  }
+}
+
+void goButtonPressed (int v)
+{
+  music.showBirdie = false;
+  play.active = true;
+  stop.active = false;
+  pitch.active = true;
+  replay.active = false;
+  goButton.visibility(false);
+  libraryButton.visibility(false);
 }
 
 void transportButton (int v)
@@ -27,6 +20,7 @@ void transportButton (int v)
   {
   case 0:
     myMessage.add("play");
+    stop.active = true;
     scorecard.active = false;
     break;
   case 1:
@@ -37,8 +31,48 @@ void transportButton (int v)
     break;
   case 3:
     myMessage.add("replay");
+    stop.active = true;
   }
   oscP5.send(myMessage, latidoPD);
+}
+
+void libraryButton (int v)
+{
+  if (v==0)
+  {
+    selectInput("Choose your latido.txt library file", "folderCallback");
+  } else
+  {
+    previous.visibility(false);
+    redo.visibility(false);
+    next.visibility(false);
+    if (v==2) //redo
+    {
+      scorecard.active = false;
+      music.showBirdie = false;
+      play.active = true;
+      stop.active = false;
+      pitch.active = true;
+      replay.active = false;
+      goButton.visibility(false);
+      libraryButton.visibility(false);
+    } else
+    {
+      scorecard.active = false;
+      music.showBirdie = true;
+      goButton.visible = true;
+      goButton.active = true;
+
+      if (v==1) library.loadPrevious();
+      else library.loadNext();
+      music.load(library.getImage());
+      music.showBirdie = true;
+      music.setText(library.getText());
+      tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+      tempoLabel.set(library.getTempo()+" bpm");
+      notifyPd();
+    }
+  }
 }
 
 void volumeSlider (float v)
@@ -90,6 +124,12 @@ public void scorePD (float f)
   pitch.active = false;
   replay.active = true;
   scorecard.setScore(f);
+  previous.visible = true;
+  next.visible = true;
+  redo.visible = true;
+  previous.active = true;
+  redo.active = true;
+  next.active = (f >= 0.7);
 }
 
 void folderCallback(File f)

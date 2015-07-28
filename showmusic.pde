@@ -48,7 +48,7 @@ public class ShowMusic
     textSize(18);
     noStroke();
     fill(0);
-    float y = TOPBAR_HEIGHT+2*PADDING;
+    float y = TOPBAR_HEIGHT+PADDING;
     if (text.length>0)
     {
       for (int i=0; i<text.length; i++)
