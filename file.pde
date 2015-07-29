@@ -19,7 +19,7 @@ class MelodyLibrary
     indexPath = path+"/latido.txt";
     midiPath = dataPath(path)+"/midi/";
     imagePath = path+"/image/";
-    rhythmPath = path+"/rhythm/";
+    rhythmPath = dataPath(path)+"/rhythm/";
     textPath = path+"/text/";
     lines = loadStrings(indexPath);
     if (lines==null) return "";

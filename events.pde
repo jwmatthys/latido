@@ -1,5 +1,8 @@
-void mousePressed()
+void keyPressed()
 {
+  OscMessage myMessage = new OscMessage("/rhy");
+  myMessage.add(library.rhythm ? 1 : 0);
+  oscP5.send(myMessage, latidoPD);
 }
 
 void nextButton (int v)
@@ -28,7 +31,7 @@ void nextButton (int v)
     music.setText(library.getText());
     tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
     tempoLabel.set(library.getTempo()+" bpm");
-    notifyPd();
+    notifyPd(library.rhythm);
     userProgress.updateInfo(library.currentLine, library.getName());
   }
 }
@@ -47,7 +50,7 @@ void prevButton (int v)
     music.setText(library.getText());
     tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
     tempoLabel.set(library.getTempo()+" bpm");
-    notifyPd();
+    notifyPd(library.rhythm);
     userProgress.updateInfo(library.currentLine, library.getName());
   } else
   {
@@ -112,7 +115,7 @@ void libraryButton (int v)
       music.setText(library.getText());
       tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
       tempoLabel.set(library.getTempo()+" bpm");
-      notifyPd();
+      notifyPd(library.rhythm);
       userProgress.updateInfo(library.currentLine, library.getName());
     }
   }
@@ -196,7 +199,7 @@ void folderCallback(File f)
     music.setText(library.getText());
     tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
     tempoLabel.set(library.getTempo()+" bpm");
-    notifyPd();
+    notifyPd(library.rhythm);
   }
 }
 

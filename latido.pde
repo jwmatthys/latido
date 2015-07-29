@@ -107,7 +107,7 @@ void setup()
   music.setText(library.getText());
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
-  notifyPd();
+  notifyPd(library.rhythm);
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
 
@@ -129,15 +129,25 @@ void paintSidebar()
   rect(70, 0, width, TOPBAR_HEIGHT);
 }
 
-void notifyPd()
+void notifyPd(boolean rhythm)
 {
-  OscMessage myMessage = new OscMessage("/latido/tempo");
+  OscMessage myMessage = new OscMessage("/latido/isrhythm");
+  myMessage.add(library.rhythm ? 1 : 0);
+  oscP5.send(myMessage, latidoPD);
+  myMessage = new OscMessage("/latido/tempo");
   myMessage.add(library.getTempo());
   oscP5.send(myMessage, latidoPD);
   myMessage = new OscMessage("/latido/countin");
   myMessage.add(library.getCountin());
   oscP5.send(myMessage, latidoPD);
-  myMessage = new OscMessage("/latido/midifile");
-  myMessage.add(library.getMidi());
+  if (rhythm)
+  {
+    myMessage = new OscMessage("/latido/rhyfile");
+    myMessage.add(library.getRhythm());
+  } else
+  { 
+    myMessage = new OscMessage("/latido/midifile");
+    myMessage.add(library.getMidi());
+  }
   oscP5.send(myMessage, latidoPD);
 }
