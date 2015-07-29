@@ -12,8 +12,8 @@ void mousePressed()
     splash.active = false;
     music.showBirdie = true;
     next.active = true;
-    loadProgress.active = true;
-    saveProgress.active = true;
+      loadProgress.active = true;
+  saveProgress.active = true;
   }
 }
 
@@ -30,8 +30,7 @@ void nextButton (int v)
     replay.active = false;
     libraryButton.visibility(false);
     scorecard.active = false;
-    if (userProgress.getCurrentStars(library.currentLine)>3) next.active = true;
-    else next.active = false;
+    next.active = (userProgress.getCurrentStars(library.currentLine)>3);    
   } else
   {
     scorecard.active = false;
@@ -46,6 +45,7 @@ void nextButton (int v)
     tempoLabel.set(library.getTempo()+" bpm");
     notifyPd(library.rhythm);
     userProgress.updateInfo(library.currentLine, library.getName());
+    next.active = true;
   }
 }
 
@@ -65,6 +65,7 @@ void prevButton (int v)
     tempoLabel.set(library.getTempo()+" bpm");
     notifyPd(library.rhythm);
     userProgress.updateInfo(library.currentLine, library.getName());
+        next.active = (userProgress.getCurrentStars(library.currentLine)>3);
   } else
   {
     music.showBirdie = true;

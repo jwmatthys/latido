@@ -1,4 +1,4 @@
-#N canvas 486 222 997 482 10;
+#N canvas 366 228 997 482 10;
 #X obj 568 56 inlet;
 #X text 616 54 midi note;
 #X text 189 62 user note;
@@ -7,7 +7,7 @@
 #X text 817 24 number of notes;
 #X obj 42 67 inlet;
 #X text 40 49 bang when finished;
-#N canvas 503 383 611 587 rhythm-scoring 0;
+#N canvas 499 180 611 587 rhythm-scoring 0;
 #X obj 398 39 inlet;
 #X obj 150 23 inlet;
 #X text 434 39 num notes;
@@ -31,7 +31,7 @@
 #X obj 174 512 f;
 #X obj 86 321 tabread player-rhythm;
 #X obj 283 337 tabread target-rhythm;
-#X obj 189 438 < 60;
+#X obj 189 438 < 55;
 #X connect 0 0 16 0;
 #X connect 1 0 17 0;
 #X connect 3 0 4 0;
