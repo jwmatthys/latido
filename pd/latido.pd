@@ -1,7 +1,7 @@
 #N canvas 1045 82 170 204 10;
 #X declare -path .;
 #X declare -path latido_externals;
-#N canvas 219 332 1105 487 internals 1;
+#N canvas 309 413 1105 487 internals 0;
 #X obj 614 8 adc~;
 #N canvas 41 411 450 300 play-pitch 0;
 #X obj 186 86 t b b;
@@ -311,7 +311,6 @@
 #X connect 24 0 64 0;
 #X connect 25 0 28 0;
 #X connect 25 0 69 0;
-#X connect 25 0 71 0;
 #X connect 25 0 72 0;
 #X connect 25 1 28 1;
 #X connect 25 1 73 0;
@@ -321,6 +320,7 @@
 #X connect 25 3 43 0;
 #X connect 25 3 58 0;
 #X connect 25 3 74 0;
+#X connect 25 3 71 0;
 #X connect 25 4 68 0;
 #X connect 26 0 25 0;
 #X connect 26 0 45 0;
@@ -398,7 +398,7 @@
 #X restore 24 109 pd recording-arrays;
 #N canvas 541 178 851 376 networking 0;
 #X obj 149 235 netsend -u -b;
-#X obj 149 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 149 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 34 38 oscformat mic;
 #X obj 34 64 list prepend send;
