@@ -1,2 +1,3 @@
 # latido-processing
-New version of LaTiDo gui, created in Processing
+Latido, the Sight Singing app that listens!
+
