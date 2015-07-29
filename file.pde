@@ -16,10 +16,10 @@ class MelodyLibrary
 
   String load (String path)
   {
-    indexPath = path+"/latido.txt";
+    indexPath = dataPath(path)+"/latido.txt";
     midiPath = dataPath(path)+"/midi/";
-    imagePath = path+"/image/";
-    textPath = path+"/text/";
+    imagePath = dataPath(path)+"/image/";
+    textPath = dataPath(path)+"/text/";
     lines = loadStrings(indexPath);
     if (lines==null) return "";
     String[] extensions = split(lines[1], ' ');

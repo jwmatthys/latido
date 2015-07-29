@@ -46,7 +46,7 @@ public class LatidoButton
     height = h;
     value = v;
     state = 0;
-    img = loadImage(i);
+    if (i != null) img = loadImage(i);
     label = l;
     font = createFont("Droid Sans", 12, true);
     textFont(font);

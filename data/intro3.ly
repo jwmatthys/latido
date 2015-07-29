@@ -12,4 +12,4 @@
     \relative f' {
   f4 a c a | f2 f4 e | f2 f4 c | f1 \bar "||"
 }
-}}
+}\midi{}}

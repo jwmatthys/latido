@@ -1,7 +1,7 @@
-#N canvas 1045 81 170 204 10;
+#N canvas 1043 112 170 204 10;
 #X declare -path .;
 #X declare -path latido_externals;
-#N canvas 309 414 1105 487 internals 0;
+#N canvas 137 106 1105 487 internals 0;
 #X obj 614 8 adc~;
 #N canvas 41 411 450 300 play-pitch 0;
 #X obj 186 86 t b b;
@@ -285,7 +285,7 @@
 #X obj 182 338 rhythm-gate 0;
 #X obj 18 124 rhythm-gate 0;
 #X obj 626 273 s score-osc;
-#N canvas 0 22 619 324 clank 0;
+#N canvas 0 50 619 324 clank 0;
 #X obj 177 74 rhythm-gate 1;
 #X obj 176 122 spigot 0;
 #X msg 225 96 0;
@@ -403,6 +403,7 @@
 #X connect 73 0 19 2;
 #X connect 74 0 1 0;
 #X connect 76 0 3 0;
+#X connect 76 0 13 0;
 #X connect 77 0 76 1;
 #X connect 78 0 35 0;
 #X connect 78 1 32 0;
@@ -513,3 +514,4 @@
 #X connect 38 4 25 0;
 #X connect 38 5 32 0;
 #X restore 24 155 pd networking;
+#X obj 23 74 watchdog;

@@ -15,8 +15,8 @@ class UserProgress
     library.setContent(libName);
     progress = user.getChild("progress");
     exercise = progress.getChildren("exercise");
-    println("user name: "+username.getContent());
-    println("library: "+library.getContent());
+    //println("user name: "+username.getContent());
+    //println("library: "+library.getContent());
   }
 
   void loadProgress (String f)
@@ -37,19 +37,16 @@ class UserProgress
 
   void updateInfo (int id, String n)
   {
+    exercise = progress.getChildren("exercise");
     if (id>=exercise.length)
     {
       XML newEntry = progress.addChild("exercise");
-      newEntry.setInt("id", id);
-      XML name = newEntry.addChild("name");
-      name.setContent(n);
+      newEntry.setString("name", n);
       XML score = newEntry.addChild("score");
       score.setIntContent(0);
       XML time = newEntry.addChild("started");
       newEntry.addChild("completed");
       time.setContent(timeStamp());
-    } else
-    {
     }
   } 
 
@@ -71,6 +68,11 @@ class UserProgress
     exercise = progress.getChildren("exercise");
     XML score = exercise[id].getChild("score");
     return score.getIntContent();
+  }
+  
+  String getLibraryName()
+  {
+    return library.getContent();
   }
 
   String timeStamp()

@@ -5,6 +5,18 @@ void keyPressed()
   oscP5.send(myMessage, latidoPD);
 }
 
+void mousePressed()
+{
+  if (splash.active)
+  {
+    splash.active = false;
+    music.showBirdie = true;
+    next.active = true;
+    loadProgress.active = true;
+    saveProgress.active = true;
+  }
+}
+
 void nextButton (int v)
 {
   previous.active = true;
@@ -209,10 +221,17 @@ void loadCallback(File f)
 {
   String s = f.getAbsolutePath();
   userProgress.loadProgress(s);
+  String libName = library.getName();
+  if (libName != userProgress.getLibraryName()) userProgress = new UserProgress("Latido User", libName);
 }
 
 void saveCallback(File f)
 {
   String s = f.getAbsolutePath();
   userProgress.saveProgress(s);
+}
+
+void websiteLink (int v)
+{
+  link("http://joel.matthysmusic.com/contact/");
 }
