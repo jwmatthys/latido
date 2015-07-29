@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <latido>
-  <name>"Latido Nerd"</name>
-  <library>"Eyes and Ears"</library>
+  <name>Latido User</name>
+  <library>Eyes and Ears</library>
   <progress>
-  	<exercise id="0">5</exercise>
-  	<exercise id="1">5</exercise>
-  	<exercise id="2">5</exercise>
-  	<exercise id="3">4</exercise>
-  	<exercise id="4">2</exercise>
   </progress>
 </latido>

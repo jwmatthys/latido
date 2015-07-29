@@ -26,7 +26,6 @@ ShowMusic music;
 Scorecard scorecard;
 MelodyLibrary library;
 LatidoButton libraryButton, next, previous, redo;
-LatidoButton goButton;
 LatidoButton loadProgress, saveProgress;
 UserProgress userProgress;
 boolean showSplash = true;
@@ -67,9 +66,16 @@ void setup()
   stop = new LatidoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
   pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
   replay = new LatidoButton (190, 10, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
+
+  previous = new LatidoButton (350, 10, 50, 50, "Previous", "left-arrow.png", 0);
+  redo = new LatidoButton (410, 10, 50, 50, "Redo", "redo.png", 2);
+  next = new LatidoButton (470, 10, 50, 50, "Next", "right-arrow.png", 0);
+  previous.active = false;
+  redo.active = false;
+
   userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.55, 32, "   User\nProgress");
-  loadProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+70,10,50,50, "Load", "", 0);
-  saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130,10,50,50, "Save", "", 1);
+  loadProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+70, 10, 50, 50, "Load", "", 0);
+  saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130, 10, 50, 50, "Save", "", 1);
   replay.active = false;
   play.active = false;
   pitch.active = false;
@@ -88,9 +94,13 @@ void setup()
   Interactive.on( saveProgress, "pressed", this, "userPrefs" );
   Interactive.on( volume, "valueChanged", this, "volumeSlider");
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
+  Interactive.on( next, "pressed", this, "nextButton");
+  Interactive.on( previous, "pressed", this, "prevButton");
+  Interactive.on( libraryButton, "pressed", this, "libraryButton");
+  Interactive.on( redo, "pressed", this, "libraryButton");
 
   library = new MelodyLibrary();
-  library.load("eyes_and_ears");
+  String libName = library.load("eyes_and_ears");
 
   music.load(library.getImage());
   music.showBirdie = true;
@@ -98,26 +108,11 @@ void setup()
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
   notifyPd();
-  goButton = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55,height-120, 90, 90, "Go!", "warning.png", 0);
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-2*PADDING);
-  float buttonXpos = (width+SIDEBAR_WIDTH)/2 - 100 - 40;
-  float buttonYpos = height-TOPBAR_HEIGHT-PADDING - 40;
-  previous = new LatidoButton (buttonXpos, buttonYpos, 80, 80, "Previous", "left-arrow.png", 1);
-  redo = new LatidoButton (buttonXpos + 100, buttonYpos, 80, 80, "Redo", "redo.png", 2);
-  next = new LatidoButton (buttonXpos + 200, buttonYpos, 80, 80, "Next", "right-arrow.png", 3);
-  previous.visibility(false);
-  redo.visibility(false);
-  next.visibility(false);
-  Interactive.on( goButton, "pressed", this, "goButtonPressed");
-  Interactive.on( libraryButton, "pressed", this, "libraryButton");
-  Interactive.on( previous, "pressed", this, "libraryButton");
-  Interactive.on( redo, "pressed", this, "libraryButton");
-  Interactive.on( next, "pressed", this, "libraryButton");
-  
-  userProgress = new UserProgress();
-  userProgress.updateProgress(0,7);
-  userProgress.updateProgress(4,76);
+
+  userProgress = new UserProgress("Latido User", libName);
+  userProgress.updateInfo(library.currentLine, library.getName());
 }
 
 void draw()

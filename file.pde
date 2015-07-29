@@ -14,7 +14,7 @@ class MelodyLibrary
   {
   }
 
-  boolean load (String path)
+  String load (String path)
   {
     indexPath = path+"/latido.txt";
     midiPath = dataPath(path)+"/midi/";
@@ -22,15 +22,13 @@ class MelodyLibrary
     rhythmPath = path+"/rhythm/";
     textPath = path+"/text/";
     lines = loadStrings(indexPath);
-    if (lines==null) return false;
-
-    println(lines[0]);
+    if (lines==null) return "";
     String[] extensions = split(lines[1], ' ');
     imageExt = extensions[0];
     midiExt = extensions[1];
     currentLine = 0;
     parse (0);
-    return true;
+    return lines[0];
   }
 
   void parse (int line)
@@ -76,6 +74,10 @@ class MelodyLibrary
     return textPath+filename+".txt";
   }
 
+String getName ()
+  {
+    return filename;
+  }
   int getTempo ()
   {
     return tempo;

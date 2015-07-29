@@ -2,15 +2,63 @@ void mousePressed()
 {
 }
 
-void goButtonPressed (int v)
+void nextButton (int v)
 {
-  music.showBirdie = false;
-  play.active = true;
-  stop.active = false;
-  pitch.active = true;
-  replay.active = false;
-  goButton.visibility(false);
-  libraryButton.visibility(false);
+  previous.active = true;
+  if (music.showBirdie)
+  {
+    music.showBirdie = false;
+    play.active = true;
+    stop.active = false;
+    pitch.active = true;
+    replay.active = false;
+    libraryButton.visibility(false);
+    scorecard.active = false;
+    if (userProgress.getCurrentStars(library.currentLine)>3) next.active = true;
+    else next.active = false;
+  } else
+  {
+    scorecard.active = false;
+    music.showBirdie = true;
+    replay.active = false;
+
+    library.loadNext();
+    music.load(library.getImage());
+    music.showBirdie = true;
+    music.setText(library.getText());
+    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+    tempoLabel.set(library.getTempo()+" bpm");
+    notifyPd();
+    userProgress.updateInfo(library.currentLine, library.getName());
+  }
+}
+
+void prevButton (int v)
+{
+  if (music.showBirdie || scorecard.active)
+  {
+    scorecard.active = false;
+    music.showBirdie = true;
+    replay.active = false;
+
+    library.loadPrevious();
+    music.load(library.getImage());
+    music.showBirdie = true;
+    music.setText(library.getText());
+    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+    tempoLabel.set(library.getTempo()+" bpm");
+    notifyPd();
+    userProgress.updateInfo(library.currentLine, library.getName());
+  } else
+  {
+    music.showBirdie = true;
+    play.active = false;
+    stop.active = false;
+    pitch.active = true;
+    scorecard.active = false;
+    next.active = true;
+  }
+  if (music.showBirdie && library.currentLine==0) previous.active = false;
 }
 
 void transportButton (int v)
@@ -43,9 +91,6 @@ void libraryButton (int v)
     selectInput("Choose your latido.txt library file...", "folderCallback");
   } else
   {
-    previous.visibility(false);
-    redo.visibility(false);
-    next.visibility(false);
     if (v==2) //redo
     {
       scorecard.active = false;
@@ -54,24 +99,21 @@ void libraryButton (int v)
       stop.active = false;
       pitch.active = true;
       replay.active = false;
-      goButton.visibility(false);
       libraryButton.visibility(false);
     } else
     {
       scorecard.active = false;
       music.showBirdie = true;
-      goButton.visible = true;
-      goButton.active = true;
       replay.active = false;
 
-      if (v==1) library.loadPrevious();
-      else library.loadNext();
+      library.loadPrevious();
       music.load(library.getImage());
       music.showBirdie = true;
       music.setText(library.getText());
       tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
       tempoLabel.set(library.getTempo()+" bpm");
       notifyPd();
+      userProgress.updateInfo(library.currentLine, library.getName());
     }
   }
 }
@@ -128,20 +170,19 @@ public void metroStatePD (float f)
   metro.setState(s);
 }
 
-public void scorePD (float f)
+public void scorePD (float theScore)
 {
   play.active = false;
   stop.active = false;
   pitch.active = false;
   replay.active = true;
-  scorecard.setScore(f);
-  previous.visible = true;
-  next.visible = true;
-  redo.visible = true;
-  previous.active = true;
+  scorecard.setScore(theScore);
   redo.active = true;
-  next.active = (f >= 0.7);
-  saveProgress.active = (f >= 0.7);
+  if (theScore >= 0.7 || userProgress.getCurrentStars(library.currentLine)>3)
+  {
+    next.active = true;
+  }
+  userProgress.updateScore(library.currentLine, scorecard.stars);
 }
 
 void folderCallback(File f)

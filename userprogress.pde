@@ -6,11 +6,13 @@ class UserProgress
   XML progress;
   XML[] exercise;
 
-  UserProgress ()
+  UserProgress (String playerName, String libName)
   {
     user = loadXML("newuser.xml");
     username = user.getChild("name");
     library = user.getChild("library");
+    username.setContent(playerName);
+    library.setContent(libName);
     progress = user.getChild("progress");
     exercise = progress.getChildren("exercise");
     println("user name: "+username.getContent());
@@ -32,10 +34,47 @@ class UserProgress
   {
     saveXML(user, f);
   }
-  
-  void updateProgress (int id, int stars)
+
+  void updateInfo (int id, String n)
   {
-    exercise[id].setInt("id",id);
-    exercise[id].setIntContent(stars);
+    if (id>=exercise.length)
+    {
+      XML newEntry = progress.addChild("exercise");
+      newEntry.setInt("id", id);
+      XML name = newEntry.addChild("name");
+      name.setContent(n);
+      XML score = newEntry.addChild("score");
+      score.setIntContent(0);
+      XML time = newEntry.addChild("started");
+      newEntry.addChild("completed");
+      time.setContent(timeStamp());
+    } else
+    {
+    }
+  } 
+
+  void updateScore (int id, int stars)
+  {
+    exercise = progress.getChildren("exercise");
+    XML score = exercise[id].getChild("score");
+    XML time =  exercise[id].getChild("completed");
+    int oldStars = score.getIntContent();
+    if (stars > oldStars)
+    {
+      score.setIntContent(stars);
+      if (stars>3) time.setContent(timeStamp());
+    }
+  }
+
+  int getCurrentStars (int id)
+  {
+    exercise = progress.getChildren("exercise");
+    XML score = exercise[id].getChild("score");
+    return score.getIntContent();
+  }
+
+  String timeStamp()
+  {
+    return nf(hour(), 2)+":"+nf(minute(), 2)+" "+nf(month(), 2)+"/"+nf(day(), 2)+"/"+nf(year(), 2);
   }
 }
