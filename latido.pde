@@ -140,14 +140,7 @@ void notifyPd(boolean rhythm)
   myMessage = new OscMessage("/latido/countin");
   myMessage.add(library.getCountin());
   oscP5.send(myMessage, latidoPD);
-  if (rhythm)
-  {
-    myMessage = new OscMessage("/latido/rhyfile");
-    myMessage.add(library.getRhythm());
-  } else
-  { 
-    myMessage = new OscMessage("/latido/midifile");
-    myMessage.add(library.getMidi());
-  }
+  myMessage = new OscMessage("/latido/midifile");
+  myMessage.add(library.getMidi());
   oscP5.send(myMessage, latidoPD);
 }

@@ -1,5 +1,0 @@
-q | q q q q | q q q q | q q q q h h h h q q h;
-h h q q h h h q q q q q q q q h q;
-h h q q h q q q q q q h | q q q q q q h q q q q q q h;
-q | h q q h h q q q q h q q | h q q q q q q h q q w;
-
