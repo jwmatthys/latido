@@ -36,7 +36,7 @@ class MelodyLibrary
     filename = current[0];
     tempo = int(current[1]);
     countin = float(current[2]);
-    if (current.length>3) rhythm = true;
+    rhythm = (current.length > 3);
   }
 
   void loadNext()
@@ -68,7 +68,7 @@ class MelodyLibrary
     return textPath+filename+".txt";
   }
 
-String getName ()
+  String getName ()
   {
     return filename;
   }

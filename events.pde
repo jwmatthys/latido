@@ -11,9 +11,10 @@ void nextButton (int v)
   if (music.showBirdie)
   {
     music.showBirdie = false;
+    redo.active = false;
     play.active = true;
     stop.active = false;
-    pitch.active = true;
+    pitch.active = !library.rhythm;
     replay.active = false;
     libraryButton.visibility(false);
     scorecard.active = false;
@@ -57,7 +58,7 @@ void prevButton (int v)
     music.showBirdie = true;
     play.active = false;
     stop.active = false;
-    pitch.active = true;
+    pitch.active = !library.rhythm;
     scorecard.active = false;
     next.active = true;
   }
@@ -100,9 +101,10 @@ void libraryButton (int v)
       music.showBirdie = false;
       play.active = true;
       stop.active = false;
-      pitch.active = true;
+      pitch.active = !library.rhythm;
       replay.active = false;
       libraryButton.visibility(false);
+      redo.active = false;
     } else
     {
       scorecard.active = false;
