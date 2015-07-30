@@ -4,6 +4,7 @@ class UserProgress
   XML username;
   XML library;
   XML progress;
+  XML score;
   XML[] exercise;
   int nextUnpassed;
   String secretKey;
@@ -15,6 +16,7 @@ class UserProgress
     username = user.getChild("name");
     library = user.getChild("library");
     progress = user.getChild("progress");
+    score = user.getChild("score");
     exercise = progress.getChildren("exercise");
     username.setContent(playerName);
     library.setContent(libName);
@@ -34,6 +36,7 @@ class UserProgress
       username = user.getChild("name");
       library = user.getChild("library");
       progress = user.getChild("progress");
+      score = user.getChild("score");
       exercise = progress.getChildren("exercise");
       int id;
       for (id = 0; id<exercise.length; id++)
@@ -88,13 +91,24 @@ class UserProgress
     if (stars > oldStars)
     {
       exercise[id].setIntContent(stars);
-      if (stars > 3) exercise[id].setString("completed", timeStamp());
+      int oldScore = score.getIntContent();
+      score.setIntContent(oldScore + stars - oldStars);
+      if (stars > 3 && oldStars <= 3)
+      {
+        exercise[id].setString("completed", timeStamp());
+      }
     }
+    println("total score: "+score.getIntContent());
   }
 
   int getCurrentStars (int id)
   {
     return exercise[id].getIntContent();
+  }
+
+  int getTotalScore ()
+  {
+    return score.getIntContent();
   }
 
   String getLibraryName()
