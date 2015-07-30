@@ -1,4 +1,4 @@
-#N canvas 366 228 997 482 10;
+#N canvas 363 233 997 482 10;
 #X obj 568 56 inlet;
 #X text 616 54 midi note;
 #X text 189 62 user note;
@@ -62,22 +62,19 @@
 #X connect 22 0 9 1;
 #X connect 23 0 12 0;
 #X restore 78 227 pd rhythm-scoring;
-#X obj 781 51 t b b f f;
 #X obj 77 261 outlet;
 #X obj 193 118 rhy-timer player-rhythm;
 #X obj 541 126 rhy-timer target-rhythm;
-#X msg 786 122 \; player-rhythm resize \$1 \; target-rhythm resize
-\$1 \; player-rhythm const 0 \; target-rhythm const 0;
 #X obj 940 23 inlet;
 #X text 950 44 reset;
-#X connect 0 0 12 0;
-#X connect 3 0 11 0;
-#X connect 4 0 9 0;
+#X obj 781 51 t b b f;
+#X connect 0 0 11 0;
+#X connect 3 0 10 0;
+#X connect 4 0 14 0;
 #X connect 6 0 8 0;
-#X connect 8 0 10 0;
-#X connect 9 0 11 1;
-#X connect 9 1 12 1;
-#X connect 9 2 13 0;
-#X connect 9 3 8 1;
-#X connect 14 0 12 1;
-#X connect 14 0 11 1;
+#X connect 8 0 9 0;
+#X connect 12 0 11 1;
+#X connect 12 0 10 1;
+#X connect 14 0 10 1;
+#X connect 14 1 11 1;
+#X connect 14 2 8 1;
