@@ -1,7 +1,8 @@
 ##How to make your own Latido library
 
-Create a folder, within it 3 folders: image, midi, and text, and a file called `latido.txt`.
+Create a folder, and within it add a file called `latido.txt` and 3 folders named: `image`, `midi`, and `text`.
 
+#####Folder structure
 ```
 YourLibrary/
    |
@@ -34,7 +35,7 @@ There must be a main file in the top folder called latido.txt. This file has the
 The rest of the file should follow this syntax for every line:
 __filename tempo countin *optional:* R *(for rhythm exercises)*__
 
-###Example `latido.txt`
+#####Example `latido.txt`
 
 ```
 Bach Chorales SATB
