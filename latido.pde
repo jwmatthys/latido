@@ -118,7 +118,7 @@ void setup()
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
-  userProgress = new UserProgress("Latido User", libName);
+  userProgress = new UserProgress(System.getProperty("user.name"), libName);
   userProgress.updateInfo(library.currentLine, library.getName());
   savePath = "";
   saving = false;
