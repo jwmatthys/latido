@@ -58,7 +58,7 @@ class UserProgress
   {
     try
     {
-      if (f.substring(f.length()-extension.length(), f.length()) != ".latido")
+      if (!f.substring(f.length()-extension.length(), f.length()).equals(".latido"))
       {
         f += extension;
       }
