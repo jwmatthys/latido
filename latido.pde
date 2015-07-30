@@ -1,4 +1,9 @@
-import java.awt.event.ComponentAdapter; //<>//
+import javax.crypto.Cipher; //<>//
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.IOException;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.Image;
 import de.bezier.guido.*;
@@ -40,13 +45,13 @@ void setup()
   oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
 
-  PImage icon = loadImage("appbar.futurama.bender.png");
+  PImage icon = loadImage("icons/appbar.futurama.bender.png");
 
   size(1024, 540);
   smooth();
   PADDING = width/20;
 
-  surface.setTitle("Latido 0.9a2");
+  surface.setTitle("Latido 0.8a2");
   if (surface != null) {
     surface.setResizable(true);
   }
@@ -61,16 +66,16 @@ void setup()
 
   Interactive.make(this);
   music = new ShowMusic();
-  reportProblem = new LatidoButton (10, height-50, 50, 45, "Bug?", "ladybug.png", 0);
-  libraryButton = new LatidoButton (10, height-80, 50, 50, "Load...", "playback.png", 0);
+  reportProblem = new LatidoButton (10, height-55, 50, 45, "Bug?", "icons/ladybug.png", 0);
+  libraryButton = new LatidoButton (10, height-80, 50, 50, "Load...", "icons/playback.png", 0);
   libraryButton.visibility(false); // just for now, until this is ready for prime time
-  play = new LatidoButton (10, 10, 50, 50, "Play", "appbar.control.play.png", 0);
-  stop = new LatidoButton (70, 10, 50, 50, "Stop", "appbar.control.stop.png", 1);
-  pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "tuningfork1.png", 2);
-  replay = new LatidoButton (190, 10, 50, 50, "Playback", "appbar.social.uservoice.png", 3);
-  previous = new LatidoButton (350, 10, 50, 50, "Previous", "left-arrow.png", 0);
-  redo = new LatidoButton (410, 10, 50, 50, "Redo", "redo.png", 2);
-  next = new LatidoButton (470, 10, 50, 50, "Next", "right-arrow.png", 0);
+  play = new LatidoButton (10, 10, 50, 50, "Play", "icons/appbar.control.play.png", 0);
+  stop = new LatidoButton (70, 10, 50, 50, "Stop", "icons/appbar.control.stop.png", 1);
+  pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "icons/tuningfork1.png", 2);
+  replay = new LatidoButton (190, 10, 50, 50, "Playback", "icons/appbar.social.uservoice.png", 3);
+  previous = new LatidoButton (350, 10, 50, 50, "Previous", "icons/left-arrow.png", 0);
+  redo = new LatidoButton (410, 10, 50, 50, "Redo", "icons/redo.png", 2);
+  next = new LatidoButton (470, 10, 50, 50, "Next", "icons/right-arrow.png", 0);
   previous.active = false;
   redo.active = false;
   userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.55, 32, "   User\nProgress");
@@ -83,9 +88,9 @@ void setup()
   next.active = false;
   loadProgress.active = false;
   saveProgress.active = false;
-  volume = new VolSlider (10, 70, 20, 200);
+  volume = new VolSlider (10, height-265, 20, 200);
   volume.set (0.25);
-  micLevel = new MicLevel (40, 70, 20, 200);
+  micLevel = new MicLevel (40, height-265, 20, 200);
   tempo = new HSlider (width-210, 10, 200, 20);
   tempoLabel = new Label (width-210, 50, "Tempo");
 
@@ -105,7 +110,6 @@ void setup()
 
   library = new MelodyLibrary();
   libName = library.load("eyes_and_ears");
-
   music.load(library.getImage());
   music.setText(library.getText());
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));

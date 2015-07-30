@@ -20,20 +20,19 @@ void mousePressed()
 void nextButton (int v)
 {
   previous.active = true;
+  scorecard.active = false;
+  redo.active = false;
   if (music.showBirdie)
   {
     music.showBirdie = false;
-    redo.active = false;
     play.active = true;
     stop.active = false;
     pitch.active = !library.rhythm;
     replay.active = false;
     libraryButton.visibility(false);
-    scorecard.active = false;
     next.active = (userProgress.getCurrentStars(library.currentLine)>3);
   } else
   {
-    scorecard.active = false;
     music.showBirdie = true;
     replay.active = false;
 
@@ -117,7 +116,6 @@ void libraryButton (int v)
       pitch.active = !library.rhythm;
       replay.active = false;
       libraryButton.visibility(false);
-      redo.active = false;
     } else
     {
       scorecard.active = false;
@@ -222,11 +220,8 @@ void folderCallback(File f)
 void loadCallback(File f)
 {
   String s = f.getAbsolutePath();
-  XML test = loadXML(s);
-  XML testlib = test.getChild("library");
-  if (libName.equals(testlib.getContent()))
-  { 
-    userProgress.load(s);
+  if (userProgress.load(s))
+  {
     savePath = s;
     saving = true;
     scorecard.active = false;

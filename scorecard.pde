@@ -54,7 +54,7 @@ public class Scorecard
   this.h = h;
   ix = new Integrator(width);
   font = createFont("Helvetica", 48, true);
-  star = loadImage("star1.png");
+  star = loadImage("icons/star1.png");
   center = x + w/2;
   active = false;
   score = 0;

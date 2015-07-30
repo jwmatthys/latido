@@ -9,7 +9,7 @@ public class ShowMusic
   ShowMusic ()
   {
     Interactive.add( this ); // register it with the manager
-    birdie = loadImage("birdie.png");
+    birdie = loadImage("images/birdie.png");
     showBirdie = true;
     font = createFont("Droid Sans", 18, true);
     text = new String[1];

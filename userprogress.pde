@@ -6,6 +6,7 @@ class UserProgress
   XML progress;
   XML[] exercise;
   int nextUnpassed;
+  String secretKey;
 
   UserProgress (String playerName, String libName)
   {
@@ -17,30 +18,51 @@ class UserProgress
     username.setContent(playerName);
     library.setContent(libName);
     nextUnpassed = 0;
+    secretKey = libName.substring(0,8);
   }
 
-  void load (String f)
+  boolean load (String f)
   {
-    user=loadXML(f);
-    username = user.getChild("name");
-    library = user.getChild("library");
-    progress = user.getChild("progress");
-    exercise = progress.getChildren("exercise");
-    int id;
-    for (id = 0; id<exercise.length; id++)
+    try
     {
-      int testval = exercise[id].getIntContent();
-      if (testval < 4)
+      byte[] data = loadBytes(f);
+      File tempFile = File.createTempFile("guido", "arrezo");
+      saveBytes(tempFile, decipher(secretKey, data));
+      user=loadXML(tempFile.getAbsolutePath());
+      tempFile.delete();
+      username = user.getChild("name");
+      library = user.getChild("library");
+      progress = user.getChild("progress");
+      exercise = progress.getChildren("exercise");
+      int id;
+      for (id = 0; id<exercise.length; id++)
       {
-        break;
+        int testval = exercise[id].getIntContent();
+        if (testval < 4)
+        {
+          break;
+        }
       }
+      nextUnpassed = id;
+      secretKey = library.getContent().substring(0, 8);
+      return true;
+    } 
+    catch (Exception e) {
+      println(e);
     }
-    nextUnpassed = id;
+    return false;
   }
 
   void save (String f)
   {
-    saveXML(user, f);
+    try
+    {
+      byte[] data = user.toString().getBytes();
+      saveBytes(f, cipher(secretKey, data));
+    } 
+    catch (Exception e) {
+      println(e);
+    }
   }
 
   void updateInfo (int id, String n)
@@ -78,5 +100,44 @@ class UserProgress
   String timeStamp()
   {
     return nf(hour(), 2)+":"+nf(minute(), 2)+" "+nf(month(), 2)+"/"+nf(day(), 2)+"/"+nf(year(), 2);
+  }
+
+
+  /**
+   * Encrypt data
+   * @param secretKey -   a secret key used for encryption
+   * @param data      -   data to encrypt
+   * @return  Encrypted data
+   * @throws Exception
+   */
+  byte[] cipher(String secretKey, byte[] data) throws Exception {
+    // Key has to be of length 8
+    if (secretKey == null || secretKey.length() != 8)
+      throw new Exception("Invalid key length - 8 bytes key needed!");
+
+    SecretKey key = new SecretKeySpec(secretKey.getBytes(), "DES");
+    Cipher cipher = Cipher.getInstance("DES");
+    cipher.init(Cipher.ENCRYPT_MODE, key);
+
+    return cipher.doFinal(data);
+  }
+
+  /**
+   * Decrypt data
+   * @param secretKey -   a secret key used for decryption
+   * @param data      -   data to decrypt
+   * @return  Decrypted data
+   * @throws Exception
+   */
+  byte[] decipher(String secretKey, byte[] data) throws Exception {
+    // Key has to be of length 8
+    if (secretKey == null || secretKey.length() != 8)
+      throw new Exception("Invalid key length - 8 bytes key needed!");
+
+    SecretKey key = new SecretKeySpec(secretKey.getBytes(), "DES");
+    Cipher cipher = Cipher.getInstance("DES");
+    cipher.init(Cipher.DECRYPT_MODE, key);
+
+    return cipher.doFinal(data);
   }
 }

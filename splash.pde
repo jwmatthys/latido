@@ -6,7 +6,7 @@ public class Splash
   Splash()
   {
     Interactive.add( this ); // register it with the manager
-    splashImage = loadImage("splash.png");
+    splashImage = loadImage("images/splash.png");
     active = true;
   }
 
