@@ -1,0 +1,15 @@
+#N canvas 914 540 450 300 10;
+#X obj 99 22 inlet;
+#X obj 180 23 inlet;
+#X obj 99 68 list prepend 0;
+#X obj 99 127 outlet;
+#X obj 180 128 outlet;
+#X text 279 67 left inlet is input;
+#X obj 99 97 route 0 1;
+#X text 274 87 right inlet is 0 or 1;
+#X text 285 29 2 outlet gate;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 6 0;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;

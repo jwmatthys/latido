@@ -57,8 +57,6 @@ public class LatidoButton
     visible = true;
   }
 
-  // called by manager
-
   void mousePressed () 
   {
     if (active)

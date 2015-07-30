@@ -12,8 +12,8 @@ void mousePressed()
     splash.active = false;
     music.showBirdie = true;
     next.active = true;
-      loadProgress.active = true;
-  saveProgress.active = true;
+    loadProgress.active = true;
+    saveProgress.active = true;
   }
 }
 
@@ -30,7 +30,7 @@ void nextButton (int v)
     replay.active = false;
     libraryButton.visibility(false);
     scorecard.active = false;
-    next.active = (userProgress.getCurrentStars(library.currentLine)>3);    
+    next.active = (userProgress.getCurrentStars(library.currentLine)>3);
   } else
   {
     scorecard.active = false;
@@ -65,7 +65,7 @@ void prevButton (int v)
     tempoLabel.set(library.getTempo()+" bpm");
     notifyPd(library.rhythm);
     userProgress.updateInfo(library.currentLine, library.getName());
-        next.active = (userProgress.getCurrentStars(library.currentLine)>3);
+    next.active = (userProgress.getCurrentStars(library.currentLine)>3);
   } else
   {
     music.showBirdie = true;
@@ -201,6 +201,7 @@ public void scorePD (float theScore)
     next.active = true;
   }
   userProgress.updateScore(library.currentLine, scorecard.stars);
+  if (saving) userProgress.save(savePath);
 }
 
 void folderCallback(File f)
@@ -221,15 +222,36 @@ void folderCallback(File f)
 void loadCallback(File f)
 {
   String s = f.getAbsolutePath();
-  userProgress.loadProgress(s);
-  String libName = library.getName();
-  if (libName != userProgress.getLibraryName()) userProgress = new UserProgress("Latido User", libName);
+  XML test = loadXML(s);
+  XML testlib = test.getChild("library");
+  if (libName.equals(testlib.getContent()))
+  { 
+    userProgress.load(s);
+    savePath = s;
+    saving = true;
+    scorecard.active = false;
+    music.showBirdie = true;
+    replay.active = false;
+
+    library.loadSpecific(userProgress.nextUnpassed);
+    music.load(library.getImage());
+    music.showBirdie = true;
+    music.setText(library.getText());
+    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+    tempoLabel.set(library.getTempo()+" bpm");
+    notifyPd(library.rhythm);
+    userProgress.updateInfo(library.currentLine, library.getName());
+    next.active = true;
+    if (library.currentLine>0) previous.active = true;
+  }
 }
 
 void saveCallback(File f)
 {
   String s = f.getAbsolutePath();
-  userProgress.saveProgress(s);
+  userProgress.save(s);
+  savePath = s;
+  saving = true;
 }
 
 void websiteLink (int v)

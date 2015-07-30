@@ -14,11 +14,11 @@ public class Splash
   {
     if (active)
     {
-      image (splashImage, 2*PADDING, 2*PADDING,width-4*PADDING, height-4*PADDING);
+      image (splashImage, 2*PADDING+SIDEBAR_WIDTH, 2*PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-4*PADDING);
       noFill();
       stroke(0);
       strokeWeight(3);
-      rect(2*PADDING, 2*PADDING, width-4*PADDING, height-4*PADDING);
+      rect(2*PADDING+SIDEBAR_WIDTH, 2*PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-4*PADDING);
       strokeWeight(1);
     }
   }

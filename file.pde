@@ -52,6 +52,15 @@ class MelodyLibrary
     if (currentLine < 0) currentLine++;
     parse(currentLine);
   }
+  
+  void loadSpecific(int i)
+  {
+    if (i < lines.length - lineOffset)
+    {
+      currentLine = i;
+      parse(currentLine);
+    }
+  }
 
   String getMidi ()
   {

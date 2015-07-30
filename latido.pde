@@ -29,6 +29,9 @@ MelodyLibrary library;
 LatidoButton libraryButton, next, previous, redo;
 LatidoButton loadProgress, saveProgress;
 UserProgress userProgress;
+String libName;
+String savePath;
+boolean saving;
 Splash splash;
 
 void setup()
@@ -72,7 +75,7 @@ void setup()
   redo.active = false;
   userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.55, 32, "   User\nProgress");
   loadProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+70, 10, 50, 50, "Load", null, 0);
-  saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130, 10, 50, 50, "Save", null, 1);
+  saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130, 10, 50, 50, "Save as", null, 1);
   replay.active = false;
   play.active = false;
   pitch.active = false;
@@ -101,7 +104,7 @@ void setup()
   Interactive.on( reportProblem, "pressed", this, "websiteLink");
 
   library = new MelodyLibrary();
-  String libName = library.load("eyes_and_ears");
+  libName = library.load("eyes_and_ears");
 
   music.load(library.getImage());
   music.setText(library.getText());
@@ -113,6 +116,8 @@ void setup()
 
   userProgress = new UserProgress("Latido User", libName);
   userProgress.updateInfo(library.currentLine, library.getName());
+  savePath = "";
+  saving = false;
 
   splash = new Splash();
 
