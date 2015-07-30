@@ -7,6 +7,7 @@ class UserProgress
   XML[] exercise;
   int nextUnpassed;
   String secretKey;
+  String extension=".latido";
 
   UserProgress (String playerName, String libName)
   {
@@ -18,7 +19,7 @@ class UserProgress
     username.setContent(playerName);
     library.setContent(libName);
     nextUnpassed = 0;
-    secretKey = libName.substring(0,8);
+    secretKey = libName.substring(0, 8);
   }
 
   boolean load (String f)
@@ -57,6 +58,10 @@ class UserProgress
   {
     try
     {
+      if (f.substring(f.length()-extension.length(), f.length()) != ".latido")
+      {
+        f += extension;
+      }
       byte[] data = user.toString().getBytes();
       saveBytes(f, cipher(secretKey, data));
     } 
