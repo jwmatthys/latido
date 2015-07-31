@@ -14,7 +14,6 @@ public class ProgressGraph
     this.w = w;
     this.h = h;
     tree = null;
-    //loadImage("tree/output_000.png");
     maxScore = 1500;
     currentStep = 0;
   }
@@ -36,7 +35,6 @@ public class ProgressGraph
     {
       int picnum = progress*4;
       String newfn = "tree/output_"+nf(picnum, 3)+".png";
-      println("loading image "+newfn);
       tree = loadImage(newfn);
       currentStep = progress;
     }

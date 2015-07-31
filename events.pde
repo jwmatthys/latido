@@ -241,6 +241,8 @@ void loadCallback(File f)
     tempoLabel.set(library.getTempo()+" bpm");
     notifyPd(library.rhythm);
     userProgress.updateInfo(library.currentLine, library.getName());
+    tree.updateGraph(userProgress.getTotalScore());
+    treeLabel.set(userProgress.getTotalScore()+" Stars");
     next.active = true;
     if (library.currentLine>0) previous.active = true;
   }
