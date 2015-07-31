@@ -21,6 +21,8 @@ OscP5 oscP5tcpClient;
 OscP5 oscP5;
 NetAddress latidoPD;
 
+Process pd;
+
 LatidoButton reportProblem;
 LatidoButton play, stop, pitch, replay;
 MicLevel micLevel;
@@ -43,7 +45,12 @@ Label treeLabel;
 
 void setup()
 {
-  oscP5tcpClient = new OscP5(this, "127.0.0.1", 11000, OscP5.TCP);
+  String p = dataPath("");
+  try {
+    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-r", "44100", p+"/../pd/latido.pd").start();
+  } 
+  catch (Exception e) {
+  }
   oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
 
@@ -125,8 +132,8 @@ void setup()
   savePath = "";
   saving = false;
 
-  tree = new ProgressGraph(0,80,70,81);
-  treeLabel = new Label(5,170,"0 Stars", 11);
+  tree = new ProgressGraph(0, 80, 70, 81);
+  treeLabel = new Label(5, 170, "0 Stars", 11);
   splash = new Splash();
   tree.setMaxScore(library.numMelodies*5);
 
@@ -135,4 +142,13 @@ void setup()
   oscP5.plug(this, "metroPD", "/metro");
   oscP5.plug(this, "metroStatePD", "/metrostate");
   oscP5.plug(this, "scorePD", "/score");
+  oscP5.plug(this, "watchdogPD", "/watchdog");
+}
+
+void stop()
+{
+  pd.destroy();
+    OscMessage myMessage = new OscMessage("/latido/quit");
+  myMessage.add(1);
+  oscP5.send(myMessage, latidoPD);
 }

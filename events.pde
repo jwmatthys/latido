@@ -186,6 +186,12 @@ public void metroStatePD (float f)
   metro.setState(s);
 }
 
+public void watchdogPD ()
+{
+  OscMessage myMessage = new OscMessage("/latido/watchdog");
+  oscP5.send(myMessage, latidoPD);
+}
+
 public void scorePD (float theScore)
 {
   play.active = false;
