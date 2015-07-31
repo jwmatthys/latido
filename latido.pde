@@ -38,6 +38,8 @@ String libName;
 String savePath;
 boolean saving;
 Splash splash;
+ProgressGraph tree;
+Label treeLabel;
 
 void setup()
 {
@@ -78,7 +80,7 @@ void setup()
   next = new LatidoButton (470, 10, 50, 50, "Next", "icons/right-arrow.png", 0);
   previous.active = false;
   redo.active = false;
-  userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.55, 32, "   User\nProgress");
+  userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.555, 32, "   User\nProgress", 12);
   loadProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+70, 10, 50, 50, "Load", null, 0);
   saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130, 10, 50, 50, "Save as", null, 1);
   replay.active = false;
@@ -92,7 +94,7 @@ void setup()
   volume.set (0.25);
   micLevel = new MicLevel (40, height-265, 20, 200);
   tempo = new HSlider (width-210, 10, 200, 20);
-  tempoLabel = new Label (width-210, 50, "Tempo");
+  tempoLabel = new Label (width-210, 50, "Tempo", 14);
 
   Interactive.on( play, "pressed", this, "transportButton" );
   Interactive.on( stop, "pressed", this, "transportButton" );
@@ -123,7 +125,10 @@ void setup()
   savePath = "";
   saving = false;
 
+  tree = new ProgressGraph(0,80,70,81);
+  treeLabel = new Label(5,170,"0 Stars", 11);
   splash = new Splash();
+  tree.setMaxScore(library.numMelodies*5);
 
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");

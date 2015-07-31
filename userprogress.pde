@@ -98,7 +98,6 @@ class UserProgress
         exercise[id].setString("completed", timeStamp());
       }
     }
-    println("total score: "+score.getIntContent());
   }
 
   int getCurrentStars (int id)

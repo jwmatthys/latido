@@ -199,6 +199,8 @@ public void scorePD (float theScore)
     next.active = true;
   }
   userProgress.updateScore(library.currentLine, scorecard.stars);
+  tree.updateGraph(userProgress.getTotalScore());
+  treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
 }
 
@@ -207,12 +209,15 @@ void folderCallback(File f)
   if (f != null)
   {
     String s = f.getAbsoluteFile().getParent();
-    library.load(s);
+    String libName = library.load(s);
+    userProgress = new UserProgress(System.getProperty("user.name"), libName);
+    userProgress.updateInfo(library.currentLine, library.getName());
     music.load(library.getImage());
     music.showBirdie = true;
     music.setText(library.getText());
     tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
     tempoLabel.set(library.getTempo()+" bpm");
+    tree.setMaxScore(library.numMelodies*5);
     notifyPd(library.rhythm);
   }
 }

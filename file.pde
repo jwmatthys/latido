@@ -8,6 +8,7 @@ class MelodyLibrary
   float countin;
   int currentLine;
   boolean rhythm;
+  int numMelodies;
   final int lineOffset = 3;
 
   MelodyLibrary ()
@@ -26,6 +27,7 @@ class MelodyLibrary
     imageExt = extensions[0];
     midiExt = extensions[1];
     currentLine = 0;
+    numMelodies = lines.length - lineOffset;
     parse (0);
     return lines[0];
   }

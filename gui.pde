@@ -350,14 +350,16 @@ public class Label
   float x, y;
   String text;
   PFont font;
+  float size;
 
-  Label (float x, float y, String text)
+  Label (float x, float y, String text, float s)
   {
     Interactive.add( this ); // register it with the manager
     this.x = x;
     this.y = y;
     this.text = text;
-    font = createFont("Droid Sans Mono", 14, true);
+    this.size = s;
+    font = createFont("Droid Sans Mono", size*2, true);
   }
 
   void set (String s)
@@ -370,7 +372,7 @@ public class Label
     noStroke();
     fill(0);
     textFont(font);
-    textSize(14);
+    textSize(size);
     text(text, x, y);
   }
 }
