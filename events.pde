@@ -14,6 +14,7 @@ void mousePressed()
     next.active = true;
     loadProgress.active = true;
     saveProgress.active = true;
+    notifyPd(library.rhythm);
   }
 }
 

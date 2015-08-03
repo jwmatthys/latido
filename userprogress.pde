@@ -52,7 +52,7 @@ class UserProgress
       return true;
     } 
     catch (Exception e) {
-      println(e);
+      showMessageDialog(null, "Could not load Latido user file", "Alert", ERROR_MESSAGE);
     }
     return false;
   }
@@ -69,7 +69,7 @@ class UserProgress
       saveBytes(f, cipher(secretKey, data));
     } 
     catch (Exception e) {
-      println(e);
+      showMessageDialog(null, "Could not save Latido user file", "Alert", ERROR_MESSAGE);
     }
   }
 

@@ -17,19 +17,26 @@ class MelodyLibrary
 
   String load (String path)
   {
-    indexPath = dataPath(path)+"/latido.txt";
-    midiPath = dataPath(path)+"/midi/";
-    imagePath = dataPath(path)+"/image/";
-    textPath = dataPath(path)+"/text/";
-    lines = loadStrings(indexPath);
-    if (lines==null) return "";
-    String[] extensions = split(lines[1], ' ');
-    imageExt = extensions[0];
-    midiExt = extensions[1];
-    currentLine = 0;
-    numMelodies = lines.length - lineOffset;
-    parse (0);
-    return lines[0];
+    try 
+    {
+      indexPath = dataPath(path)+"/latido.txt";
+      midiPath = dataPath(path)+"/midi/";
+      imagePath = dataPath(path)+"/image/";
+      textPath = dataPath(path)+"/text/";
+      lines = loadStrings(indexPath);
+      String[] extensions = split(lines[1], ' ');
+      imageExt = extensions[0];
+      midiExt = extensions[1];
+      currentLine = 0;
+      numMelodies = lines.length - lineOffset;
+      parse (0);
+      return lines[0];
+    } 
+    catch (Exception e)
+    {
+      showMessageDialog(null, "Could not load Latido library", "Alert", ERROR_MESSAGE);
+      return "";
+    }
   }
 
   void parse (int line)
@@ -54,7 +61,7 @@ class MelodyLibrary
     if (currentLine < 0) currentLine++;
     parse(currentLine);
   }
-  
+
   void loadSpecific(int i)
   {
     if (i < lines.length - lineOffset)

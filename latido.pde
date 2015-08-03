@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.Image;
+import static javax.swing.JOptionPane.*;
 import de.bezier.guido.*;
 import oscP5.*;
 import netP5.*;
@@ -47,9 +48,10 @@ void setup()
 {
   String p = dataPath("");
   try {
-    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-r", "44100", p+"/../pd/latido.pd").start();
+    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-r", "44100", p+"/pd/latido.pd").start();
   } 
   catch (Exception e) {
+    showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", ERROR_MESSAGE);
   }
   oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
@@ -123,7 +125,6 @@ void setup()
   music.setText(library.getText());
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
-  notifyPd(library.rhythm);
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
