@@ -11,6 +11,8 @@
 #X obj 111 51 sel 1 0;
 #X text 310 54 speed;
 #X obj 138 241 outlet;
+#X obj 193 78 t b b;
+#X msg 168 162 stop;
 #X connect 0 0 4 1;
 #X connect 1 0 4 1;
 #X connect 2 0 4 0;
@@ -22,4 +24,7 @@
 #X connect 7 0 4 0;
 #X connect 7 1 0 0;
 #X connect 9 0 7 0;
-#X connect 9 1 1 0;
+#X connect 9 1 12 0;
+#X connect 12 0 13 0;
+#X connect 12 1 1 0;
+#X connect 13 0 2 0;
