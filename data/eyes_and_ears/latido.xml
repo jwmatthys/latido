@@ -37,7 +37,7 @@
     <exercise countin="2.5" name="032" tempo="072"/>
     <exercise countin="4" name="033" tempo="108"/>
     <exercise countin="4" name="034" tempo="112"/>
-    <exercise countin="2" name="035" tempo="52"/>
+    <exercise countin="1.666666" name="035" tempo="52"/>
     <exercise countin="3" name="036" tempo="80"/>
     <exercise countin="4" name="037" tempo="72"/>
     <exercise countin="4" name="038" tempo="78"/>
