@@ -125,7 +125,7 @@ void setup()
   music.setText(library.getText());
   tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
   tempoLabel.set(library.getTempo()+" bpm");
-  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-150, 500, 100, 2);
+  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
   userProgress = new UserProgress(System.getProperty("user.name"), libName);

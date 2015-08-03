@@ -6,8 +6,8 @@
   <midiextension>midi</midiextension>
   <progress>
     <exercise countin="4" name="intro1" tempo="120"/>
-    <exercise countin="4" name="intro2" tempo="88"/>
-    <exercise countin="4" name="intro3" tempo="120"/>
+    <exercise countin="4" name="intro2" tempo="96"/>
+    <exercise countin="4" name="intro3" tempo="108"/>
     <exercise countin="4" name="001" rhythm="true" tempo="120"/>
     <exercise countin="4" name="002" rhythm="true" tempo="160"/>
     <exercise countin="3" name="003" rhythm="true" tempo="152"/>
@@ -155,277 +155,281 @@
     <exercise countin="2" name="153" tempo="60"/>
     <exercise countin="3" name="154" tempo="60"/>
     <exercise countin="3" name="155" tempo="60"/>
-    <exercise countin="4" name="156" tempo="60"/>
-    <exercise countin="4" name="157" tempo="60"/>
-    <exercise countin="4" name="158" tempo="60"/>
-    <exercise countin="4" name="159" tempo="60"/>
-    <exercise countin="4" name="160" tempo="60"/>
-    <exercise countin="4" name="161" tempo="60"/>
-    <exercise countin="4" name="162" tempo="60"/>
-    <exercise countin="4" name="163" tempo="60"/>
-    <exercise countin="4" name="164" tempo="60"/>
-    <exercise countin="4" name="165" tempo="60"/>
-    <exercise countin="4" name="166" tempo="60"/>
-    <exercise countin="4" name="167" tempo="60"/>
-    <exercise countin="4" name="168" tempo="60"/>
-    <exercise countin="4" name="169" tempo="60"/>
-    <exercise countin="4" name="170" tempo="60"/>
-    <exercise countin="4" name="171" tempo="60"/>
-    <exercise countin="4" name="172" tempo="60"/>
-    <exercise countin="4" name="173" tempo="60"/>
-    <exercise countin="4" name="174" tempo="60"/>
-    <exercise countin="4" name="175" tempo="60"/>
+    <exercise countin="1.666666" name="156" tempo="60"/>
+    <exercise countin="3" name="157" tempo="60"/>
+    <exercise countin="2" name="158" tempo="60"/>
+    <exercise countin="3" name="159" tempo="60"/>
+    <exercise countin="3" name="160" tempo="60"/>
+    <exercise countin="2.5" name="161" tempo="60"/>
+    <exercise countin="3" name="162" tempo="60"/>
+    <exercise countin="1.666666" name="163" tempo="60"/>
+    <exercise countin="3" name="164" tempo="60"/>
+    <exercise countin="3" name="165" tempo="60"/>
+    <exercise countin="2" name="166" tempo="60"/>
+    <exercise countin="2" name="167" tempo="60"/>
+    <exercise countin="1.5" name="168" tempo="60"/>
+    <exercise countin="3" name="169" tempo="60"/>
+    <exercise countin="4" name="minor1" tempo="100"/>
+    <exercise countin="4" name="minor2" tempo="100"/>
+    <exercise countin="4" name="minor3" tempo="100"/>
+    <exercise countin="3" name="minor4" tempo="100"/>
+    <exercise countin="3" name="minor5" tempo="60"/>
+    <exercise countin="4" name="minor6" tempo="60"/>
+    <exercise countin="4" name="170" tempo="120"/>
+    <exercise countin="2" name="171" tempo="60"/>
+    <exercise countin="3" name="172" tempo="60"/>
+    <exercise countin="3" name="173" tempo="60"/>
+    <exercise countin="3" name="174" tempo="60"/>
+    <exercise countin="2" name="175" tempo="60"/>
     <exercise countin="4" name="176" tempo="60"/>
     <exercise countin="4" name="177" tempo="60"/>
-    <exercise countin="4" name="178" tempo="60"/>
-    <exercise countin="4" name="179" tempo="60"/>
-    <exercise countin="4" name="180" tempo="60"/>
-    <exercise countin="4" name="181" tempo="60"/>
+    <exercise countin="3" name="178" tempo="60"/>
+    <exercise countin="3" name="179" tempo="60"/>
+    <exercise countin="2" name="180" tempo="60"/>
     <exercise countin="4" name="182" tempo="60"/>
     <exercise countin="4" name="183" tempo="60"/>
-    <exercise countin="4" name="184" tempo="60"/>
+    <exercise countin="3" name="184" tempo="60"/>
     <exercise countin="4" name="185" tempo="60"/>
-    <exercise countin="4" name="186" tempo="60"/>
+    <exercise countin="3" name="186" tempo="60"/>
     <exercise countin="4" name="187" tempo="60"/>
-    <exercise countin="4" name="188" tempo="60"/>
-    <exercise countin="4" name="189" tempo="60"/>
-    <exercise countin="4" name="190" tempo="60"/>
-    <exercise countin="4" name="191" tempo="60"/>
+    <exercise countin="2" name="188" tempo="60"/>
+    <exercise countin="2" name="189" tempo="60"/>
+    <exercise countin="2" name="190" tempo="60"/>
+    <exercise countin="3" name="191" tempo="60"/>
     <exercise countin="4" name="192" tempo="60"/>
-    <exercise countin="4" name="193" tempo="60"/>
-    <exercise countin="4" name="194" tempo="60"/>
-    <exercise countin="4" name="195" tempo="60"/>
-    <exercise countin="4" name="196" tempo="60"/>
+    <exercise countin="1.5" name="193" tempo="60"/>
+    <exercise countin="2" name="194" tempo="60"/>
+    <exercise countin="3" name="195" tempo="60"/>
+    <exercise countin="3" name="196" tempo="60"/>
     <exercise countin="4" name="197" tempo="60"/>
-    <exercise countin="4" name="198" tempo="60"/>
-    <exercise countin="4" name="199" tempo="60"/>
+    <exercise countin="3" name="198" tempo="60"/>
+    <exercise countin="2" name="199" tempo="60"/>
     <exercise countin="4" name="200" tempo="60"/>
-    <exercise countin="4" name="201" tempo="60"/>
-    <exercise countin="4" name="202" tempo="60"/>
-    <exercise countin="4" name="203" tempo="60"/>
-    <exercise countin="4" name="204" tempo="60"/>
-    <exercise countin="4" name="205" tempo="60"/>
+    <exercise countin="2.666666" name="201" tempo="48"/>
+    <exercise countin="2" name="202" tempo="60"/>
+    <exercise countin="3" name="203" tempo="60"/>
+    <exercise countin="3" name="204" tempo="60"/>
+    <exercise countin="3" name="205" tempo="60"/>
     <exercise countin="4" name="206" tempo="60"/>
-    <exercise countin="4" name="207" tempo="60"/>
-    <exercise countin="4" name="208" tempo="60"/>
+    <exercise countin="2" name="207" tempo="60"/>
+    <exercise countin="2" name="208" tempo="60"/>
     <exercise countin="4" name="209" tempo="60"/>
-    <exercise countin="4" name="210" tempo="60"/>
-    <exercise countin="4" name="211" tempo="60"/>
+    <exercise countin="2" name="210" tempo="60"/>
+    <exercise countin="2" name="211" tempo="60"/>
     <exercise countin="4" name="212" tempo="60"/>
-    <exercise countin="4" name="213" tempo="60"/>
-    <exercise countin="4" name="214" tempo="60"/>
-    <exercise countin="4" name="215" tempo="60"/>
-    <exercise countin="4" name="216" tempo="60"/>
-    <exercise countin="4" name="217" tempo="60"/>
-    <exercise countin="4" name="218" tempo="60"/>
-    <exercise countin="4" name="219" tempo="60"/>
-    <exercise countin="4" name="220" tempo="60"/>
-    <exercise countin="4" name="221" tempo="60"/>
+    <exercise countin="2" name="213" tempo="60"/>
+    <exercise countin="2" name="214" tempo="60"/>
+    <exercise countin="3" name="215" tempo="60"/>
+    <exercise countin="3" name="216" tempo="60"/>
+    <exercise countin="1.5" name="217" tempo="60"/>
+    <exercise countin="2" name="218" tempo="60"/>
+    <exercise countin="1.75" name="219" tempo="60"/>
+    <exercise countin="3" name="220" tempo="60"/>
+    <exercise countin="3" name="221" tempo="60"/>
     <exercise countin="4" name="222" tempo="60"/>
-    <exercise countin="4" name="223" tempo="60"/>
-    <exercise countin="4" name="224" tempo="60"/>
-    <exercise countin="4" name="225" tempo="60"/>
+    <exercise countin="3" name="223" tempo="60"/>
+    <exercise countin="3" name="224" tempo="60"/>
+    <exercise countin="3" name="225" tempo="60"/>
     <exercise countin="4" name="226" tempo="60"/>
-    <exercise countin="4" name="227" tempo="60"/>
-    <exercise countin="4" name="228" tempo="60"/>
-    <exercise countin="4" name="229" tempo="60"/>
-    <exercise countin="4" name="230" tempo="60"/>
-    <exercise countin="4" name="231" tempo="60"/>
-    <exercise countin="4" name="232" tempo="60"/>
+    <exercise countin="3" name="227" tempo="60"/>
+    <exercise countin="3" name="228" tempo="60"/>
+    <exercise countin="3" name="229" tempo="60"/>
+    <exercise countin="2" name="230" tempo="60"/>
+    <exercise countin="2" name="231" tempo="60"/>
+    <exercise countin="3.5" name="232" tempo="60"/>
     <exercise countin="4" name="233" tempo="60"/>
-    <exercise countin="4" name="234" tempo="60"/>
+    <exercise countin="3" name="234" tempo="60"/>
     <exercise countin="4" name="235" tempo="60"/>
-    <exercise countin="4" name="236" tempo="60"/>
-    <exercise countin="4" name="237" tempo="60"/>
-    <exercise countin="4" name="238" tempo="60"/>
-    <exercise countin="4" name="239" tempo="60"/>
+    <exercise countin="2" name="236" tempo="60"/>
+    <exercise countin="2" name="237" tempo="60"/>
+    <exercise countin="1.5" name="238" tempo="60"/>
+    <exercise countin="2" name="239" tempo="60"/>
     <exercise countin="4" name="240" tempo="60"/>
-    <exercise countin="4" name="241" tempo="60"/>
-    <exercise countin="4" name="242" tempo="60"/>
-    <exercise countin="4" name="243" tempo="60"/>
-    <exercise countin="4" name="244" tempo="60"/>
-    <exercise countin="4" name="245" tempo="60"/>
-    <exercise countin="4" name="246" tempo="60"/>
-    <exercise countin="4" name="247" tempo="60"/>
-    <exercise countin="4" name="248" tempo="60"/>
-    <exercise countin="4" name="249" tempo="60"/>
+    <exercise countin="1.5" name="241" tempo="60"/>
+    <exercise countin="1.5" name="242" tempo="60"/>
+    <exercise countin="3" name="243" tempo="60"/>
+    <exercise countin="2" name="244" tempo="60"/>
+    <exercise countin="2" name="245" tempo="60"/>
+    <exercise countin="3" name="246" tempo="60"/>
+    <exercise countin="2" name="247" tempo="60"/>
+    <exercise countin="1.5" name="248" tempo="60"/>
+    <exercise countin="1.666666" name="249" tempo="60"/>
     <exercise countin="4" name="250" tempo="60"/>
-    <exercise countin="4" name="251" tempo="60"/>
-    <exercise countin="4" name="252" tempo="60"/>
-    <exercise countin="4" name="253" tempo="60"/>
+    <exercise countin="2" name="251" tempo="60"/>
+    <exercise countin="3" name="252" tempo="60"/>
+    <exercise countin="3" name="253" tempo="60"/>
     <exercise countin="4" name="254" tempo="60"/>
-    <exercise countin="4" name="255" tempo="60"/>
-    <exercise countin="4" name="256" tempo="60"/>
-    <exercise countin="4" name="257" tempo="60"/>
+    <exercise countin="1.666666" name="255" tempo="60"/>
+    <exercise countin="2" name="256" tempo="60"/>
+    <exercise countin="3" name="257" tempo="60"/>
     <exercise countin="4" name="258" tempo="60"/>
-    <exercise countin="4" name="259" tempo="60"/>
+    <exercise countin="2" name="259" tempo="60"/>
     <exercise countin="4" name="260" tempo="60"/>
-    <exercise countin="4" name="261" tempo="60"/>
-    <exercise countin="4" name="262" tempo="60"/>
-    <exercise countin="4" name="263" tempo="60"/>
-    <exercise countin="4" name="264" tempo="60"/>
-    <exercise countin="4" name="265" tempo="60"/>
+    <exercise countin="1.666666" name="261" tempo="60"/>
+    <exercise countin="2" name="262" tempo="60"/>
+    <exercise countin="3" name="263" tempo="60"/>
+    <exercise countin="2" name="264" tempo="60"/>
+    <exercise countin="3" name="265" tempo="60"/>
     <exercise countin="4" name="266" tempo="60"/>
     <exercise countin="4" name="267" tempo="60"/>
-    <exercise countin="4" name="268" tempo="60"/>
-    <exercise countin="4" name="269" tempo="60"/>
-    <exercise countin="4" name="270" tempo="60"/>
-    <exercise countin="4" name="271" tempo="60"/>
-    <exercise countin="4" name="272" tempo="60"/>
-    <exercise countin="4" name="273" tempo="60"/>
-    <exercise countin="4" name="274" tempo="60"/>
-    <exercise countin="4" name="275" tempo="60"/>
-    <exercise countin="4" name="276" tempo="60"/>
+    <exercise countin="2" name="268" tempo="60"/>
+    <exercise countin="1.666666" name="269" tempo="60"/>
+    <exercise countin="3.666666" name="270" tempo="60"/>
+    <exercise countin="1.666666" name="271" tempo="60"/>
+    <exercise countin="2" name="272" tempo="60"/>
+    <exercise countin="3" name="273" tempo="60"/>
+    <exercise countin="3" name="274" tempo="60"/>
+    <exercise countin="2" name="275" tempo="60"/>
+    <exercise countin="3" name="276" tempo="60"/>
     <exercise countin="4" name="277" tempo="60"/>
-    <exercise countin="4" name="278" tempo="60"/>
-    <exercise countin="4" name="279" tempo="60"/>
-    <exercise countin="4" name="280" tempo="60"/>
-    <exercise countin="4" name="281" tempo="60"/>
-    <exercise countin="4" name="282" tempo="60"/>
-    <exercise countin="4" name="283" tempo="60"/>
-    <exercise countin="4" name="284" tempo="60"/>
-    <exercise countin="4" name="285" tempo="60"/>
-    <exercise countin="4" name="286" tempo="60"/>
-    <exercise countin="4" name="287" tempo="60"/>
-    <exercise countin="4" name="288" tempo="60"/>
-    <exercise countin="4" name="289" tempo="60"/>
-    <exercise countin="4" name="290" tempo="60"/>
+    <exercise countin="1.666666" name="278" tempo="60"/>
+    <exercise countin="2" name="279" tempo="60"/>
+    <exercise countin="2" name="280" tempo="60"/>
+    <exercise countin="2" name="281" tempo="60"/>
+    <exercise countin="3" name="282" tempo="60"/>
+    <exercise countin="1.5" name="283" tempo="60"/>
+    <exercise countin="3" name="284" tempo="60"/>
+    <exercise countin="2" name="285" tempo="60"/>
+    <exercise countin="2" name="286" tempo="60"/>
+    <exercise countin="2" name="287" tempo="60"/>
+    <exercise countin="2" name="288" tempo="60"/>
+    <exercise countin="3" name="289" tempo="60"/>
+    <exercise countin="2.5" name="290" tempo="60"/>
     <exercise countin="4" name="291" tempo="60"/>
-    <exercise countin="4" name="292" tempo="60"/>
-    <exercise countin="4" name="293" tempo="60"/>
-    <exercise countin="4" name="294" tempo="60"/>
-    <exercise countin="4" name="295" tempo="60"/>
+    <exercise countin="3" name="292" tempo="60"/>
+    <exercise countin="2" name="293" tempo="60"/>
+    <exercise countin="3" name="294" tempo="60"/>
+    <exercise countin="2" name="295" tempo="60"/>
     <exercise countin="4" name="296" tempo="60"/>
     <exercise countin="4" name="297" tempo="60"/>
-    <exercise countin="4" name="298" tempo="60"/>
+    <exercise countin="2" name="298" tempo="60"/>
     <exercise countin="4" name="299" tempo="60"/>
-    <exercise countin="4" name="300" tempo="60"/>
+    <exercise countin="3" name="300" tempo="60"/>
     <exercise countin="4" name="301" tempo="60"/>
-    <exercise countin="4" name="302" tempo="60"/>
-    <exercise countin="4" name="303" tempo="60"/>
-    <exercise countin="4" name="304" tempo="60"/>
-    <exercise countin="4" name="305" tempo="60"/>
-    <exercise countin="4" name="306" tempo="60"/>
-    <exercise countin="4" name="307" tempo="60"/>
+    <exercise countin="3" name="302" tempo="60"/>
+    <exercise countin="2" name="303" tempo="60"/>
+    <exercise countin="3" name="304" tempo="60"/>
+    <exercise countin="2" name="305" tempo="60"/>
+    <exercise countin="1.333333" name="306" tempo="60"/>
+    <exercise countin="3" name="307" tempo="60"/>
     <exercise countin="4" name="308" tempo="60"/>
-    <exercise countin="4" name="309" tempo="60"/>
-    <exercise countin="4" name="310" tempo="60"/>
-    <exercise countin="4" name="311" tempo="60"/>
+    <exercise countin="3" name="309" tempo="60"/>
+    <exercise countin="1.5" name="310" tempo="60"/>
+    <exercise countin="3" name="311" tempo="60"/>
     <exercise countin="4" name="312" tempo="60"/>
     <exercise countin="4" name="313" tempo="60"/>
-    <exercise countin="4" name="314" tempo="60"/>
+    <exercise countin="2" name="314" tempo="60"/>
     <exercise countin="4" name="315" tempo="60"/>
-    <exercise countin="4" name="316" tempo="60"/>
-    <exercise countin="4" name="317" tempo="60"/>
-    <exercise countin="4" name="318" tempo="60"/>
-    <exercise countin="4" name="319" tempo="60"/>
-    <exercise countin="4" name="320" tempo="60"/>
-    <exercise countin="4" name="321" tempo="60"/>
+    <exercise countin="1.75" name="316" tempo="60"/>
+    <exercise countin="2" name="317" tempo="60"/>
+    <exercise countin="3" name="318" tempo="60"/>
+    <exercise countin="2" name="319" tempo="60"/>
+    <exercise countin="2" name="320" tempo="60"/>
+    <exercise countin="3.5" name="321" tempo="60"/>
     <exercise countin="4" name="322" tempo="60"/>
-    <exercise countin="4" name="323" tempo="60"/>
-    <exercise countin="4" name="324" tempo="60"/>
+    <exercise countin="1.5" name="323" tempo="60"/>
+    <exercise countin="2.5" name="324" tempo="60"/>
     <exercise countin="4" name="325" tempo="60"/>
-    <exercise countin="4" name="326" tempo="60"/>
-    <exercise countin="4" name="327" tempo="60"/>
-    <exercise countin="4" name="328" tempo="60"/>
-    <exercise countin="4" name="329" tempo="60"/>
-    <exercise countin="4" name="330" tempo="60"/>
-    <exercise countin="4" name="331" tempo="60"/>
-    <exercise countin="4" name="332" tempo="60"/>
-    <exercise countin="4" name="333" tempo="60"/>
-    <exercise countin="4" name="334" tempo="60"/>
-    <exercise countin="4" name="335" tempo="60"/>
-    <exercise countin="4" name="336" tempo="60"/>
-    <exercise countin="4" name="337" tempo="60"/>
-    <exercise countin="4" name="338" tempo="60"/>
-    <exercise countin="4" name="339" tempo="60"/>
-    <exercise countin="4" name="340" tempo="60"/>
-    <exercise countin="4" name="341" tempo="60"/>
-    <exercise countin="4" name="342" tempo="60"/>
-    <exercise countin="4" name="343" tempo="60"/>
+    <exercise countin="2" name="326" tempo="60"/>
+    <exercise countin="3" name="327" tempo="60"/>
+    <exercise countin="3" name="328" tempo="60"/>
+    <exercise countin="1.5" name="329" tempo="60"/>
+    <exercise countin="2" name="330" tempo="60"/>
+    <exercise countin="3" name="331" tempo="60"/>
+    <exercise countin="2" name="332" tempo="60"/>
+    <exercise countin="1.333333" name="333" tempo="60"/>
+    <exercise countin="3" name="334" tempo="60"/>
+    <exercise countin="3" name="335" tempo="60"/>
+    <exercise countin="3" name="336" tempo="60"/>
+    <exercise countin="3" name="337" tempo="60"/>
+    <exercise countin="3" name="338" tempo="60"/>
+    <exercise countin="2" name="339" tempo="60"/>
+    <exercise countin="3" name="340" tempo="60"/>
+    <exercise countin="3" name="341" tempo="60"/>
+    <exercise countin="3" name="342" tempo="60"/>
+    <exercise countin="2" name="343" tempo="60"/>
     <exercise countin="4" name="344" tempo="60"/>
-    <exercise countin="4" name="345" tempo="60"/>
-    <exercise countin="4" name="346" tempo="60"/>
-    <exercise countin="4" name="347" tempo="60"/>
-    <exercise countin="4" name="348" tempo="60"/>
-    <exercise countin="4" name="349" tempo="60"/>
-    <exercise countin="4" name="350" tempo="60"/>
-    <exercise countin="4" name="351" tempo="60"/>
-    <exercise countin="4" name="352" tempo="60"/>
+    <exercise countin="3" name="345" tempo="60"/>
+    <exercise countin="3" name="346" tempo="60"/>
+    <exercise countin="3" name="347" tempo="60"/>
+    <exercise countin="3.5" name="348" tempo="60"/>
+    <exercise countin="1.666666" name="349" tempo="60"/>
+    <exercise countin="1.5" name="350" tempo="60"/>
+    <exercise countin="2" name="351" tempo="60"/>
+    <exercise countin="3" name="352" tempo="60"/>
     <exercise countin="4" name="353" tempo="60"/>
-    <exercise countin="4" name="354" tempo="60"/>
+    <exercise countin="1.5" name="354" tempo="60"/>
     <exercise countin="4" name="355" tempo="60"/>
-    <exercise countin="4" name="356" tempo="60"/>
-    <exercise countin="4" name="357" tempo="60"/>
+    <exercise countin="3" name="356" tempo="60"/>
+    <exercise countin="4.5" name="357" tempo="40"/>
     <exercise countin="4" name="358" tempo="60"/>
-    <exercise countin="4" name="359" tempo="60"/>
-    <exercise countin="4" name="360" tempo="60"/>
-    <exercise countin="4" name="361" tempo="60"/>
+    <exercise countin="2" name="359" tempo="60"/>
+    <exercise countin="3" name="360" tempo="60"/>
+    <exercise countin="2" name="361" tempo="60"/>
     <exercise countin="4" name="362" tempo="60"/>
-    <exercise countin="4" name="363" tempo="60"/>
-    <exercise countin="4" name="364" tempo="60"/>
-    <exercise countin="4" name="365" tempo="60"/>
-    <exercise countin="4" name="366" tempo="60"/>
+    <exercise countin="3" name="363" tempo="60"/>
+    <exercise countin="3" name="364" tempo="60"/>
+    <exercise countin="3" name="365" tempo="60"/>
+    <exercise countin="2" name="366" tempo="60"/>
     <exercise countin="4" name="367" tempo="60"/>
-    <exercise countin="4" name="368" tempo="60"/>
-    <exercise countin="4" name="369" tempo="60"/>
-    <exercise countin="4" name="370" tempo="60"/>
-    <exercise countin="4" name="371" tempo="60"/>
-    <exercise countin="4" name="372" tempo="60"/>
-    <exercise countin="4" name="373" tempo="60"/>
-    <exercise countin="4" name="374" tempo="60"/>
-    <exercise countin="4" name="375" tempo="60"/>
-    <exercise countin="4" name="376" tempo="60"/>
-    <exercise countin="4" name="377" tempo="60"/>
-    <exercise countin="4" name="378" tempo="60"/>
-    <exercise countin="4" name="379" tempo="60"/>
-    <exercise countin="4" name="380" tempo="60"/>
-    <exercise countin="4" name="381" tempo="60"/>
-    <exercise countin="4" name="382" tempo="60"/>
+    <exercise countin="3" name="368" tempo="60"/>
+    <exercise countin="2" name="369" tempo="60"/>
+    <exercise countin="3" name="370" tempo="60"/>
+    <exercise countin="2" name="371" tempo="60"/>
+    <exercise countin="2.5" name="372" tempo="60"/>
+    <exercise countin="2" name="373" tempo="60"/>
+    <exercise countin="2" name="374" tempo="60"/>
+    <exercise countin="3" name="375" tempo="60"/>
+    <exercise countin="2" name="376" tempo="60"/>
+    <exercise countin="3" name="377" tempo="60"/>
+    <exercise countin="3" name="378" tempo="60"/>
+    <exercise countin="3" name="379" tempo="60"/>
+    <exercise countin="2" name="380" tempo="60"/>
+    <exercise countin="2" name="381" tempo="60"/>
+    <exercise countin="3" name="382" tempo="60"/>
     <exercise countin="4" name="383" tempo="60"/>
-    <exercise countin="4" name="384" tempo="60"/>
-    <exercise countin="4" name="385" tempo="60"/>
-    <exercise countin="4" name="386" tempo="60"/>
-    <exercise countin="4" name="387" tempo="60"/>
-    <exercise countin="4" name="388" tempo="60"/>
-    <exercise countin="4" name="389" tempo="60"/>
-    <exercise countin="4" name="390" tempo="60"/>
+    <exercise countin="3" name="384" tempo="60"/>
+    <exercise countin="2.5" name="385" tempo="60"/>
+    <exercise countin="2" name="386" tempo="60"/>
+    <exercise countin="2" name="387" tempo="60"/>
+    <exercise countin="3" name="388" tempo="60"/>
+    <exercise countin="2" name="389" tempo="60"/>
+    <exercise countin="3" name="390" tempo="60"/>
     <exercise countin="4" name="391" tempo="60"/>
-    <exercise countin="4" name="392" tempo="60"/>
-    <exercise countin="4" name="393" tempo="60"/>
+    <exercise countin="3" name="392" tempo="60"/>
+    <exercise countin="3" name="393" tempo="60"/>
     <exercise countin="4" name="394" tempo="60"/>
-    <exercise countin="4" name="395" tempo="60"/>
-    <exercise countin="4" name="396" tempo="60"/>
+    <exercise countin="2.5" name="395" tempo="60"/>
+    <exercise countin="3" name="396" tempo="60"/>
     <exercise countin="4" name="397" tempo="60"/>
-    <exercise countin="4" name="398" tempo="60"/>
-    <exercise countin="4" name="399" tempo="60"/>
-    <exercise countin="4" name="400" tempo="60"/>
-    <exercise countin="4" name="401" tempo="60"/>
+    <exercise countin="2" name="399" tempo="60"/>
+    <exercise countin="1.5" name="400" tempo="60"/>
+    <exercise countin="2" name="401" tempo="60"/>
     <exercise countin="4" name="402" tempo="60"/>
-    <exercise countin="4" name="403" tempo="60"/>
-    <exercise countin="4" name="404" tempo="60"/>
-    <exercise countin="4" name="405" tempo="60"/>
-    <exercise countin="4" name="406" tempo="60"/>
-    <exercise countin="4" name="407" tempo="60"/>
-    <exercise countin="4" name="408" tempo="60"/>
-    <exercise countin="4" name="409" tempo="60"/>
-    <exercise countin="4" name="410" tempo="60"/>
-    <exercise countin="4" name="411" tempo="60"/>
-    <exercise countin="4" name="412" tempo="60"/>
-    <exercise countin="4" name="413" tempo="60"/>
-    <exercise countin="4" name="414" tempo="60"/>
-    <exercise countin="4" name="415" tempo="60"/>
-    <exercise countin="4" name="416" tempo="60"/>
-    <exercise countin="4" name="417" tempo="60"/>
-    <exercise countin="4" name="418" tempo="60"/>
-    <exercise countin="4" name="419" tempo="60"/>
-    <exercise countin="4" name="420" tempo="60"/>
+    <exercise countin="3" name="403" tempo="60"/>
+    <exercise countin="3" name="404" tempo="60"/>
+    <exercise countin="1.666666" name="405" tempo="60"/>
+    <exercise countin="2" name="406" tempo="60"/>
+    <exercise countin="3" name="407" tempo="60"/>
+    <exercise countin="3" name="408" tempo="60"/>
+    <exercise countin="1.5" name="409" tempo="60"/>
+    <exercise countin="3" name="410" tempo="60"/>
+    <exercise countin="3" name="411" tempo="60"/>
+    <exercise countin="4" name="412" tempo="120"/>
+    <exercise countin="2" name="413" tempo="132"/>
+    <exercise countin="2" name="414" tempo="88"/>
+    <exercise countin="2" name="415" tempo="60"/>
+    <exercise countin="1.666666" name="416" tempo="60"/>
+    <exercise countin="1.666666" name="417" tempo="60"/>
+    <exercise countin="2" name="418" tempo="60"/>
+    <exercise countin="2" name="419" tempo="60"/>
+    <exercise countin="1.666666" name="420" tempo="60"/>
     <exercise countin="4" name="421" tempo="60"/>
-    <exercise countin="4" name="422" tempo="60"/>
+    <exercise countin="1.5" name="422" tempo="60"/>
     <exercise countin="4" name="423" tempo="60"/>
-    <exercise countin="4" name="424" tempo="60"/>
+    <exercise countin="1.5" name="424" tempo="60"/>
     <exercise countin="4" name="425" tempo="60"/>
-    <exercise countin="4" name="426" tempo="60"/>
-    <exercise countin="4" name="427" tempo="60"/>
+    <exercise countin="1.5" name="426" tempo="60"/>
+    <exercise countin="3" name="427" tempo="60"/>
   </progress>
 </latido>
