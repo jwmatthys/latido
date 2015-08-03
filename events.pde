@@ -9,6 +9,7 @@ void mousePressed()
 {
   if (splash.active)
   {
+    libraryButton.visibility(false);
     splash.active = false;
     music.showBirdie = true;
     next.active = true;
@@ -105,7 +106,7 @@ void libraryButton (int v)
 {
   if (v==0)
   {
-    selectInput("Choose your latido.txt library file...", "folderCallback");
+    selectFolder("Choose your latido library folder...", "folderCallback");
   } else
   {
     if (v==2) //redo
@@ -213,9 +214,9 @@ public void scorePD (float theScore)
 
 void folderCallback(File f)
 {
-  if (f != null)
+  try
   {
-    String s = f.getAbsoluteFile().getParent();
+    String s = f.getAbsolutePath();
     String libName = library.load(s);
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
     userProgress.updateInfo(library.currentLine, library.getName());
@@ -226,6 +227,10 @@ void folderCallback(File f)
     tempoLabel.set(library.getTempo()+" bpm");
     tree.setMaxScore(library.numMelodies*5);
     notifyPd(library.rhythm);
+  }
+  catch (Exception e)
+  {
+    showMessageDialog(null, "Could not load Latido library", "Alert", ERROR_MESSAGE);
   }
 }
 
