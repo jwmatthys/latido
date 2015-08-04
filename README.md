@@ -1,5 +1,4 @@
-# latido-processing
-Latido, the Sight Singing game
+# Latido, the Sight Singing game
 
 Imagine if Aural Skills was a game. You are given a melody, you sing it into the microphone on your computer or mobile device, and you are rated 1-5 stars. Perform well and you level up to harder melodies and rhythms.
 
