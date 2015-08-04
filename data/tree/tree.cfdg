@@ -1,0 +1,15 @@
+startshape TREE
+ 
+background { b -1 a -1 }
+ 
+rule TREE
+{
+    CIRCLE {}
+    TREE {r 0.7 y 0.1 s 0.993}
+}
+ 
+rule TREE 0.02
+{
+    TREE {b 0.02}
+    TREE {flip 90 b 0.02}
+}
