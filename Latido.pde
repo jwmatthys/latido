@@ -48,7 +48,7 @@ void setup()
 {
   String p = dataPath("");
   try {
-    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-alsa", "-r", "44100", p+"/pd/latido.pd").start();
+    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-r", "44100", p+"/pd/latido.pd").start();
   } 
   catch (Exception e) {
     showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", ERROR_MESSAGE);
@@ -62,13 +62,13 @@ void setup()
   smooth();
   PADDING = width/20;
 
-  surface.setTitle("Latido 0.82a1");
-  if (surface != null) {
-    surface.setResizable(true);
+  frame.setTitle("Latido 0.82a1");
+  if (frame != null) {
+    frame.setResizable(true);
   }
   frame.addComponentListener(new ComponentAdapter() {
     public void componentResized(ComponentEvent e) {
-      if (e.getSource()==surface) {
+      if (e.getSource()==frame) {
         println("resized to:" + width+" x "+height+" mouse: "+mouseY +" "+mouseY);
       }
     }
