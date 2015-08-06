@@ -1,8 +1,6 @@
 void keyPressed()
 {
-  OscMessage myMessage = new OscMessage("/rhy");
-  myMessage.add(library.rhythm ? 1 : 0);
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/rhy", library.rhythm ? 1 : 0);
 }
 
 void mousePressed()
@@ -50,7 +48,7 @@ void nextButton (int v)
   }
 }
 
-void prevButton (int v)
+void previousButton (int v)
 {
   if (music.showBirdie || scorecard.active)
   {
@@ -79,61 +77,43 @@ void prevButton (int v)
   if (music.showBirdie && library.currentLine==0) previous.active = false;
 }
 
-void transportButton (int v)
+public void playButton (int value)
 {
-  OscMessage myMessage = new OscMessage("/latido/transport");
-  switch (v)
-  {
-  case 0:
-    myMessage.add("play");
-    stop.active = true;
-    scorecard.active = false;
-    break;
-  case 1:
-    myMessage.add("stop");
-    break;
-  case 2:
-    myMessage.add("pitch");
-    break;
-  case 3:
-    myMessage.add("replay");
-    stop.active = true;
-  }
-  oscP5.send(myMessage, latidoPD);
+  sendOscString("/latido/transport", "play");
+  stop.active = true;
+  scorecard.active = false;
+}
+
+public void stopButton (int value)
+{
+  sendOscString("/latido/transport", "stop");
+}
+
+public void pitchButton (int value)
+{
+  sendOscString("/latido/transport", "pitch");
+}
+
+public void replayButton (int value)
+{
+  sendOscString("/latido/transport", "replay");
+  stop.active = true;
+} 
+
+void redoButton (int value)
+{
+  scorecard.active = false;
+  music.showBirdie = false;
+  play.active = true;
+  stop.active = false;
+  pitch.active = !library.rhythm;
+  replay.active = false;
+  libraryButton.visibility(false);
 }
 
 void libraryButton (int v)
 {
-  if (v==0)
-  {
-    selectFolder("Choose your latido library folder...", "folderCallback");
-  } else
-  {
-    if (v==2) //redo
-    {
-      scorecard.active = false;
-      music.showBirdie = false;
-      play.active = true;
-      stop.active = false;
-      pitch.active = !library.rhythm;
-      replay.active = false;
-      libraryButton.visibility(false);
-    } else
-    {
-      scorecard.active = false;
-      music.showBirdie = true;
-      replay.active = false;
-
-      library.loadPrevious();
-      music.load(library.getImage());
-      music.showBirdie = true;
-      music.setText(library.getText());
-      tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-      tempoLabel.set(library.getTempo()+" bpm");
-      notifyPd(library.rhythm);
-      userProgress.updateInfo(library.currentLine, library.getName());
-    }
-  }
+  selectFolder("Choose your latido library folder...", "folderCallback");
 }
 
 void userPrefs (int v)
@@ -149,24 +129,17 @@ void userPrefs (int v)
 
 void volumeSlider (float v)
 {
-  OscMessage myMessage = new OscMessage("/latido/vol");
-  myMessage.add(v);
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/latido/vol", v*0.01);
 }
 
 void tempoSlider (float v)
 {
-  tempoVal = (int)map (v, 0, 1, TEMPO_LOW, TEMPO_HIGH);
-  String l = tempoVal + " bpm";
-  tempoLabel.set (l);
-  OscMessage myMessage = new OscMessage("/latido/tempo");
-  myMessage.add(tempoVal);
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/latido/tempo", v);
 }
 
 public void micPD (float f)
 {
-  micLevel.set(sqrt(f*0.01));
+  gui.getController("micLevel").setValue(f);
 }
 
 public void tempoPD (float f)
@@ -228,7 +201,6 @@ void folderCallback(File f)
     tree.setMaxScore(library.numMelodies*5);
     notifyPd(library.rhythm);
     showMessageDialog(null, "Loaded new library:\n"+library.getDescription(), "New Latido Library Loaded", INFORMATION_MESSAGE);
-
   }
   catch (Exception e)
   {

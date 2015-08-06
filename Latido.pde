@@ -8,6 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.Image;
 import static javax.swing.JOptionPane.*;
 import de.bezier.guido.*;
+import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
@@ -24,10 +25,10 @@ NetAddress latidoPD;
 
 Process pd;
 
+ControlP5 gui;
+
 LatidoButton reportProblem;
 LatidoButton play, stop, pitch, replay;
-MicLevel micLevel;
-VolSlider volume;
 HSlider tempo;
 Label tempoLabel, userPrefsLabel;
 MetroButton metro;
@@ -62,7 +63,7 @@ void setup()
   smooth();
   PADDING = width/20;
 
-  frame.setTitle("Latido 0.82a1");
+  frame.setTitle("Latido 0.83a1");
   if (frame != null) {
     frame.setResizable(true);
   }
@@ -76,17 +77,72 @@ void setup()
   );
 
   Interactive.make(this);
+  gui = new ControlP5(this);
+
   music = new ShowMusic();
+
+  PImage[] imgs = {
+    loadImage("icons/appbar.control.play.png"), loadImage("icons/appbar.control.play.png"), loadImage("icons/appbar.control.play.png")
+    };
+
+    gui.addButton("playButton")
+      .setLabel("Play")
+        .setPosition(10, 10)
+          .setSize(50, 50);
+
+  gui.addButton("stopButton")
+    .setLabel("Stop")
+      .setPosition(70, 10)
+        .setSize(50, 50);
+
+  gui.addButton("pitchButton")
+    .setLabel("Pitch")
+      .setPosition(130, 10)
+        .setSize(50, 50);
+
+  gui.addButton("playbackButton")
+    .setLabel("PlayBack")
+      .setPosition(190, 10)
+        .setSize(50, 50);
+
+  gui.addButton("previousButton")
+    .setLabel("Previous")
+      .setPosition(350, 10)
+        .setSize(50, 50);
+
+  gui.addButton("redoButton")
+    .setLabel("Redo")
+      .setPosition(410, 10)
+        .setSize(50, 50);
+
+  gui.addButton("nextButton")
+    .setLabel("Next")
+      .setPosition(470, 10)
+        .setSize(50, 50);
+
+  //gui.getController("playButton").lock();
+
+
+  //libraryButton.visibility(false); // just for now, until this is ready for prime time
+  play = new LatidoButton (10, 110, 50, 50, "Play", "icons/appbar.control.play.png", 0);
+  stop = new LatidoButton (70, 110, 50, 50, "Stop", "icons/appbar.control.stop.png", 1);
+  pitch = new LatidoButton (130, 110, 50, 50, "Pitch", "icons/tuningfork1.png", 2);
+  replay = new LatidoButton (190, 110, 50, 50, "Playback", "icons/appbar.social.uservoice.png", 3);
+  play.visibility(false);
+  stop.visibility(false);
+  pitch.visibility(false);
+  replay.visibility(false);
+
+  previous = new LatidoButton (350, 110, 50, 50, "Previous", "icons/left-arrow.png", 0);
+  redo = new LatidoButton (410, 110, 50, 50, "Redo", "icons/redo.png", 2);
+  next = new LatidoButton (470, 110, 50, 50, "Next", "icons/right-arrow.png", 0);
+
+  previous.visibility(false);
+  redo.visibility(false);
+  next.visibility(false);
+
   reportProblem = new LatidoButton (10, height-55, 50, 45, "Bug?", "icons/ladybug.png", 0);
   libraryButton = new LatidoButton (width-60, height-60, 50, 50, "Load...", "icons/playback.png", 0);
-  //libraryButton.visibility(false); // just for now, until this is ready for prime time
-  play = new LatidoButton (10, 10, 50, 50, "Play", "icons/appbar.control.play.png", 0);
-  stop = new LatidoButton (70, 10, 50, 50, "Stop", "icons/appbar.control.stop.png", 1);
-  pitch = new LatidoButton (130, 10, 50, 50, "Pitch", "icons/tuningfork1.png", 2);
-  replay = new LatidoButton (190, 10, 50, 50, "Playback", "icons/appbar.social.uservoice.png", 3);
-  previous = new LatidoButton (350, 10, 50, 50, "Previous", "icons/left-arrow.png", 0);
-  redo = new LatidoButton (410, 10, 50, 50, "Redo", "icons/redo.png", 2);
-  next = new LatidoButton (470, 10, 50, 50, "Next", "icons/right-arrow.png", 0);
   previous.active = false;
   redo.active = false;
   userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.555, 32, "   User\nProgress", 12);
@@ -99,32 +155,50 @@ void setup()
   next.active = false;
   loadProgress.active = false;
   saveProgress.active = false;
-  volume = new VolSlider (10, height-265, 20, 200);
-  volume.set (0.25);
-  micLevel = new MicLevel (40, height-265, 20, 200);
-  tempo = new HSlider (width-210, 10, 200, 20);
-  tempoLabel = new Label (width-210, 50, "Tempo", 14);
+  //volume = new VolSlider (10, height-265, 20, 200);
+  //volume.set (0.25);
+  //tempo = new HSlider (width-210, 10, 200, 20);
+  //tempoLabel = new Label (width-210, 50, "Tempo", 14);
 
-  Interactive.on( play, "pressed", this, "transportButton" );
-  Interactive.on( stop, "pressed", this, "transportButton" );
-  Interactive.on( pitch, "pressed", this, "transportButton" );
-  Interactive.on( replay, "pressed", this, "transportButton" );
+  gui.addSlider("tempoSlider")
+    .setLabel("Tempo")
+      .setPosition(width-210, 10)
+        .setSize(200, 20)
+          .setRange(40, 280)
+            .setValue(40)
+              .setDecimalPrecision(0)
+              .getCaptionLabel().align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE)
+              .setColor(color(0));
+
+
+  gui.addSlider("volumeSlider")
+    .setLabel("vol")
+      .setPosition(10, height-265)
+        .setSize(20, 200)
+          .setRange(0, 100)
+            .setValue(25)
+              .setLabelVisible(false);
+
+  gui.addSlider("micLevel")
+    .setPosition(40, height-265)
+      .setSize(20, 200)
+        .setRange(0, 100)
+          .setLabelVisible(false)
+            ;
+
   Interactive.on( loadProgress, "pressed", this, "userPrefs" );
   Interactive.on( saveProgress, "pressed", this, "userPrefs" );
-  Interactive.on( volume, "valueChanged", this, "volumeSlider");
   Interactive.on( tempo, "valueChanged", this, "tempoSlider");
-  Interactive.on( next, "pressed", this, "nextButton");
-  Interactive.on( previous, "pressed", this, "prevButton");
   Interactive.on( libraryButton, "pressed", this, "libraryButton");
-  Interactive.on( redo, "pressed", this, "libraryButton");
   Interactive.on( reportProblem, "pressed", this, "websiteLink");
 
   library = new MelodyLibraryXML();
   libName = library.load("eyes_and_ears");
   music.load(library.getImage());
   music.setText(library.getText());
-  tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-  tempoLabel.set(library.getTempo()+" bpm");
+  gui.getController("tempoSlider").setValue((int)library.getTempo());
+  //tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
+  //tempoLabel.set(library.getTempo()+" bpm");
   metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110, 500, 100, 2);
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
@@ -149,7 +223,8 @@ void setup()
 void stop()
 {
   pd.destroy();
-    OscMessage myMessage = new OscMessage("/latido/quit");
+  OscMessage myMessage = new OscMessage("/latido/quit");
   myMessage.add(1);
   oscP5.send(myMessage, latidoPD);
 }
+
