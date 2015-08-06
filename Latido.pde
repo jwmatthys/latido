@@ -18,6 +18,7 @@ int PADDING;
 final int TEMPO_LOW = 40;
 final int TEMPO_HIGH = 280;
 int tempoVal = 60;
+int metroOff = 0; // updates frame to deactivate metro toggle
 
 OscP5 oscP5tcpClient;
 OscP5 oscP5;
@@ -27,7 +28,7 @@ Process pd;
 
 ControlP5 gui;
 Group group;
-Toggle metro;
+CheckBox metro;
 
 //MetroButton metro;
 ShowMusic music;
@@ -229,12 +230,13 @@ void setup()
   music.setText(library.getText());
   gui.getController("tempoSlider").setValue((int)library.getTempo());
 
-  metro = gui.addToggle("metroBangFoo")
+  metro = gui.addCheckBox("metroBangFoo")
     .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110)
       .setSize(500, 100)
-        .setLabel("1")
-          .setValue(false);
-  metro.getCaptionLabel()
+        .setItemsPerRow(1)
+          .addItem("1", 0);
+
+  metro.getItem(0).getCaptionLabel()
     .setFont(createFont("", 48))
       .setSize(48)
         .align(ControlP5.CENTER, ControlP5.CENTER)
