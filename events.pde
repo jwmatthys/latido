@@ -227,6 +227,8 @@ void folderCallback(File f)
     tempoLabel.set(library.getTempo()+" bpm");
     tree.setMaxScore(library.numMelodies*5);
     notifyPd(library.rhythm);
+    showMessageDialog(null, "Loaded new library:\n"+library.getDescription(), "New Latido Library Loaded", INFORMATION_MESSAGE);
+
   }
   catch (Exception e)
   {
