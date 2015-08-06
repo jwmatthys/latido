@@ -1,0 +1,13 @@
+#N canvas 686 314 486 300 10;
+#X declare -path latido_externals;
+#X obj 260 63 r midifilename;
+#X obj 261 232 midifile;
+#X obj 287 97 route foo;
+#X obj 334 121 t s;
+#X msg 336 167 read \$1;
+#X obj 290 259 declare -path latido_externals;
+#X obj 69 139 helmholtz~;
+#X connect 0 0 2 0;
+#X connect 2 1 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;

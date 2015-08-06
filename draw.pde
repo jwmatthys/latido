@@ -14,8 +14,14 @@ void paintSidebar()
 
 void notifyPd(boolean rhythm)
 {
+  pd.sendFloat("isrhythm", library.rhythm ? 1.0 : 0.0);
+  pd.sendFloat("new-bpm", (float)library.getTempo());
+  pd.sendFloat("countin", (float)library.getCountin());
+  pd.sendSymbol("midifilename",library.getMidi());
+  
+  /*
   OscMessage myMessage = new OscMessage("/latido/isrhythm");
-  myMessage.add(library.rhythm ? 1 : 0);
+  myMessage.add();
   oscP5.send(myMessage, latidoPD);
   myMessage = new OscMessage("/latido/tempo");
   myMessage.add(library.getTempo());
@@ -26,4 +32,5 @@ void notifyPd(boolean rhythm)
   myMessage = new OscMessage("/latido/midifile");
   myMessage.add(library.getMidi());
   oscP5.send(myMessage, latidoPD);
+  */
 }

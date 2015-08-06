@@ -1,8 +1,11 @@
 void keyPressed()
 {
+  pd.sendFloat("user-rhy", library.rhythm ? 1 : 0);
+  /*
   OscMessage myMessage = new OscMessage("/rhy");
-  myMessage.add(library.rhythm ? 1 : 0);
-  oscP5.send(myMessage, latidoPD);
+   myMessage.add(library.rhythm ? 1 : 0);
+   oscP5.send(myMessage, latidoPD);
+   */
 }
 
 void mousePressed()
@@ -81,25 +84,23 @@ void prevButton (int v)
 
 void transportButton (int v)
 {
-  OscMessage myMessage = new OscMessage("/latido/transport");
   switch (v)
   {
   case 0:
-    myMessage.add("play");
+    pd.sendBang("midi-play");
     stop.active = true;
     scorecard.active = false;
     break;
   case 1:
-    myMessage.add("stop");
+    pd.sendBang("midi-stop");
     break;
   case 2:
-    myMessage.add("pitch");
+    pd.sendBang("play-pitch");
     break;
   case 3:
-    myMessage.add("replay");
+    pd.sendBang("listen");
     stop.active = true;
   }
-  oscP5.send(myMessage, latidoPD);
 }
 
 void libraryButton (int v)
@@ -149,9 +150,12 @@ void userPrefs (int v)
 
 void volumeSlider (float v)
 {
+  pd.sendFloat("master-vol", v);
+  /*
   OscMessage myMessage = new OscMessage("/latido/vol");
-  myMessage.add(v);
-  oscP5.send(myMessage, latidoPD);
+   myMessage.add(v);
+   oscP5.send(myMessage, latidoPD);
+   */
 }
 
 void tempoSlider (float v)
@@ -159,9 +163,12 @@ void tempoSlider (float v)
   tempoVal = (int)map (v, 0, 1, TEMPO_LOW, TEMPO_HIGH);
   String l = tempoVal + " bpm";
   tempoLabel.set (l);
+  pd.sendFloat("new-bpm", tempoVal);
+  /*
   OscMessage myMessage = new OscMessage("/latido/tempo");
-  myMessage.add(tempoVal);
-  oscP5.send(myMessage, latidoPD);
+   myMessage.add(tempoVal);
+   oscP5.send(myMessage, latidoPD);
+   */
 }
 
 public void micPD (float f)
@@ -186,12 +193,6 @@ public void metroStatePD (float f)
 {
   int s = int(f);
   metro.setState(s);
-}
-
-public void watchdogPD ()
-{
-  OscMessage myMessage = new OscMessage("/latido/watchdog");
-  oscP5.send(myMessage, latidoPD);
 }
 
 public void scorePD (float theScore)

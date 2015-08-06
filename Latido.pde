@@ -8,8 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.Image;
 import static javax.swing.JOptionPane.*;
 import de.bezier.guido.*;
-import oscP5.*;
-import netP5.*;
+import org.puredata.processing.PureData;
 
 final float SIDEBAR_WIDTH = 70;
 final float TOPBAR_HEIGHT = 70;
@@ -18,11 +17,7 @@ final int TEMPO_LOW = 40;
 final int TEMPO_HIGH = 280;
 int tempoVal = 60;
 
-OscP5 oscP5tcpClient;
-OscP5 oscP5;
-NetAddress latidoPD;
-
-Process pd;
+PureData pd;
 
 LatidoButton reportProblem;
 LatidoButton play, stop, pitch, replay;
@@ -46,21 +41,18 @@ Label treeLabel;
 
 void setup()
 {
-  String p = dataPath("");
-  try {
-    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-r", "44100", p+"/pd/latido.pd").start();
-  } 
-  catch (Exception e) {
-    showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", ERROR_MESSAGE);
-  }
-  oscP5 = new OscP5 (this, 12000);
-  latidoPD = new NetAddress("127.0.0.1", 12001);
-
-  PImage icon = loadImage("icons/appbar.futurama.bender.png");
-
   size(1024, 540);
   smooth();
   PADDING = width/20;
+
+  pd = new PureData(this, 44100, 2, 2);
+  pd.openPatch("pd/test.pd");
+  pd.subscribe("mic-osc");
+  pd.subscribe("metro-osc");
+  pd.subscribe("tempo-osc");
+  pd.subscribe("metro-state");
+  pd.subscribe("score-osc");
+  pd.start();
 
   surface.setTitle("Latido 0.82a1");
   if (surface != null) {
@@ -137,19 +129,24 @@ void setup()
   treeLabel = new Label(5, 170, "0 Stars", 11);
   splash = new Splash();
   tree.setMaxScore(library.numMelodies*5);
-
-  oscP5.plug(this, "micPD", "/mic");
-  oscP5.plug(this, "tempoPD", "/tempo");
-  oscP5.plug(this, "metroPD", "/metro");
-  oscP5.plug(this, "metroStatePD", "/metrostate");
-  oscP5.plug(this, "scorePD", "/score");
-  oscP5.plug(this, "watchdogPD", "/watchdog");
 }
 
-void stop()
+void receiveFloat(String source, float x)
 {
-  pd.destroy();
-    OscMessage myMessage = new OscMessage("/latido/quit");
-  myMessage.add(1);
-  oscP5.send(myMessage, latidoPD);
+  if (source.equals("mic-osc")) micPD(x);
+  else if (source.equals("tempo-osc")) tempoPD(x);
+  else if (source.equals("metro-osc")) metroPD(x);
+  else if (source.equals("metro-state")) metroStatePD(x);
+  else if (source.equals("score-osc")) scorePD(x);
 }
+
+void pdPrint(String s) {
+  println("Pd: "+s);
+}
+
+//oscP5.plug(this, "micPD", "/mic");
+//oscP5.plug(this, "tempoPD", "/tempo");
+//oscP5.plug(this, "metroPD", "/metro");
+//oscP5.plug(this, "metroStatePD", "/metrostate");
+//oscP5.plug(this, "scorePD", "/score");
+//oscP5.plug(this, "watchdogPD", "/watchdog");
