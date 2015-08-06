@@ -14,16 +14,23 @@ void paintSidebar()
 
 void notifyPd(boolean rhythm)
 {
-  OscMessage myMessage = new OscMessage("/latido/isrhythm");
-  myMessage.add(library.rhythm ? 1 : 0);
-  oscP5.send(myMessage, latidoPD);
-  myMessage = new OscMessage("/latido/tempo");
-  myMessage.add(library.getTempo());
-  oscP5.send(myMessage, latidoPD);
-  myMessage = new OscMessage("/latido/countin");
-  myMessage.add(library.getCountin());
-  oscP5.send(myMessage, latidoPD);
-  myMessage = new OscMessage("/latido/midifile");
-  myMessage.add(library.getMidi());
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/latido/isrhythm", library.rhythm ? 1 : 0);
+  sendOscFloat("/latido/tempo", library.getTempo());
+  sendOscFloat("/latido/countin", library.getCountin());
+  sendOscString("/latido/midifile", library.getMidi());
 }
+
+void sendOscString (String tag, String msg)
+{
+  OscMessage myMessage = new OscMessage(tag);
+  myMessage.add(msg);
+  oscP5.send(myMessage, latidoPD);
+} 
+
+void sendOscFloat (String tag, float f)
+{
+  OscMessage myMessage = new OscMessage(tag);
+  myMessage.add(f);
+  oscP5.send(myMessage, latidoPD);
+} 
+
