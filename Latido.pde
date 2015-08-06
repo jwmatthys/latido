@@ -26,17 +26,13 @@ NetAddress latidoPD;
 Process pd;
 
 ControlP5 gui;
+Group group;
+Toggle metro;
 
-LatidoButton reportProblem;
-LatidoButton play, stop, pitch, replay;
-HSlider tempo;
-Label tempoLabel, userPrefsLabel;
-MetroButton metro;
+//MetroButton metro;
 ShowMusic music;
 Scorecard scorecard;
 MelodyLibraryXML library;
-LatidoButton libraryButton, next, previous, redo;
-LatidoButton loadProgress, saveProgress;
 UserProgress userProgress;
 String libName;
 String savePath;
@@ -79,16 +75,19 @@ void setup()
   Interactive.make(this);
   gui = new ControlP5(this);
 
+  Group group = gui.addGroup("options")
+    .setLabel ("User and Library Options")
+      .setPosition(width-230, 20)
+        .setSize(220, 300)
+          .setBackgroundColor(color(255, 250))
+            .close();
+
   music = new ShowMusic();
 
-  PImage[] imgs = {
-    loadImage("icons/appbar.control.play.png"), loadImage("icons/appbar.control.play.png"), loadImage("icons/appbar.control.play.png")
-    };
-
-    gui.addButton("playButton")
-      .setLabel("Play")
-        .setPosition(10, 10)
-          .setSize(50, 50);
+  gui.addButton("playButton")
+    .setLabel("Play")
+      .setPosition(10, 10)
+        .setSize(50, 50);
 
   gui.addButton("stopButton")
     .setLabel("Stop")
@@ -120,86 +119,127 @@ void setup()
       .setPosition(470, 10)
         .setSize(50, 50);
 
-  //gui.getController("playButton").lock();
+  gui.addButton("websiteLink")
+    .setLabel("Found a bug?")
+      .setPosition(width-80, height-30)
+        .setSize(70, 20);
 
+  gui.addButton("loadButton")
+    .setLabel("Load user progress file")
+      .setPosition(10, 10)
+        .setSize(200, 50)
+          .setGroup(group);
 
-  //libraryButton.visibility(false); // just for now, until this is ready for prime time
-  play = new LatidoButton (10, 110, 50, 50, "Play", "icons/appbar.control.play.png", 0);
-  stop = new LatidoButton (70, 110, 50, 50, "Stop", "icons/appbar.control.stop.png", 1);
-  pitch = new LatidoButton (130, 110, 50, 50, "Pitch", "icons/tuningfork1.png", 2);
-  replay = new LatidoButton (190, 110, 50, 50, "Playback", "icons/appbar.social.uservoice.png", 3);
-  play.visibility(false);
-  stop.visibility(false);
-  pitch.visibility(false);
-  replay.visibility(false);
+  gui.addButton("saveButton")
+    .setLabel("Save user progress file")
+      .setPosition(10, 70)
+        .setSize(200, 50)
+          .setGroup(group);
 
-  previous = new LatidoButton (350, 110, 50, 50, "Previous", "icons/left-arrow.png", 0);
-  redo = new LatidoButton (410, 110, 50, 50, "Redo", "icons/redo.png", 2);
-  next = new LatidoButton (470, 110, 50, 50, "Next", "icons/right-arrow.png", 0);
+  gui.addButton("libraryButton")
+    .setLabel("Load new Latido module")
+      .setPosition(10, 130)
+        .setSize(200, 50)
+          .setGroup(group);
 
-  previous.visibility(false);
-  redo.visibility(false);
-  next.visibility(false);
+  /*
+  gui.addToggle("practiceButton")
+   .setLabel("Switch on/off Practice Mode")
+   .setPosition(10, 190)
+   .setSize(100, 20)
+   .setValue(false)
+   .setMode(ControlP5.SWITCH)
+   .setGroup(group)
+   .getCaptionLabel()
+   .setColor(color(0))
+   ;
+   */
 
-  reportProblem = new LatidoButton (10, height-55, 50, 45, "Bug?", "icons/ladybug.png", 0);
-  libraryButton = new LatidoButton (width-60, height-60, 50, 50, "Load...", "icons/playback.png", 0);
-  previous.active = false;
-  redo.active = false;
-  userPrefsLabel = new Label((SIDEBAR_WIDTH+width)*0.555, 32, "   User\nProgress", 12);
-  loadProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+70, 10, 50, 50, "Load", null, 0);
-  saveProgress = new LatidoButton ((SIDEBAR_WIDTH+width)*0.55+130, 10, 50, 50, "Save as", null, 1);
-  replay.active = false;
-  play.active = false;
-  pitch.active = false;
-  stop.active = false;
-  next.active = false;
-  loadProgress.active = false;
-  saveProgress.active = false;
-  //volume = new VolSlider (10, height-265, 20, 200);
-  //volume.set (0.25);
-  //tempo = new HSlider (width-210, 10, 200, 20);
-  //tempoLabel = new Label (width-210, 50, "Tempo", 14);
+  gui.addTextlabel("practiceLabel")
+    .setText("Toggle on/off Practice Mode\n\nAllows you to practice\nany exercise, but you\nearn no stars.")
+      .setPosition(10, 190)
+        .setColor(color(0))
+          .setGroup(group);
+
+  gui.addIcon("practiceButton", 10)
+    .setPosition(130, 190)
+      .setSize(70, 50)
+        .setRoundedCorners(20)
+          .setFont(createFont("fontawesome-webfont.ttf", 40))
+            .setFontIcons(#00f205, #00f204)
+              .setSwitch(true)
+                .setColorForeground(color(0))
+                  .setColorActive(color(0))
+                    .hideBackground()
+                      .setGroup(group); 
+
+  setLock(gui.getController("playButton"), true);
+  setLock(gui.getController("stopButton"), true);
+  setLock(gui.getController("pitchButton"), true);
+  setLock(gui.getController("playbackButton"), true);
+  setLock(gui.getController("previousButton"), true);
+  setLock(gui.getController("redoButton"), true);
+  setLock(gui.getController("nextButton"), true);
 
   gui.addSlider("tempoSlider")
     .setLabel("Tempo")
-      .setPosition(width-210, 10)
-        .setSize(200, 20)
+      .setPosition(10, 80)
+        .setSize(20, 200)
           .setRange(40, 280)
             .setValue(40)
               .setDecimalPrecision(0)
-              .getCaptionLabel().align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE)
-              .setColor(color(0));
+                .setColorForeground(color(0, 128, 0))
+                  .setColorActive(color(0, 200, 0));
 
+  gui.getController("tempoSlider").getCaptionLabel()
+    .setPaddingX(5)
+      .align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
+        .setColor(color(0));
+  gui.getController("tempoSlider").getValueLabel()
+    .setColor(color(0));
 
   gui.addSlider("volumeSlider")
     .setLabel("vol")
-      .setPosition(10, height-265)
+      .setPosition(10, height-220)
         .setSize(20, 200)
           .setRange(0, 100)
-            .setValue(25)
-              .setLabelVisible(false);
+            .setDecimalPrecision(0)
+              .setValue(50);
+
+  gui.getController("volumeSlider").getCaptionLabel()
+    .align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
+      .setPaddingX(0)
+        .setColor(color(0));
+  gui.getController("volumeSlider").getValueLabel()
+    .setPaddingX(0)
+      .align(ControlP5.CENTER, -200)
+        .setColor(color(255));
+
 
   gui.addSlider("micLevel")
-    .setPosition(40, height-265)
+    .setPosition(40, height-220)
       .setSize(20, 200)
         .setRange(0, 100)
           .setLabelVisible(false)
             ;
-
-  Interactive.on( loadProgress, "pressed", this, "userPrefs" );
-  Interactive.on( saveProgress, "pressed", this, "userPrefs" );
-  Interactive.on( tempo, "valueChanged", this, "tempoSlider");
-  Interactive.on( libraryButton, "pressed", this, "libraryButton");
-  Interactive.on( reportProblem, "pressed", this, "websiteLink");
 
   library = new MelodyLibraryXML();
   libName = library.load("eyes_and_ears");
   music.load(library.getImage());
   music.setText(library.getText());
   gui.getController("tempoSlider").setValue((int)library.getTempo());
-  //tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-  //tempoLabel.set(library.getTempo()+" bpm");
-  metro = new MetroButton( SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110, 500, 100, 2);
+
+  metro = gui.addToggle("metroBangFoo")
+    .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110)
+      .setSize(500, 100)
+        .setLabel("1")
+          .setValue(false);
+  metro.getCaptionLabel()
+    .setFont(createFont("", 48))
+      .setSize(48)
+        .align(ControlP5.CENTER, ControlP5.CENTER)
+          .setColor(color(0));
+
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
