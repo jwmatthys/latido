@@ -142,9 +142,9 @@ public void tempoPD (float f)
 
 public void metroPD (float f)
 {
-  int b = int(f);
-  println("bang");
-  metro.setLabel(nf(f,0,0));
+  metro.activate(0);
+  metroOff = frameCount+5;
+  metro.getItem(0).setLabel(nf(f,0,0));
 }
 
 public void metroStatePD (float f)
