@@ -1,7 +1,0 @@
-The third important pattern is
-the ascending tetrachord*. This
-sounds exactly the same as in
-major mode!
-
-* Tetrachord is the name for a
-collection of four notes.
