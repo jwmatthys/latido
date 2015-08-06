@@ -62,7 +62,7 @@ void setup()
   smooth();
   PADDING = width/20;
 
-  surface.setTitle("Latido 0.82a1");
+  surface.setTitle("Latido 0.83-alpha");
   if (surface != null) {
     surface.setResizable(true);
   }
