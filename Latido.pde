@@ -54,30 +54,58 @@ void setup()
   oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
 
-  PImage icon = loadImage("icons/appbar.futurama.bender.png");
-
   size(1024, 560);
+  setupFrame();
   smooth();
   PADDING = width/20;
 
-  frame.setTitle("Latido 0.83a1");
-  if (frame != null) {
-    frame.setResizable(true);
-  }
-  frame.addComponentListener(new ComponentAdapter() {
-    public void componentResized(ComponentEvent e) {
-      if (e.getSource()==frame) {
-        //gui.getController("options").setPosition(width-230, 20);
-        //gui.getController("websiteLink").setPosition(width-80, height-30);
-        println("resized to:" + width+" x "+height+" mouse: "+mouseY +" "+mouseY);
-      }
-    }
-  }
-  );
-
   Interactive.make(this);
-  gui = new ControlP5(this);
 
+  library = new MelodyLibraryXML();
+  music = new ShowMusic();
+  libName = library.load("eyes_and_ears");
+  music.load(library.getImage());
+  music.setText(library.getText());
+
+  userProgress = new UserProgress(System.getProperty("user.name"), libName);
+  userProgress.updateInfo(library.currentLine, library.getName());
+  savePath = "";
+  saving = false;
+
+  gui = new ControlP5(this);
+  createGui();
+
+  scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
+
+  //tree = new ProgressGraph(0, 80, 70, 81);
+  //treeLabel = new Label(5, 170, "0 Stars", 11);
+  //tree.setMaxScore(library.numMelodies*5);
+  splash = new Splash();
+
+  oscP5.plug(this, "micPD", "/mic");
+  oscP5.plug(this, "tempoPD", "/tempo");
+  oscP5.plug(this, "metroPD", "/metro");
+  oscP5.plug(this, "metroStatePD", "/metrostate");
+  oscP5.plug(this, "scorePD", "/score");
+  oscP5.plug(this, "watchdogPD", "/watchdog");
+}
+
+void stop()
+{
+  pd.destroy();
+  OscMessage myMessage = new OscMessage("/latido/quit");
+  myMessage.add(1);
+  oscP5.send(myMessage, latidoPD);
+}
+
+public void updateResize()
+{
+  group.setPosition(width-230, 20);
+  gui.getController("websiteLink").setPosition(width-80, height-30);
+}
+
+void createGui()
+{
   Group group = gui.addGroup("options")
     .setLabel ("User and Library Options")
       .setPosition(width-230, 30)
@@ -89,66 +117,86 @@ void setup()
   group.getCaptionLabel()
     .align(ControlP5.CENTER, ControlP5.CENTER);
 
-  music = new ShowMusic();
-
   gui.addButton("playButton")
     .setLabel("Play")
       .setPosition(10, 10)
-        .setSize(50, 50);
+        .setSize(50, 50).
+          getCaptionLabel()
+          .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("stopButton")
     .setLabel("Stop")
       .setPosition(70, 10)
-        .setSize(50, 50);
+        .setSize(50, 50).
+          getCaptionLabel()
+          .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("pitchButton")
     .setLabel("Pitch")
       .setPosition(130, 10)
-        .setSize(50, 50);
+        .setSize(50, 50).
+          getCaptionLabel()
+          .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("playbackButton")
     .setLabel("PlayBack")
       .setPosition(190, 10)
-        .setSize(50, 50);
+        .setSize(50, 50).
+          getCaptionLabel()
+          .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("nextButton")
     .setLabel("Next")
       .setPosition((width/2)+35, 10)
-        .setSize(50, 50);
+        .setSize(50, 50)
+          .getCaptionLabel()
+            .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("previousButton")
     .setLabel("Previous")
       .setPosition((width/2)-85, 10)
-        .setSize(50, 50);
+        .setSize(50, 50)
+          .getCaptionLabel()
+            .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("redoButton")
     .setLabel("Redo")
       .setPosition((width/2)-25, 10)
-        .setSize(50, 50);
+        .setSize(50, 50).
+          getCaptionLabel()
+          .align(ControlP5.CENTER, ControlP5.CENTER);
 
 
   gui.addButton("websiteLink")
     .setLabel("Find a bug?")
       .setPosition(0, height-20)
-        .setSize(70, 20);
+        .setSize(70, 20)
+          .getCaptionLabel()
+            .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("loadButton")
     .setLabel("Load user progress file")
       .setPosition(10, 10)
         .setSize(200, 50)
-          .setGroup(group);
+          .setGroup(group)
+            .getCaptionLabel()
+              .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("saveButton")
     .setLabel("Save user progress file")
       .setPosition(10, 70)
         .setSize(200, 50)
-          .setGroup(group);
+          .setGroup(group)
+            .getCaptionLabel()
+              .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("libraryButton")
     .setLabel("Load new Latido module")
       .setPosition(10, 130)
         .setSize(200, 50)
-          .setGroup(group);
+          .setGroup(group)
+            .getCaptionLabel()
+              .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addTextlabel("practiceLabel")
     .setText("PRACTICE MODE OFF")
@@ -224,10 +272,6 @@ void setup()
         .setColor(color(0));
   gui.getController("micLevel").getValueLabel().setVisible(false);
 
-  library = new MelodyLibraryXML();
-  libName = library.load("eyes_and_ears");
-  music.load(library.getImage());
-  music.setText(library.getText());
   gui.getController("tempoSlider").setValue((int)library.getTempo());
 
   metro = gui.addCheckBox("metroBangFoo")
@@ -237,47 +281,28 @@ void setup()
           .addItem("1", 0)
             .hide();
 
-  //metro.setColorActive(color(0,0,250)); //on - should be lighter
-  //metro.setColorBackground(color(0,0,100)); //off - should be darker
-  //metro.setColorForeground(color(0,0,100)); //mouseover - should be same as background
-
   metro.getItem(0).getCaptionLabel()
     .setFont(createFont("", 48))
       .setSize(48)
         .align(ControlP5.CENTER, ControlP5.CENTER)
           .setColor(255);
-
-  scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
-
-  userProgress = new UserProgress(System.getProperty("user.name"), libName);
-  userProgress.updateInfo(library.currentLine, library.getName());
-  savePath = "";
-  saving = false;
-
-  tree = new ProgressGraph(0, 80, 70, 81);
-  treeLabel = new Label(5, 170, "0 Stars", 11);
-  splash = new Splash();
-  tree.setMaxScore(library.numMelodies*5);
-
-  oscP5.plug(this, "micPD", "/mic");
-  oscP5.plug(this, "tempoPD", "/tempo");
-  oscP5.plug(this, "metroPD", "/metro");
-  oscP5.plug(this, "metroStatePD", "/metrostate");
-  oscP5.plug(this, "scorePD", "/score");
-  oscP5.plug(this, "watchdogPD", "/watchdog");
 }
 
-void stop()
+void setupFrame()
 {
-  pd.destroy();
-  OscMessage myMessage = new OscMessage("/latido/quit");
-  myMessage.add(1);
-  oscP5.send(myMessage, latidoPD);
-}
-
-public void updateResize()
-{
-  group.setPosition(width-230, 20);
-  gui.getController("websiteLink").setPosition(width-80, height-30);
+  frame.setTitle("Latido 0.9-alpha");
+  if (frame != null) {
+    frame.setResizable(true);
+  }
+  frame.addComponentListener(new ComponentAdapter() {
+    public void componentResized(ComponentEvent e) {
+      if (e.getSource()==frame) {
+        //gui.getController("options").setPosition(width-230, 20);
+        //gui.getController("websiteLink").setPosition(width-80, height-30);
+        //println("resized to:" + width+" x "+height+" mouse: "+mouseY +" "+mouseY);
+      }
+    }
+  }
+  );
 }
 
