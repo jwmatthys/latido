@@ -19,6 +19,7 @@ final int TEMPO_LOW = 40;
 final int TEMPO_HIGH = 280;
 int tempoVal = 60;
 int metroOff = 0; // updates frame to deactivate metro toggle
+boolean practiceMode = false;
 
 OscP5 oscP5tcpClient;
 OscP5 oscP5;
@@ -30,7 +31,6 @@ ControlP5 gui;
 Group group;
 CheckBox metro;
 
-//MetroButton metro;
 ShowMusic music;
 Scorecard scorecard;
 MelodyLibraryXML library;
@@ -56,7 +56,7 @@ void setup()
 
   PImage icon = loadImage("icons/appbar.futurama.bender.png");
 
-  size(1024, 540);
+  size(1024, 560);
   smooth();
   PADDING = width/20;
 
@@ -67,6 +67,8 @@ void setup()
   frame.addComponentListener(new ComponentAdapter() {
     public void componentResized(ComponentEvent e) {
       if (e.getSource()==frame) {
+        //gui.getController("options").setPosition(width-230, 20);
+        //gui.getController("websiteLink").setPosition(width-80, height-30);
         println("resized to:" + width+" x "+height+" mouse: "+mouseY +" "+mouseY);
       }
     }
@@ -78,10 +80,14 @@ void setup()
 
   Group group = gui.addGroup("options")
     .setLabel ("User and Library Options")
-      .setPosition(width-230, 20)
+      .setPosition(width-230, 30)
         .setSize(220, 300)
-          .setBackgroundColor(color(255, 250))
-            .close();
+          .setBarHeight(20)
+            .setBackgroundColor(color(255, 250))
+              .close();
+
+  group.getCaptionLabel()
+    .align(ControlP5.CENTER, ControlP5.CENTER);
 
   music = new ShowMusic();
 
@@ -105,24 +111,25 @@ void setup()
       .setPosition(190, 10)
         .setSize(50, 50);
 
+  gui.addButton("nextButton")
+    .setLabel("Next")
+      .setPosition((width/2)+35, 10)
+        .setSize(50, 50);
+
   gui.addButton("previousButton")
     .setLabel("Previous")
-      .setPosition(350, 10)
+      .setPosition((width/2)-85, 10)
         .setSize(50, 50);
 
   gui.addButton("redoButton")
     .setLabel("Redo")
-      .setPosition(410, 10)
+      .setPosition((width/2)-25, 10)
         .setSize(50, 50);
 
-  gui.addButton("nextButton")
-    .setLabel("Next")
-      .setPosition(470, 10)
-        .setSize(50, 50);
 
   gui.addButton("websiteLink")
-    .setLabel("Found a bug?")
-      .setPosition(width-80, height-30)
+    .setLabel("Find a bug?")
+      .setPosition(0, height-20)
         .setSize(70, 20);
 
   gui.addButton("loadButton")
@@ -143,36 +150,22 @@ void setup()
         .setSize(200, 50)
           .setGroup(group);
 
-  /*
-  gui.addToggle("practiceButton")
-   .setLabel("Switch on/off Practice Mode")
-   .setPosition(10, 190)
-   .setSize(100, 20)
-   .setValue(false)
-   .setMode(ControlP5.SWITCH)
-   .setGroup(group)
-   .getCaptionLabel()
-   .setColor(color(0))
-   ;
-   */
-
   gui.addTextlabel("practiceLabel")
-    .setText("Toggle on/off Practice Mode\n\nAllows you to practice\nany exercise, but you\nearn no stars.")
-      .setPosition(10, 190)
+    .setText("PRACTICE MODE OFF")
+      .setPosition(112, 196)
         .setColor(color(0))
           .setGroup(group);
 
-  gui.addIcon("practiceButton", 10)
-    .setPosition(130, 190)
-      .setSize(70, 50)
-        .setRoundedCorners(20)
-          .setFont(createFont("fontawesome-webfont.ttf", 40))
-            .setFontIcons(#00f205, #00f204)
-              .setSwitch(true)
-                .setColorForeground(color(0))
-                  .setColorActive(color(0))
-                    .hideBackground()
-                      .setGroup(group); 
+  gui.addToggle("practiceToggle")
+    .setLabel("Switch on/off Practice Mode")
+      .setPosition(10, 190)
+        .setSize(100, 20)
+          .setValue(true)
+            .setMode(ControlP5.SWITCH)
+              .setGroup(group)
+                .getCaptionLabel()
+                  .setColor(color(0))
+                    ;
 
   setLock(gui.getController("playButton"), true);
   setLock(gui.getController("stopButton"), true);
@@ -180,7 +173,6 @@ void setup()
   setLock(gui.getController("playbackButton"), true);
   setLock(gui.getController("previousButton"), true);
   setLock(gui.getController("redoButton"), true);
-  setLock(gui.getController("nextButton"), true);
 
   gui.addSlider("tempoSlider")
     .setLabel("Tempo")
@@ -197,11 +189,13 @@ void setup()
       .align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
         .setColor(color(0));
   gui.getController("tempoSlider").getValueLabel()
-    .setColor(color(0));
+    .setPaddingX(0)
+      .align(ControlP5.CENTER, -200)
+        .setColor(color(255));
 
   gui.addSlider("volumeSlider")
     .setLabel("vol")
-      .setPosition(10, height-220)
+      .setPosition(10, 300)
         .setSize(20, 200)
           .setRange(0, 100)
             .setDecimalPrecision(0)
@@ -218,11 +212,17 @@ void setup()
 
 
   gui.addSlider("micLevel")
-    .setPosition(40, height-220)
-      .setSize(20, 200)
-        .setRange(0, 100)
-          .setLabelVisible(false)
+    .setLabel("mic")
+      .setPosition(40, 300)
+        .setSize(20, 200)
+          .setRange(0, 100)
             ;
+
+  gui.getController("micLevel").getCaptionLabel()
+    .align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
+      .setPaddingX(0)
+        .setColor(color(0));
+  gui.getController("micLevel").getValueLabel().setVisible(false);
 
   library = new MelodyLibraryXML();
   libName = library.load("eyes_and_ears");
@@ -234,13 +234,18 @@ void setup()
     .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110)
       .setSize(500, 100)
         .setItemsPerRow(1)
-          .addItem("1", 0);
+          .addItem("1", 0)
+            .hide();
+
+  //metro.setColorActive(color(0,0,250)); //on - should be lighter
+  //metro.setColorBackground(color(0,0,100)); //off - should be darker
+  //metro.setColorForeground(color(0,0,100)); //mouseover - should be same as background
 
   metro.getItem(0).getCaptionLabel()
     .setFont(createFont("", 48))
       .setSize(48)
         .align(ControlP5.CENTER, ControlP5.CENTER)
-          .setColor(color(0));
+          .setColor(255);
 
   scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
@@ -268,5 +273,11 @@ void stop()
   OscMessage myMessage = new OscMessage("/latido/quit");
   myMessage.add(1);
   oscP5.send(myMessage, latidoPD);
+}
+
+public void updateResize()
+{
+  group.setPosition(width-230, 20);
+  gui.getController("websiteLink").setPosition(width-80, height-30);
 }
 
