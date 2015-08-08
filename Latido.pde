@@ -65,7 +65,7 @@ void setup()
 
   module = new MelodyModuleXML();
   music = new ShowMusic();
-  libName = module.load("eyes_and_ears");
+  libName = module.load(new File(dataPath("eyes_and_ears/latido.xml")));
   music.load(module.getImage());
   music.setText(module.getText());
 
@@ -282,14 +282,16 @@ void createGui()
       .setSize(500, 100)
         .setItemsPerRow(1)
           .addItem("1", 0)
-            .hide();
+            .hide()
+            ;
 
   scorecardGroup = gui.addGroup("scorecard")
     .hideBar()
-      .setSize(width/2, height/2)
-        .setPosition(width/4, height/4)
+      .setSize(width*2/3, height*2/3)
+        .setPosition(width/6, height/6)
           .setBackgroundColor(color(200,10,10,100))
-            .hide();
+            .hide()
+            ;
 
   gui.addGroup("splash")
     .hideBar()
