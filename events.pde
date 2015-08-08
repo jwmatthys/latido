@@ -106,7 +106,7 @@ void redoButton (int value)
 
 void moduleButton (int v)
 {
-  selectFolder("Choose your latido module folder...", "folderCallback");
+  selectInput("Choose your latido module file...", "moduleCallback");
 }
 
 void loadButton (int v)
@@ -210,12 +210,11 @@ public void scorePD (float theScore)
   if (saving) userProgress.save(savePath);
 }
 
-void folderCallback(File f)
+void moduleCallback(File f)
 {
   try
   {
-    String s = f.getAbsolutePath();
-    String libName = module.load(s);
+    String libName = module.load(f);
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
     userProgress.updateInfo(module.currentLine, module.getName());
     music.load(module.getImage());

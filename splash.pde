@@ -4,7 +4,6 @@ class Splash extends Canvas
 
   public void setup(PApplet p)
   {
-    println("starting splash canvas");
     splashImage = loadImage("images/splash.png");
   }
 

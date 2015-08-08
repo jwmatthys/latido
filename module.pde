@@ -13,20 +13,22 @@ class MelodyModuleXML
   {
   }
 
-  String load (String path)
+  String load (File index)
   {
     try 
     {
-      indexFile = loadXML(dataPath(path)+"/latido.xml");
+      indexPath = index.getAbsolutePath();
+      indexFile = loadXML(indexPath);
+      //File parent = index.getParentFile();
+      String folder = index.getParentFile().getAbsolutePath();
       shortname = indexFile.getChild("shortname");
       image = indexFile.getChild("imageextension");
       midi = indexFile.getChild("midiextension");
       progress = indexFile.getChild("progress");
       exercises = progress.getChildren("exercise");
-      indexPath = dataPath(path)+"/latido.xml";
-      midiPath = dataPath(path)+"/midi/";
-      imagePath = dataPath(path)+"/image/";
-      textPath = dataPath(path)+"/text/";
+      midiPath = folder+"/midi/";
+      imagePath = folder+"/image/";
+      textPath = folder+"/text/";
       currentLine = 0;
       numMelodies = exercises.length;
       parse (0);
