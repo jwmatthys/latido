@@ -8,7 +8,8 @@ void createGui()
             .setBackgroundColor(#E5E6E8)
               //.setColorForeground(color(255))
               .close()
-                .hide();
+                .hide()
+                ;
 
   optionGroup.getCaptionLabel()
     .align(ControlP5.CENTER, ControlP5.CENTER);
@@ -211,5 +212,14 @@ void createGui()
           .setColor(255);
 
   optionGroup.bringToFront();
+  //gui.getTooltip().register("playButton", "Play the exercise");
+  //gui.getTooltip().register("stopButton", "Stop playback");
+  gui.getTooltip().register("pitchButton", "Hear your starting pitch");
+  gui.getTooltip().register("playbackButton", "Hear your last attempt");
+  //gui.getTooltip().register("previousButton", "Go back to the previous exercise");
+  //gui.getTooltip().register("redoButton", "Try the same exercise again");
+  //gui.getTooltip().register("nextButton", "Go on to the next screen");
+  gui.getTooltip().register("tempoSlider", "Adjust the playback tempo");
+  gui.getTooltip().register("volumeSlider", "Adjust the playback volume");
 }
 
