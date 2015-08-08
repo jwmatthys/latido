@@ -6,10 +6,11 @@ void keyPressed()
 void nextButton (int v)
 {
   setLock(gui.getController("redoButton"), true);
-  scorecard.active = false;
-  if (splash.active)
+  gui.getGroup("scorecard").hide();
+  if (gui.getGroup("splash").isVisible())
   {
-    splash.active = false;
+    gui.getGroup("splash").hide();
+    //gui.getGroup("splash").remove();
     music.showBirdie = true;
     setLock(gui.getController("nextButton"), false);
     notifyPd(library.rhythm);
@@ -43,9 +44,9 @@ void nextButton (int v)
 
 void previousButton (int v)
 {
-  if (music.showBirdie || scorecard.active)
+  if (music.showBirdie ||   gui.getGroup("scorecard").isVisible())
   {
-    scorecard.active = false;
+    gui.getGroup("scorecard").hide();
     music.showBirdie = true;
     setLock(gui.getController("playbackButton"), true);//.lock();
 
@@ -65,7 +66,7 @@ void previousButton (int v)
     setLock(gui.getController("pitchButton"), library.rhythm);
 
     setLock(gui.getController("nextButton"), false);
-    scorecard.active = false;
+    gui.getGroup("scorecard").hide();
   }
   setLock(gui.getController("previousButton"), (music.showBirdie && library.currentLine==0));
 }
@@ -74,7 +75,7 @@ public void playButton (int value)
 {
   sendOscString("/latido/transport", "play");
   setLock(gui.getController("stopButton"), false);
-  scorecard.active = false;
+  gui.getGroup("scorecard").hide();
 }
 
 public void stopButton (int value)
@@ -95,7 +96,7 @@ public void playbackButton (int value)
 
 void redoButton (int value)
 {
-  scorecard.active = false;
+  gui.getGroup("scorecard").hide();
   music.showBirdie = false;
   setLock(gui.getController("playButton"), false);//.unlock();
   setLock(gui.getController("stopButton"), true);//.lock();
@@ -200,9 +201,9 @@ public void scorePD (float theScore)
   setLock(gui.getController("pitchButton"), true);
   setLock(gui.getController("playbackButton"), false);
   setLock(gui.getController("redoButton"), false);
-  scorecard.setScore(theScore);
+  //scorecard.setScore(theScore);
   setLock(gui.getController("nextButton"), cantAdvance(theScore));
-  if (!practiceMode) userProgress.updateScore(library.currentLine, scorecard.stars);
+  //if (!practiceMode) userProgress.updateScore(library.currentLine, scorecard.stars);
   tree.updateGraph(userProgress.getTotalScore());
   treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
@@ -237,7 +238,7 @@ void loadCallback(File f)
   {
     savePath = s;
     saving = true;
-    scorecard.active = false;
+    gui.getGroup("scorecard").hide();
     music.showBirdie = true;
     setLock(gui.getController("playbackButton"), true);
 
