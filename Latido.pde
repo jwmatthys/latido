@@ -33,7 +33,7 @@ CheckBox metro;
 
 ShowMusic music;
 Scorecard scorecard;
-MelodyLibraryXML library;
+MelodyModuleXML module;
 UserProgress userProgress;
 String libName;
 String savePath;
@@ -63,14 +63,14 @@ void setup()
 
   Interactive.make(this);
 
-  library = new MelodyLibraryXML();
+  module = new MelodyModuleXML();
   music = new ShowMusic();
-  libName = library.load("eyes_and_ears");
-  music.load(library.getImage());
-  music.setText(library.getText());
+  libName = module.load("eyes_and_ears");
+  music.load(module.getImage());
+  music.setText(module.getText());
 
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
-  userProgress.updateInfo(library.currentLine, library.getName());
+  userProgress.updateInfo(module.currentLine, module.getName());
   savePath = "";
   saving = false;
 
@@ -82,7 +82,7 @@ void setup()
 
   //tree = new ProgressGraph(0, 80, 70, 81);
   //treeLabel = new Label(5, 170, "0 Stars", 11);
-  //tree.setMaxScore(library.numMelodies*5);
+  //tree.setMaxScore(module.numMelodies*5);
 
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
@@ -109,7 +109,7 @@ public void updateResize()
 void createGui()
 {
   Group group = gui.addGroup("options")
-    .setLabel ("User and Library Options")
+    .setLabel ("User and Module Options")
       .setPosition(width-230, 30)
         .setSize(220, 300)
           .setBarHeight(20)
@@ -192,7 +192,7 @@ void createGui()
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
 
-  gui.addButton("libraryButton")
+  gui.addButton("moduleButton")
     .setLabel("Load new Latido module")
       .setPosition(10, 130)
         .setSize(200, 50)
@@ -274,7 +274,7 @@ void createGui()
         .setColor(color(0));
   gui.getController("micLevel").getValueLabel().setVisible(false);
 
-  gui.getController("tempoSlider").setValue((int)library.getTempo());
+  gui.getController("tempoSlider").setValue((int)module.getTempo());
 
   metro = gui.addCheckBox("metroBangFoo")
     .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110)

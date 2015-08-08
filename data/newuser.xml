@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <latido>
   <name>Latido User</name>
-  <library>Eyes and Ears</library>
+  <module>Eyes and Ears</module>
   <score>0</score>
   <progress>
   </progress>

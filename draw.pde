@@ -1,6 +1,7 @@
 void draw()
 {
-  background(#E5E6E8);
+  background(255);
+  paintSidebar();
   if (frameCount == metroOff) metro.deactivate(0);
 }
 
@@ -14,10 +15,10 @@ void paintSidebar()
 
 void notifyPd(boolean rhythm)
 {
-  sendOscFloat("/latido/isrhythm", library.rhythm ? 1 : 0);
-  sendOscFloat("/latido/tempo", library.getTempo());
-  sendOscFloat("/latido/countin", library.getCountin());
-  sendOscString("/latido/midifile", library.getMidi());
+  sendOscFloat("/latido/isrhythm", module.rhythm ? 1 : 0);
+  sendOscFloat("/latido/tempo", module.getTempo());
+  sendOscFloat("/latido/countin", module.getCountin());
+  sendOscString("/latido/midifile", module.getMidi());
 }
 
 void sendOscString (String tag, String msg)

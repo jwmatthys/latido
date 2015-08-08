@@ -2,7 +2,7 @@ class UserProgress
 {
   XML user;
   XML username;
-  XML library;
+  XML module;
   XML progress;
   XML score;
   XML[] exercise;
@@ -14,12 +14,12 @@ class UserProgress
   {
     user = loadXML("newuser.xml");
     username = user.getChild("name");
-    library = user.getChild("library");
+    module = user.getChild("module");
     progress = user.getChild("progress");
     score = user.getChild("score");
     exercise = progress.getChildren("exercise");
     username.setContent(playerName);
-    library.setContent(libName);
+    module.setContent(libName);
     nextUnpassed = 0;
     secretKey = libName.substring(0, 8);
   }
@@ -34,7 +34,7 @@ class UserProgress
       user=loadXML(tempFile.getAbsolutePath());
       tempFile.delete();
       username = user.getChild("name");
-      library = user.getChild("library");
+      module = user.getChild("module");
       progress = user.getChild("progress");
       score = user.getChild("score");
       exercise = progress.getChildren("exercise");
@@ -48,7 +48,7 @@ class UserProgress
         }
       }
       nextUnpassed = id;
-      secretKey = library.getContent().substring(0, 8);
+      secretKey = module.getContent().substring(0, 8);
       return true;
     } 
     catch (Exception e) {
@@ -110,9 +110,9 @@ class UserProgress
     return score.getIntContent();
   }
 
-  String getLibraryName()
+  String getModuleName()
   {
-    return library.getContent();
+    return module.getContent();
   }
 
   String timeStamp()
