@@ -38,7 +38,9 @@ UserProgress userProgress;
 String libName;
 String savePath;
 boolean saving;
-Splash splash;
+Canvas splash;
+//Group scorecard;
+Group splashGroup;
 ProgressGraph tree;
 Label treeLabel;
 
@@ -75,12 +77,12 @@ void setup()
   gui = new ControlP5(this);
   createGui();
 
-  scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
+  //scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
+
 
   //tree = new ProgressGraph(0, 80, 70, 81);
   //treeLabel = new Label(5, 170, "0 Stars", 11);
   //tree.setMaxScore(library.numMelodies*5);
-  splash = new Splash();
 
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
@@ -280,6 +282,20 @@ void createGui()
         .setItemsPerRow(1)
           .addItem("1", 0)
             .hide();
+
+  gui.addGroup("scorecard")
+    .hideBar()
+      .setSize(width/2, height/2)
+        .setPosition(width/4, height/4)
+          .setBackgroundColor(color(255))
+            .hide();
+
+  gui.addGroup("splash")
+    .hideBar()
+      .setPosition(2*PADDING+SIDEBAR_WIDTH, 2*PADDING)
+        .setSize((int)(width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING))
+          .addCanvas(new Splash())
+            ;
 
   metro.getItem(0).getCaptionLabel()
     .setFont(createFont("", 48))

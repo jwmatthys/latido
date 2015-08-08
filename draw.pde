@@ -1,7 +1,6 @@
 void draw()
 {
-  background(255);
-  paintSidebar();
+  background(#E5E6E8);
   if (frameCount == metroOff) metro.deactivate(0);
 }
 

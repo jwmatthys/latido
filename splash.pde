@@ -1,25 +1,21 @@
-public class Splash
+class Splash extends Canvas
 {
-  boolean active;
   PImage splashImage;
 
-  Splash()
+  public void setup(PApplet p)
   {
-    Interactive.add( this ); // register it with the manager
+    println("starting splash canvas");
     splashImage = loadImage("images/splash.png");
-    active = true;
   }
 
-  void draw()
+  public void draw(PApplet p)
   {
-    if (active)
-    {
-      image (splashImage, 2*PADDING+SIDEBAR_WIDTH, 2*PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-4*PADDING);
-      noFill();
-      stroke(0);
-      strokeWeight(3);
-      rect(2*PADDING+SIDEBAR_WIDTH, 2*PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-4*PADDING);
-      strokeWeight(1);
-    }
+    image (splashImage, 0, 0, (width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING));
+    noFill();
+    stroke(0);
+    strokeWeight(3);
+    rect(0, 0, (width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING));
+    strokeWeight(1);
   }
 }
+
