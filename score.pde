@@ -80,3 +80,14 @@ class CalculateScore
   }
 }
 
+class Stars
+{
+  Stars()
+  {
+  }
+
+  void draw()
+  {
+  }
+}
+

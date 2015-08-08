@@ -10,7 +10,6 @@ class UserProgress
   String secretKey;
   String extension=".latido";
 
-
   UserProgress (String playerName, String libName)
   {
     user = loadXML("newuser.xml");

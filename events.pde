@@ -220,9 +220,8 @@ void moduleCallback(File f)
     userProgress.updateInfo(module.currentLine, module.getName());
     music.load(module.getImage());
     setView(SHOW_TEXT);
-    //music.setText(module.getText());
     gui.getController("tempoSlider").setValue(module.getTempo());
-    tree.setMaxScore(module.numMelodies*5);
+    //tree.setMaxScore(module.numMelodies*5);
     notifyPd(module.rhythm);
     showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
   }
@@ -248,8 +247,8 @@ void loadCallback(File f)
     gui.getController("tempoSlider").setValue(module.getTempo());
     notifyPd(module.rhythm);
     userProgress.updateInfo(module.currentLine, module.getName());
-    tree.updateGraph(userProgress.getTotalScore());
-    treeLabel.set(userProgress.getTotalScore()+" Stars");
+    //tree.updateGraph(userProgress.getTotalScore());
+    //treeLabel.set(userProgress.getTotalScore()+" Stars");
     setLock(gui.getController("nextButton"), false);
     setLock(gui.getController("previousButton"), (module.currentLine<=0));
   }
