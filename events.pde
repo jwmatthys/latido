@@ -205,10 +205,19 @@ public void scorePD (float theScore)
   //println("theScore: "+theScore+", stars: "+stars);
   if (!practiceMode) userProgress.updateScore(module.currentLine, stars);
   setLock(gui.getController("nextButton"), cantAdvance());
-  gui.getGroup("scorecard").show();
   //tree.updateGraph(userProgress.getTotalScore());
   //treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
+  showScorecard (stars);
+}
+
+void showScorecard(int stars)
+{
+  HACK_STARS = stars; // :( we have to use a global variable and create a new controlP5 canvas
+  scorecardGroup.removeCanvas(starCanvas);
+  starCanvas = new StarCanvas();
+  scorecardGroup.addCanvas(starCanvas);
+  gui.getGroup("scorecard").show();
 }
 
 void moduleCallback(File f)

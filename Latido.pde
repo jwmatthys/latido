@@ -13,8 +13,8 @@ import netP5.*;
 
 final boolean SHOW_MUSIC = true;
 final boolean SHOW_TEXT = false;
-final float SIDEBAR_WIDTH = 70;
-final float TOPBAR_HEIGHT = 70;
+final int SIDEBAR_WIDTH = 70;
+final int TOPBAR_HEIGHT = 70;
 int PADDING;
 final int TEMPO_LOW = 40;
 final int TEMPO_HIGH = 280;
@@ -22,12 +22,15 @@ int tempoVal = 60;
 int metroOff = 0; // updates frame to deactivate metro toggle
 boolean practiceMode = false;
 
+public int HACK_STARS = 0;
+
 OscP5 oscP5tcpClient;
 OscP5 oscP5;
 NetAddress latidoPD;
 
 Process pd;
 PFont font;
+PFont biggerFont;
 
 ControlP5 gui;
 Group group;
@@ -43,9 +46,9 @@ boolean saving;
 Group scorecardGroup;
 Group splashGroup;
 Group optionGroup;
+Group progressGroup;
 Textarea textbox;
-//ProgressGraph tree;
-//Label treeLabel;
+Canvas starCanvas;
 boolean view;
 
 void setup()
@@ -81,6 +84,8 @@ void setup()
   createGui();
   view = SHOW_MUSIC;
   setText(module.getText());
+
+  //stars = new Stars(HACK_STARS, SIDEBAR_WIDTH, (width+SIDEBAR_WIDTH)/2, TOPBAR_HEIGHT+100, 20, 500);
 
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");

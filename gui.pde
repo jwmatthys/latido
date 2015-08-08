@@ -1,19 +1,5 @@
 void createGui()
 {
-  optionGroup = gui.addGroup("options")
-    .setLabel ("User and Module Options")
-      .setPosition(width-220, 30)
-        .setSize(220, 300)
-          .setBarHeight(20)
-            .setBackgroundColor(#E5E6E8)
-              //.setColorForeground(color(255))
-              .close()
-                .hide()
-                ;
-
-  optionGroup.getCaptionLabel()
-    .align(ControlP5.CENTER, ControlP5.CENTER);
-
   gui.addButton("playButton")
     .setLabel("Play")
       .setPosition(10, 10)
@@ -173,31 +159,54 @@ void createGui()
   gui.getController("tempoSlider").setValue((int)module.getTempo());
 
   metro = gui.addCheckBox("metroBangFoo")
-    .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-110)
+    .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-120)
       .setSize(500, 100)
         .setItemsPerRow(1)
           .addItem("1", 0)
             .hide()
               ;
 
+  progressGroup = gui.addGroup("progress")
+  .open()
+    .hideBar()
+      .setBackgroundColor(#E5E6E8)
+        .setPosition(SIDEBAR_WIDTH, height/2+2*PADDING)
+          .setSize(width-SIDEBAR_WIDTH, height/2-2*PADDING)
+            ;
+
   scorecardGroup = gui.addGroup("scorecard")
     .hideBar()
       .setSize(width*2/3, height*2/3)
         .setPosition(width/6, height/6)
-          .setBackgroundColor(color(200, 10, 10, 100))
+          .setBackgroundColor(#E5E6E8)
             .hide()
               ;
 
+  optionGroup = gui.addGroup("options")
+    .setLabel ("User and Module Options")
+      .setPosition(width-220, 30)
+        .setSize(220, 300)
+          .setBarHeight(20)
+            .setBackgroundColor(#E5E6E8)
+              //.setColorForeground(color(255))
+              .close()
+                .hide()
+                  ;
+
+  optionGroup.getCaptionLabel()
+    .align(ControlP5.CENTER, ControlP5.CENTER);
+
   gui.addGroup("splash")
     .hideBar()
+      //.hide()
       .setPosition(2*PADDING+SIDEBAR_WIDTH, 2*PADDING)
         .setSize((int)(width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING))
           .addCanvas(new Splash())
             ;
 
   textbox = gui.addTextarea("text")
-    .setPosition(width/2 + 50, TOPBAR_HEIGHT+PADDING)
-      .setSize(400, 400)
+    .setPosition(SIDEBAR_WIDTH+PADDING, TOPBAR_HEIGHT+PADDING)
+      .setSize(width - SIDEBAR_WIDTH - 2*PADDING, height/2-PADDING)
         .setColorBackground(color(255))
           .setColorForeground(color(0))
             .setColor(0) // text color

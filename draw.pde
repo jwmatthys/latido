@@ -34,7 +34,8 @@ void setText (String path)
     String[] paragraph = loadStrings(path);
     String theText = PApplet.join(paragraph, '\n');
     textbox.setText(theText);
-  } catch (Exception e)
+  } 
+  catch (Exception e)
   {
     textbox.setText(module.getDescription()+"\n"+module.getName());
   }
