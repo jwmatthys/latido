@@ -57,47 +57,6 @@ void createGui()
           .getCaptionLabel()
             .align(ControlP5.CENTER, ControlP5.CENTER);
 
-  gui.addButton("loadButton")
-    .setLabel("Load user progress file")
-      .setPosition(10, 10)
-        .setSize(200, 50)
-          .setGroup(optionGroup)
-            .getCaptionLabel()
-              .align(ControlP5.CENTER, ControlP5.CENTER);
-
-  gui.addButton("saveButton")
-    .setLabel("Save user progress file")
-      .setPosition(10, 70)
-        .setSize(200, 50)
-          .setGroup(optionGroup)
-            .getCaptionLabel()
-              .align(ControlP5.CENTER, ControlP5.CENTER);
-
-  gui.addButton("moduleButton")
-    .setLabel("Load new Latido module")
-      .setPosition(10, 130)
-        .setSize(200, 50)
-          .setGroup(optionGroup)
-            .getCaptionLabel()
-              .align(ControlP5.CENTER, ControlP5.CENTER);
-
-  gui.addTextlabel("practiceLabel")
-    .setText("PRACTICE MODE OFF")
-      .setPosition(112, 196)
-        .setColor(color(0))
-          .setGroup(optionGroup);
-
-  gui.addToggle("practiceToggle")
-    .setLabel("Switch on/off Practice Mode")
-      .setPosition(10, 190)
-        .setSize(100, 20)
-          .setValue(true)
-            .setMode(ControlP5.SWITCH)
-              .setGroup(optionGroup)
-                .getCaptionLabel()
-                  .setColor(color(0))
-                    ;
-
   setLock(gui.getController("playButton"), true);
   setLock(gui.getController("stopButton"), true);
   setLock(gui.getController("pitchButton"), true);
@@ -195,6 +154,48 @@ void createGui()
 
   optionGroup.getCaptionLabel()
     .align(ControlP5.CENTER, ControlP5.CENTER);
+
+
+  gui.addButton("loadButton")
+    .setLabel("Load user progress file")
+      .setPosition(10, 10)
+        .setSize(200, 50)
+          .setGroup(optionGroup)
+            .getCaptionLabel()
+              .align(ControlP5.CENTER, ControlP5.CENTER);
+
+  gui.addButton("saveButton")
+    .setLabel("Save user progress file")
+      .setPosition(10, 70)
+        .setSize(200, 50)
+          .setGroup(optionGroup)
+            .getCaptionLabel()
+              .align(ControlP5.CENTER, ControlP5.CENTER);
+
+  gui.addButton("moduleButton")
+    .setLabel("Load new Latido module")
+      .setPosition(10, 130)
+        .setSize(200, 50)
+          .setGroup(optionGroup)
+            .getCaptionLabel()
+              .align(ControlP5.CENTER, ControlP5.CENTER);
+
+  gui.addTextlabel("practiceLabel")
+    .setText("PRACTICE MODE OFF")
+      .setPosition(112, 196)
+        .setColor(color(0))
+          .setGroup(optionGroup);
+
+  gui.addToggle("practiceToggle")
+    .setLabel("Switch on/off Practice Mode")
+      .setPosition(10, 190)
+        .setSize(100, 20)
+          .setValue(true)
+            .setMode(ControlP5.SWITCH)
+              .setGroup(optionGroup)
+                .getCaptionLabel()
+                  .setColor(color(0))
+                    ;
 
   gui.addGroup("splash")
     .hideBar()
