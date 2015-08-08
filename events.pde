@@ -7,18 +7,20 @@ void nextButton (int v)
 {
   setLock(gui.getController("redoButton"), true);
   gui.getGroup("scorecard").hide();
-  if (gui.getGroup("splash").isVisible())
+  optionGroup.close();
+  if (gui.getGroup("splash") != null && gui.getGroup("splash").isVisible())
   {
     gui.getGroup("splash").hide();
-    //gui.getGroup("splash").remove();
-    music.showBirdie = true;
+    gui.getGroup("splash").remove();
+    optionGroup.show();
+    setView(SHOW_TEXT);
     setLock(gui.getController("nextButton"), false);
     notifyPd(module.rhythm);
   } else
   {
-    if (music.showBirdie)
+    if (view == SHOW_TEXT)
     {
-      music.showBirdie = false;
+      setView(SHOW_MUSIC);
       setLock(gui.getController("playButton"), false);//.unlock();
       setLock(gui.getController("stopButton"), false);//.lock();
       setLock(gui.getController("pitchButton"), module.rhythm);
@@ -27,12 +29,11 @@ void nextButton (int v)
       setLock(gui.getController("previousButton"), false);
     } else
     {
-      music.showBirdie = true;
+      setView(SHOW_TEXT);
       setLock(gui.getController("playbackButton"), true);
       module.loadNext();
       music.load(module.getImage());
-      music.showBirdie = true;
-      music.setText(module.getText());
+      setText(module.getText());
       gui.getController("tempoSlider").setValue(module.getTempo());
       notifyPd(module.rhythm);
       userProgress.updateInfo(module.currentLine, module.getName());
@@ -44,23 +45,23 @@ void nextButton (int v)
 
 void previousButton (int v)
 {
-  if (music.showBirdie ||   gui.getGroup("scorecard").isVisible())
+  if (view == SHOW_TEXT ||   gui.getGroup("scorecard").isVisible())
   {
     gui.getGroup("scorecard").hide();
-    music.showBirdie = true;
+    //music.showBirdie = true;
     setLock(gui.getController("playbackButton"), true);//.lock();
 
     module.loadPrevious();
     music.load(module.getImage());
-    music.showBirdie = true;
-    music.setText(module.getText());
+    //music.showBirdie = true;
+    //music.setText(module.getText());
     gui.getController("tempoSlider").setValue(module.getTempo());
     notifyPd(module.rhythm);
     userProgress.updateInfo(module.currentLine, module.getName());
     setLock(gui.getController("nextButton"), (userProgress.getCurrentStars(module.currentLine)<=3));
   } else
   {
-    music.showBirdie = true;
+    setView(SHOW_TEXT);
     setLock(gui.getController("playButton"), true);//.lock();
     setLock(gui.getController("stopButton"), true);//.lock();
     setLock(gui.getController("pitchButton"), module.rhythm);
@@ -68,7 +69,7 @@ void previousButton (int v)
     setLock(gui.getController("nextButton"), false);
     gui.getGroup("scorecard").hide();
   }
-  setLock(gui.getController("previousButton"), (music.showBirdie && module.currentLine==0));
+  setLock(gui.getController("previousButton"), (view == SHOW_TEXT && module.currentLine==0));
 }
 
 public void playButton (int value)
@@ -97,7 +98,7 @@ public void playbackButton (int value)
 void redoButton (int value)
 {
   gui.getGroup("scorecard").hide();
-  music.showBirdie = false;
+  setView(SHOW_MUSIC);
   setLock(gui.getController("playButton"), false);//.unlock();
   setLock(gui.getController("stopButton"), true);//.lock();
   setLock(gui.getController("pitchButton"), module.rhythm);
@@ -218,8 +219,8 @@ void moduleCallback(File f)
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
     userProgress.updateInfo(module.currentLine, module.getName());
     music.load(module.getImage());
-    music.showBirdie = true;
-    music.setText(module.getText());
+    setView(SHOW_TEXT);
+    //music.setText(module.getText());
     gui.getController("tempoSlider").setValue(module.getTempo());
     tree.setMaxScore(module.numMelodies*5);
     notifyPd(module.rhythm);
@@ -239,13 +240,11 @@ void loadCallback(File f)
     savePath = s;
     saving = true;
     gui.getGroup("scorecard").hide();
-    music.showBirdie = true;
+    setView(SHOW_TEXT);
     setLock(gui.getController("playbackButton"), true);
-
     module.loadSpecific(userProgress.nextUnpassed);
     music.load(module.getImage());
-    music.showBirdie = true;
-    music.setText(module.getText());
+    //music.setText(module.getText());
     gui.getController("tempoSlider").setValue(module.getTempo());
     notifyPd(module.rhythm);
     userProgress.updateInfo(module.currentLine, module.getName());

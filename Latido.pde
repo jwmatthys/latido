@@ -12,6 +12,8 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
+final boolean SHOW_MUSIC = true;
+final boolean SHOW_TEXT = false;
 final float SIDEBAR_WIDTH = 70;
 final float TOPBAR_HEIGHT = 70;
 int PADDING;
@@ -26,12 +28,13 @@ OscP5 oscP5;
 NetAddress latidoPD;
 
 Process pd;
+PFont font;
 
 ControlP5 gui;
 Group group;
 CheckBox metro;
 
-ShowMusic music;
+MusicDisplay music;
 CalculateScore score;
 MelodyModuleXML module;
 UserProgress userProgress;
@@ -41,11 +44,15 @@ boolean saving;
 Canvas splash;
 Group scorecardGroup;
 Group splashGroup;
+Group optionGroup;
+Textarea textbox;
 ProgressGraph tree;
 Label treeLabel;
+boolean view;
 
 void setup()
 {
+  font = loadFont("Inconsolata-18.vlw");
   String p = dataPath("");
   try {
     pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-r", "44100", p+"/pd/latido.pd").start();
@@ -64,10 +71,9 @@ void setup()
   Interactive.make(this);
 
   module = new MelodyModuleXML();
-  music = new ShowMusic();
+  music = new MusicDisplay();
   libName = module.load(new File(dataPath("eyes_and_ears/latido.xml")));
   music.load(module.getImage());
-  music.setText(module.getText());
 
   score = new CalculateScore();
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
@@ -77,6 +83,8 @@ void setup()
 
   gui = new ControlP5(this);
   createGui();
+  view = SHOW_MUSIC;
+  setText(module.getText());
 
   //scorecard = new Scorecard (SIDEBAR_WIDTH + 2*PADDING, TOPBAR_HEIGHT+PADDING, width-SIDEBAR_WIDTH-4*PADDING, height-TOPBAR_HEIGHT-4*PADDING);
 
@@ -109,15 +117,17 @@ public void updateResize()
 
 void createGui()
 {
-  Group group = gui.addGroup("options")
+  optionGroup = gui.addGroup("options")
     .setLabel ("User and Module Options")
-      .setPosition(width-230, 30)
+      .setPosition(width-220, 30)
         .setSize(220, 300)
           .setBarHeight(20)
-            .setBackgroundColor(color(255, 250))
-              .close();
+            .setBackgroundColor(#E5E6E8)
+              //.setColorForeground(color(255))
+              .close()
+                .hide();
 
-  group.getCaptionLabel()
+  optionGroup.getCaptionLabel()
     .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addButton("playButton")
@@ -181,7 +191,7 @@ void createGui()
     .setLabel("Load user progress file")
       .setPosition(10, 10)
         .setSize(200, 50)
-          .setGroup(group)
+          .setGroup(optionGroup)
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
 
@@ -189,7 +199,7 @@ void createGui()
     .setLabel("Save user progress file")
       .setPosition(10, 70)
         .setSize(200, 50)
-          .setGroup(group)
+          .setGroup(optionGroup)
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
 
@@ -197,7 +207,7 @@ void createGui()
     .setLabel("Load new Latido module")
       .setPosition(10, 130)
         .setSize(200, 50)
-          .setGroup(group)
+          .setGroup(optionGroup)
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
 
@@ -205,7 +215,7 @@ void createGui()
     .setText("PRACTICE MODE OFF")
       .setPosition(112, 196)
         .setColor(color(0))
-          .setGroup(group);
+          .setGroup(optionGroup);
 
   gui.addToggle("practiceToggle")
     .setLabel("Switch on/off Practice Mode")
@@ -213,7 +223,7 @@ void createGui()
         .setSize(100, 20)
           .setValue(true)
             .setMode(ControlP5.SWITCH)
-              .setGroup(group)
+              .setGroup(optionGroup)
                 .getCaptionLabel()
                   .setColor(color(0))
                     ;
@@ -283,15 +293,15 @@ void createGui()
         .setItemsPerRow(1)
           .addItem("1", 0)
             .hide()
-            ;
+              ;
 
   scorecardGroup = gui.addGroup("scorecard")
     .hideBar()
       .setSize(width*2/3, height*2/3)
         .setPosition(width/6, height/6)
-          .setBackgroundColor(color(200,10,10,100))
+          .setBackgroundColor(color(200, 10, 10, 100))
             .hide()
-            ;
+              ;
 
   gui.addGroup("splash")
     .hideBar()
@@ -300,11 +310,23 @@ void createGui()
           .addCanvas(new Splash())
             ;
 
+  textbox = gui.addTextarea("text")
+    .setPosition(width/2 + 50, TOPBAR_HEIGHT+PADDING)
+      .setSize(400, 400)
+        .setColorBackground(color(255))
+          .setColorForeground(color(0))
+            .setColor(0) // text color
+              .setFont(font)
+                .setText("Lorem ipsem")
+                    .hide();
+
   metro.getItem(0).getCaptionLabel()
     .setFont(createFont("", 48))
       .setSize(48)
         .align(ControlP5.CENTER, ControlP5.CENTER)
           .setColor(255);
+
+  optionGroup.bringToFront();
 }
 
 void setupFrame()

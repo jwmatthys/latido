@@ -19,7 +19,6 @@ class MelodyModuleXML
     {
       indexPath = index.getAbsolutePath();
       indexFile = loadXML(indexPath);
-      //File parent = index.getParentFile();
       String folder = index.getParentFile().getAbsolutePath();
       shortname = indexFile.getChild("shortname");
       image = indexFile.getChild("imageextension");
