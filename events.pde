@@ -23,7 +23,7 @@ void nextButton (int v)
       setLock(gui.getController("stopButton"), false);//.lock();
       setLock(gui.getController("pitchButton"), module.rhythm);
       setLock(gui.getController("playbackButton"), true);
-      setLock(gui.getController("nextButton"), cantAdvance(0));
+      setLock(gui.getController("nextButton"), cantAdvance());
       setLock(gui.getController("previousButton"), false);
     } else
     {
@@ -137,9 +137,8 @@ void practiceToggle (boolean v)
   setLock(gui.getController("nextButton"), false);
 }
 
-boolean cantAdvance (float score)
+boolean cantAdvance ()
 {
-  if (score > 0.7) return false;
   if (practiceMode) return false;
   else if (userProgress.getCurrentStars(module.currentLine)>3) return false;
   return true;
@@ -196,16 +195,18 @@ public void watchdogPD ()
 
 public void scorePD (float theScore)
 {
-  setLock(gui.getController("playButton"), true);//.lock();
+  setLock(gui.getController("playButton"), true);
   setLock(gui.getController("stopButton"), true);
   setLock(gui.getController("pitchButton"), true);
   setLock(gui.getController("playbackButton"), false);
   setLock(gui.getController("redoButton"), false);
-  //scorecard.setScore(theScore);
-  setLock(gui.getController("nextButton"), cantAdvance(theScore));
-  //if (!practiceMode) userProgress.updateScore(module.currentLine, scorecard.stars);
-  tree.updateGraph(userProgress.getTotalScore());
-  treeLabel.set(userProgress.getTotalScore()+" Stars");
+  int stars = score.get(theScore);
+  //println("theScore: "+theScore+", stars: "+stars);
+  if (!practiceMode) userProgress.updateScore(module.currentLine, stars);
+  setLock(gui.getController("nextButton"), cantAdvance());
+  gui.getGroup("scorecard").show();
+  //tree.updateGraph(userProgress.getTotalScore());
+  //treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
 }
 

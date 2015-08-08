@@ -32,14 +32,14 @@ Group group;
 CheckBox metro;
 
 ShowMusic music;
-Scorecard scorecard;
+CalculateScore score;
 MelodyModuleXML module;
 UserProgress userProgress;
 String libName;
 String savePath;
 boolean saving;
 Canvas splash;
-//Group scorecard;
+Group scorecardGroup;
 Group splashGroup;
 ProgressGraph tree;
 Label treeLabel;
@@ -69,6 +69,7 @@ void setup()
   music.load(module.getImage());
   music.setText(module.getText());
 
+  score = new CalculateScore();
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
   userProgress.updateInfo(module.currentLine, module.getName());
   savePath = "";
@@ -283,11 +284,11 @@ void createGui()
           .addItem("1", 0)
             .hide();
 
-  gui.addGroup("scorecard")
+  scorecardGroup = gui.addGroup("scorecard")
     .hideBar()
       .setSize(width/2, height/2)
         .setPosition(width/4, height/4)
-          .setBackgroundColor(color(255))
+          .setBackgroundColor(color(200,10,10,100))
             .hide();
 
   gui.addGroup("splash")
