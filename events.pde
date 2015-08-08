@@ -1,6 +1,6 @@
 void keyPressed()
 {
-  sendOscFloat("/rhy", library.rhythm ? 1 : 0);
+  sendOscFloat("/rhy", module.rhythm ? 1 : 0);
 }
 
 void nextButton (int v)
@@ -13,7 +13,7 @@ void nextButton (int v)
     //gui.getGroup("splash").remove();
     music.showBirdie = true;
     setLock(gui.getController("nextButton"), false);
-    notifyPd(library.rhythm);
+    notifyPd(module.rhythm);
   } else
   {
     if (music.showBirdie)
@@ -21,7 +21,7 @@ void nextButton (int v)
       music.showBirdie = false;
       setLock(gui.getController("playButton"), false);//.unlock();
       setLock(gui.getController("stopButton"), false);//.lock();
-      setLock(gui.getController("pitchButton"), library.rhythm);
+      setLock(gui.getController("pitchButton"), module.rhythm);
       setLock(gui.getController("playbackButton"), true);
       setLock(gui.getController("nextButton"), cantAdvance(0));
       setLock(gui.getController("previousButton"), false);
@@ -29,13 +29,13 @@ void nextButton (int v)
     {
       music.showBirdie = true;
       setLock(gui.getController("playbackButton"), true);
-      library.loadNext();
-      music.load(library.getImage());
+      module.loadNext();
+      music.load(module.getImage());
       music.showBirdie = true;
-      music.setText(library.getText());
-      gui.getController("tempoSlider").setValue(library.getTempo());
-      notifyPd(library.rhythm);
-      userProgress.updateInfo(library.currentLine, library.getName());
+      music.setText(module.getText());
+      gui.getController("tempoSlider").setValue(module.getTempo());
+      notifyPd(module.rhythm);
+      userProgress.updateInfo(module.currentLine, module.getName());
       setLock(gui.getController("nextButton"), false);
       setLock(gui.getController("previousButton"), false);
     }
@@ -50,25 +50,25 @@ void previousButton (int v)
     music.showBirdie = true;
     setLock(gui.getController("playbackButton"), true);//.lock();
 
-    library.loadPrevious();
-    music.load(library.getImage());
+    module.loadPrevious();
+    music.load(module.getImage());
     music.showBirdie = true;
-    music.setText(library.getText());
-    gui.getController("tempoSlider").setValue(library.getTempo());
-    notifyPd(library.rhythm);
-    userProgress.updateInfo(library.currentLine, library.getName());
-    setLock(gui.getController("nextButton"), (userProgress.getCurrentStars(library.currentLine)<=3));
+    music.setText(module.getText());
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    notifyPd(module.rhythm);
+    userProgress.updateInfo(module.currentLine, module.getName());
+    setLock(gui.getController("nextButton"), (userProgress.getCurrentStars(module.currentLine)<=3));
   } else
   {
     music.showBirdie = true;
     setLock(gui.getController("playButton"), true);//.lock();
     setLock(gui.getController("stopButton"), true);//.lock();
-    setLock(gui.getController("pitchButton"), library.rhythm);
+    setLock(gui.getController("pitchButton"), module.rhythm);
 
     setLock(gui.getController("nextButton"), false);
     gui.getGroup("scorecard").hide();
   }
-  setLock(gui.getController("previousButton"), (music.showBirdie && library.currentLine==0));
+  setLock(gui.getController("previousButton"), (music.showBirdie && module.currentLine==0));
 }
 
 public void playButton (int value)
@@ -100,13 +100,13 @@ void redoButton (int value)
   music.showBirdie = false;
   setLock(gui.getController("playButton"), false);//.unlock();
   setLock(gui.getController("stopButton"), true);//.lock();
-  setLock(gui.getController("pitchButton"), library.rhythm);
+  setLock(gui.getController("pitchButton"), module.rhythm);
   setLock(gui.getController("playbackButton"), false);
 }
 
-void libraryButton (int v)
+void moduleButton (int v)
 {
-  selectFolder("Choose your latido library folder...", "folderCallback");
+  selectFolder("Choose your latido module folder...", "folderCallback");
 }
 
 void loadButton (int v)
@@ -141,7 +141,7 @@ boolean cantAdvance (float score)
 {
   if (score > 0.7) return false;
   if (practiceMode) return false;
-  else if (userProgress.getCurrentStars(library.currentLine)>3) return false;
+  else if (userProgress.getCurrentStars(module.currentLine)>3) return false;
   return true;
 }
 
@@ -203,7 +203,7 @@ public void scorePD (float theScore)
   setLock(gui.getController("redoButton"), false);
   //scorecard.setScore(theScore);
   setLock(gui.getController("nextButton"), cantAdvance(theScore));
-  //if (!practiceMode) userProgress.updateScore(library.currentLine, scorecard.stars);
+  //if (!practiceMode) userProgress.updateScore(module.currentLine, scorecard.stars);
   tree.updateGraph(userProgress.getTotalScore());
   treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
@@ -214,20 +214,20 @@ void folderCallback(File f)
   try
   {
     String s = f.getAbsolutePath();
-    String libName = library.load(s);
+    String libName = module.load(s);
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
-    userProgress.updateInfo(library.currentLine, library.getName());
-    music.load(library.getImage());
+    userProgress.updateInfo(module.currentLine, module.getName());
+    music.load(module.getImage());
     music.showBirdie = true;
-    music.setText(library.getText());
-    gui.getController("tempoSlider").setValue(library.getTempo());
-    tree.setMaxScore(library.numMelodies*5);
-    notifyPd(library.rhythm);
-    showMessageDialog(null, "Loaded new library:\n"+library.getDescription(), "New Latido Library Loaded", INFORMATION_MESSAGE);
+    music.setText(module.getText());
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    tree.setMaxScore(module.numMelodies*5);
+    notifyPd(module.rhythm);
+    showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
   }
   catch (Exception e)
   {
-    showMessageDialog(null, "Could not load Latido library", "Alert", ERROR_MESSAGE);
+    showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
   }
 }
 
@@ -242,17 +242,17 @@ void loadCallback(File f)
     music.showBirdie = true;
     setLock(gui.getController("playbackButton"), true);
 
-    library.loadSpecific(userProgress.nextUnpassed);
-    music.load(library.getImage());
+    module.loadSpecific(userProgress.nextUnpassed);
+    music.load(module.getImage());
     music.showBirdie = true;
-    music.setText(library.getText());
-    gui.getController("tempoSlider").setValue(library.getTempo());
-    notifyPd(library.rhythm);
-    userProgress.updateInfo(library.currentLine, library.getName());
+    music.setText(module.getText());
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    notifyPd(module.rhythm);
+    userProgress.updateInfo(module.currentLine, module.getName());
     tree.updateGraph(userProgress.getTotalScore());
     treeLabel.set(userProgress.getTotalScore()+" Stars");
     setLock(gui.getController("nextButton"), false);
-    setLock(gui.getController("previousButton"), (library.currentLine<=0));
+    setLock(gui.getController("previousButton"), (module.currentLine<=0));
   }
 }
 

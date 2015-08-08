@@ -1,4 +1,4 @@
-class MelodyLibraryXML
+class MelodyModuleXML
 {
   String indexPath, midiPath, imagePath, textPath, filename;
   XML indexFile, shortname, image, midi, progress;
@@ -9,7 +9,7 @@ class MelodyLibraryXML
   int numMelodies;
   int currentLine;
 
-  MelodyLibraryXML ()
+  MelodyModuleXML ()
   {
   }
 
@@ -34,7 +34,7 @@ class MelodyLibraryXML
     } 
     catch (Exception e)
     {
-      showMessageDialog(null, "Could not load Latido library", "Alert", ERROR_MESSAGE);
+      showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
       return "";
     }
   }
@@ -50,7 +50,7 @@ class MelodyLibraryXML
     }
     catch (Exception e)
     {
-      showMessageDialog(null, "Could not parse Latido library", "Alert", ERROR_MESSAGE);
+      showMessageDialog(null, "Could not parse Latido module", "Alert", ERROR_MESSAGE);
     }
   }
 
