@@ -10,6 +10,7 @@ class UserProgress
   String secretKey;
   String extension=".latido";
 
+
   UserProgress (String playerName, String libName)
   {
     user = loadXML("newuser.xml");
@@ -120,7 +121,6 @@ class UserProgress
     return nf(hour(), 2)+":"+nf(minute(), 2)+" "+nf(month(), 2)+"/"+nf(day(), 2)+"/"+nf(year(), 2);
   }
 
-
   /**
    * Encrypt data
    * @param secretKey -   a secret key used for encryption
@@ -159,3 +159,4 @@ class UserProgress
     return cipher.doFinal(data);
   }
 }
+
