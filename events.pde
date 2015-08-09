@@ -286,6 +286,7 @@ void moduleCallback(File f)
       //lbi.setColorBackground(0xffff0000);
     }
     module.loadSpecific(0);
+    setText(module.getText());
     setView(SHOW_TEXT);
     gui.getController("tempoSlider").setValue(module.getTempo());
     progressSlider.setRange(0, module.numMelodies);
