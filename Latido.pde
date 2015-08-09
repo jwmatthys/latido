@@ -85,7 +85,6 @@ void setup()
 
   gui = new ControlP5(this);
   createGui();
-  view = SHOW_MUSIC;
   for (int i=0; i<module.numMelodies; i++) {
     module.loadSpecific(i);
     exerciseList.addItem(module.getName(), i);
@@ -94,8 +93,10 @@ void setup()
   module.loadSpecific(0);
   music.load(module.getImage());
   setText(module.getText());
-  progressSlider.setRange(0, module.numMelodies);
-
+  gui.getController("tempoSlider").setValue(module.getTempo());
+  notifyPd(module.rhythm);
+  userProgress.updateInfo(module.currentLine, module.getName());
+  progressSlider.setRange(0, module.numMelodies * 5);
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
   oscP5.plug(this, "metroPD", "/metro");

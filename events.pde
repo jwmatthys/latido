@@ -24,7 +24,6 @@ void nextButton (int v)
     optionGroup.show();
     setView(SHOW_TEXT);
     setLock(gui.getController("nextButton"), false);
-    notifyPd(module.rhythm);
   } else
   {
     if (view == SHOW_TEXT)
@@ -39,47 +38,37 @@ void nextButton (int v)
       setLock(gui.getController("previousButton"), false);
     } else
     {
-      setView(SHOW_TEXT);
-      setLock(gui.getController("playbackButton"), true);
-      progressGroup.show();
       module.loadNext();
-      music.load(module.getImage());
-      setText(module.getText());
-      gui.getController("tempoSlider").setValue(module.getTempo());
-      notifyPd(module.rhythm);
-      userProgress.updateInfo(module.currentLine, module.getName());
+      loadExercise();
       setLock(gui.getController("nextButton"), false);
       setLock(gui.getController("previousButton"), false);
-      gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
-      progressSlider.setValue(module.currentLine);
     }
   }
 }
 
 void previousButton (int v)
 {
+  progressGroup.show();
   setLock(gui.getController("nextButton"), false);
+  setLock(gui.getController("redoButton"), true);
   gui.getGroup("scorecard").hide();
   if ( scorecardGroup.isVisible() )
   {
     scorecardGroup.hide();
-  } else if (view == SHOW_TEXT)
+    setView(SHOW_TEXT);
+  } 
+  if (view == SHOW_TEXT)
   {
     setLock(gui.getController("playbackButton"), true);
     module.loadPrevious();
-    music.load(module.getImage());
-    setText(module.getText());
-    //setView(SHOW_TEXT);
-    gui.getController("tempoSlider").setValue(module.getTempo());
-    notifyPd(module.rhythm);
-    userProgress.updateInfo(module.currentLine, module.getName());
+    loadExercise();
     setLock(gui.getController("nextButton"), cantAdvance());
   } else // if view == SHOW_MUSIC
   {
     setView(SHOW_TEXT);
     setLock(gui.getController("playButton"), true);
     setLock(gui.getController("stopButton"), true);
-    setLock(gui.getController("pitchButton"), module.rhythm);
+    setLock(gui.getController("pitchButton"), true);
   }
   setLock(gui.getController("previousButton"), (view == SHOW_TEXT && module.currentLine==0));
 }
@@ -89,11 +78,17 @@ public void playButton (int value)
   sendOscString("/latido/transport", "play");
   setLock(gui.getController("stopButton"), false);
   gui.getGroup("scorecard").hide();
+  setLock(gui.getController("previousButton"), true);
+  setLock(gui.getController("redoButton"), true);
+  setLock(gui.getController("nextButton"), true);
 }
 
 public void stopButton (int value)
 {
   sendOscString("/latido/transport", "stop");
+  setLock(gui.getController("previousButton"), false);
+  setLock(gui.getController("redoButton"), false);
+  setLock(gui.getController("nextButton"), cantAdvance());
 }
 
 public void pitchButton (int value)
@@ -110,11 +105,14 @@ public void playbackButton (int value)
 void redoButton (int value)
 {
   gui.getGroup("scorecard").hide();
+  progressGroup.hide();
   setView(SHOW_MUSIC);
   setLock(gui.getController("playButton"), false);
-  setLock(gui.getController("stopButton"), true);
+  setLock(gui.getController("stopButton"), false);
   setLock(gui.getController("pitchButton"), module.rhythm);
   setLock(gui.getController("playbackButton"), false);
+  setLock(gui.getController("previousButton"), false);
+  setLock(gui.getController("redoButton"), true);
 }
 
 void moduleButton (int v)
@@ -156,12 +154,7 @@ void practiceToggle (boolean v)
     if (module.currentLine > nextUnpassed)
     {
       module.loadSpecific(nextUnpassed);
-      music.load(module.getImage());
-      setText(module.getText());
-      setView(SHOW_TEXT);
-      gui.getController("tempoSlider").setValue(module.getTempo());
-      notifyPd(module.rhythm);
-      userProgress.updateInfo(module.currentLine, module.getName());
+      loadExercise();
     }
   }
 }
@@ -172,10 +165,7 @@ void controlEvent(ControlEvent theEvent)
   {
     int val = (int)theEvent.group().value();
     module.loadSpecific(val);
-    music.load(module.getImage());
-    setText(module.getText());
-    progressSlider.setRange(0, module.numMelodies);
-    setView(SHOW_TEXT);
+    loadExercise();
     exerciseList.close();
     optionGroup.close();
   }
@@ -248,6 +238,7 @@ public void scorePD (float theScore)
   setLock(gui.getController("stopButton"), true);
   setLock(gui.getController("pitchButton"), true);
   setLock(gui.getController("playbackButton"), false);
+  setLock(gui.getController("previousButton"), false);
   setLock(gui.getController("redoButton"), false);
   int stars = score.get(theScore);
   //println("theScore: "+theScore+", stars: "+stars);
@@ -259,6 +250,9 @@ public void scorePD (float theScore)
   //tree.updateGraph(userProgress.getTotalScore());
   //treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
+  gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+  progressSlider.setValue(userProgress.getTotalScore());
+  progressGroup.show();
   showScorecard (stars);
 }
 
@@ -273,12 +267,16 @@ void showScorecard(int stars)
 
 void moduleCallback(File f)
 {
+  if (saving)
+  {
+    userProgress.save(savePath);
+  }
   try
   {
+    gui.getGroup("scorecard").hide();
     String libName = module.load(f);
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
     userProgress.updateInfo(module.currentLine, module.getName());
-    music.load(module.getImage());
     exerciseList.clear();
     for (int i=0; i<module.numMelodies; i++) {
       module.loadSpecific(i);
@@ -286,16 +284,20 @@ void moduleCallback(File f)
       //lbi.setColorBackground(0xffff0000);
     }
     module.loadSpecific(0);
-    setText(module.getText());
-    setView(SHOW_TEXT);
-    gui.getController("tempoSlider").setValue(module.getTempo());
-    progressSlider.setRange(0, module.numMelodies);
-    notifyPd(module.rhythm);
-    showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
+    loadExercise();
+    progressSlider.setRange(0, module.numMelodies * 5);
+    gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+    progressSlider.setValue(userProgress.getTotalScore());
+    showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE); 
+    if (saving)
+    {
+      saving = false;
+      showMessageDialog(null, "You must save a separate\bprogress file for each module", "Warning", WARNING_MESSAGE);
+    }
   }
   catch (Exception e)
   {
-    showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
+    //showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
   }
 }
 
@@ -304,17 +306,15 @@ void loadCallback(File f)
   String s = f.getAbsolutePath();
   if (userProgress.load(s))
   {
+    gui.getGroup("scorecard").hide();
     savePath = s;
     saving = true;
     gui.getGroup("scorecard").hide();
     setLock(gui.getController("playbackButton"), true);
     module.loadSpecific(userProgress.getNextUnpassed());
-    music.load(module.getImage());
-    setText(module.getText());
-    setView(SHOW_TEXT);
-    gui.getController("tempoSlider").setValue(module.getTempo());
-    notifyPd(module.rhythm);
-    userProgress.updateInfo(module.currentLine, module.getName());
+    loadExercise();
+    gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+    progressSlider.setValue(userProgress.getTotalScore());
     setLock(gui.getController("nextButton"), false);
     setLock(gui.getController("previousButton"), (module.currentLine<=0));
   }
@@ -322,6 +322,7 @@ void loadCallback(File f)
 
 void saveCallback(File f)
 {
+  gui.getGroup("scorecard").hide();
   String s = f.getAbsolutePath();
   userProgress.save(s);
   savePath = s;
@@ -346,5 +347,19 @@ void setLock(Controller theController, boolean theValue)
     theController.setColorBackground(color(0, 45, 90));
     theController.getCaptionLabel().setColor(color(255));
   }
+}
+
+void loadExercise()
+{
+  progressGroup.show();
+  music.load(module.getImage());
+  setText(module.getText());
+  setView(SHOW_TEXT);
+  gui.getController("tempoSlider").setValue(module.getTempo());
+  notifyPd(module.rhythm);
+  userProgress.updateInfo(module.currentLine, module.getName());
+  setLock(gui.getController("playButton"), true);
+  setLock(gui.getController("stopButton"), true);
+  setLock(gui.getController("pitchButton"), true);
 }
 
