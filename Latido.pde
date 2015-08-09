@@ -59,7 +59,7 @@ void setup()
   font = loadFont("Inconsolata-18.vlw");
   String p = dataPath("");
   try {
-    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-r", "44100", p+"/pd/latido.pd").start();
+    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-alsa", "-r", "44100", p+"/pd/latido.pd").start();
   } 
   catch (Exception e) {
     showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", ERROR_MESSAGE);
@@ -75,7 +75,7 @@ void setup()
   module = new MelodyModuleXML();
   music = new MusicDisplay();
   libName = module.load(new File(dataPath("eyes_and_ears/latido.xml")));
-  
+
 
   score = new CalculateScore();
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
