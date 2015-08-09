@@ -238,6 +238,7 @@ void moduleCallback(File f)
     progressSlider.setRange(0, module.numMelodies);
     notifyPd(module.rhythm);
     showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
+    optionGroup.close();
   }
   catch (Exception e)
   {

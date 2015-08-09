@@ -85,8 +85,7 @@ void setup()
   createGui();
   view = SHOW_MUSIC;
   setText(module.getText());
-
-  //stars = new Stars(HACK_STARS, SIDEBAR_WIDTH, (width+SIDEBAR_WIDTH)/2, TOPBAR_HEIGHT+100, 20, 500);
+  progressSlider.setRange(0, module.numMelodies);
 
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");

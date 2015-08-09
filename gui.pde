@@ -136,6 +136,11 @@ void createGui()
               .setDecimalPrecision(0)
                 ;
 
+  progressSlider.getCaptionLabel()
+    .setColor(color(0))
+      .align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE)
+        ;
+
   gui.addTextlabel("progressLabel")
     .setText("0 Stars Earned")
       .setPosition(PADDING, 45)
@@ -143,10 +148,7 @@ void createGui()
           .setColor(color(0))
             ;
 
-  gui.getController("progressSlider").getCaptionLabel()
-    .setColor(color(0))
-      .align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE)
-        ;
+
 
   gui.getController("progressSlider").getValueLabel()
     .setVisible(false);
