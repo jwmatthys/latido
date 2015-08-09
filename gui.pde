@@ -141,6 +141,9 @@ void createGui()
       .align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE)
         ;
 
+  gui.getController("progressSlider").getValueLabel()
+    .setVisible(false);
+
   gui.addTextlabel("progressLabel")
     .setText("0 Stars Earned")
       .setPosition(PADDING, 45)
@@ -148,14 +151,7 @@ void createGui()
           .setColor(color(0))
             ;
 
-
-
-  gui.getController("progressSlider").getValueLabel()
-    .setVisible(false);
-
-
-
-  metro = gui.addCheckBox("metroBangFoo")
+  metro = gui.addCheckBox("foobar")
     .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-120)
       .setSize(500, 100)
         .setItemsPerRow(1)
@@ -174,9 +170,10 @@ void createGui()
 
   optionGroup = gui.addGroup("options")
     .setLabel ("User and Module Options")
-      .setPosition(width-220, 30)
-        .setSize(220, 235)
-          .setBarHeight(20)
+      .setPosition(width-180, 35)
+        //.setBackgroundHeight(235)
+        .setSize(170, 235)
+          .setBarHeight(25)
             .setBackgroundColor(#E8E8E8)
               //.setColorForeground(color(255))
               .close()
@@ -186,11 +183,25 @@ void createGui()
   optionGroup.getCaptionLabel()
     .align(ControlP5.CENTER, ControlP5.CENTER);
 
+  exerciseList = gui.addListBox("Jump")
+    .setLabel("Jump to Exercise")
+      .setPosition(width-290, 35)
+        .setSize(100, 235)
+          .setItemHeight(20)
+            .setBarHeight(25)
+              .setBackgroundColor(color(0))
+                .close()
+                  .hide()
+                    ;
+
+  exerciseList.getCaptionLabel()
+    .align(ControlP5.CENTER, ControlP5.CENTER);      
+
 
   gui.addButton("loadButton")
     .setLabel("Load user progress file")
       .setPosition(10, 10)
-        .setSize(200, 50)
+        .setSize(150, 50)
           .setGroup(optionGroup)
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
@@ -198,7 +209,7 @@ void createGui()
   gui.addButton("saveButton")
     .setLabel("Save user progress file")
       .setPosition(10, 70)
-        .setSize(200, 50)
+        .setSize(150, 50)
           .setGroup(optionGroup)
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
@@ -206,14 +217,14 @@ void createGui()
   gui.addButton("moduleButton")
     .setLabel("Load new Latido module")
       .setPosition(10, 130)
-        .setSize(200, 50)
+        .setSize(150, 50)
           .setGroup(optionGroup)
             .getCaptionLabel()
               .align(ControlP5.CENTER, ControlP5.CENTER);
 
   gui.addTextlabel("practiceLabel")
-    .setText("PRACTICE MODE OFF")
-      .setPosition(112, 196)
+    .setText("OFF")
+      .setPosition(115, 196)
         .setColor(color(0))
           .setGroup(optionGroup);
 
@@ -252,6 +263,7 @@ void createGui()
         .align(ControlP5.CENTER, ControlP5.CENTER)
           .setColor(255);
 
+  exerciseList.bringToFront();
   optionGroup.bringToFront();
   //gui.getTooltip().register("playButton", "Play the exercise");
   //gui.getTooltip().register("stopButton", "Stop playback");

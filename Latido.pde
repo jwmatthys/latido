@@ -47,6 +47,8 @@ Group scorecardGroup;
 Group splashGroup;
 Group optionGroup;
 Group progressGroup;
+ListBox exerciseList;
+float scroll = 0;
 Slider progressSlider;
 Textarea textbox;
 Canvas starCanvas;
@@ -84,6 +86,12 @@ void setup()
   gui = new ControlP5(this);
   createGui();
   view = SHOW_MUSIC;
+  for (int i=0; i<module.numMelodies; i++) {
+    module.loadSpecific(i);
+    exerciseList.addItem(module.getName(), i);
+    //lbi.setColorBackground(0xffff0000);
+  }
+  module.loadSpecific(0);
   setText(module.getText());
   progressSlider.setRange(0, module.numMelodies);
 

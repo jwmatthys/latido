@@ -3,6 +3,15 @@ void keyPressed()
   sendOscFloat("/rhy", module.rhythm ? 1 : 0);
 }
 
+void mouseWheel(MouseEvent event)
+{
+  if (exerciseList.isMouseOver() && exerciseList.isOpen() && exerciseList.isVisible())
+  {
+    scroll = constrain(scroll+(event.getCount()*0.01), 0, 1);
+    exerciseList.scroll(scroll);
+  }
+}
+
 void nextButton (int v)
 {
   setLock(gui.getController("redoButton"), true);
@@ -13,6 +22,7 @@ void nextButton (int v)
     gui.getGroup("splash").hide();
     gui.getGroup("splash").remove();
     optionGroup.show();
+    exerciseList.show();
     setView(SHOW_TEXT);
     setLock(gui.getController("nextButton"), false);
     notifyPd(module.rhythm);
@@ -69,7 +79,6 @@ void previousButton (int v)
     setLock(gui.getController("playButton"), true);
     setLock(gui.getController("stopButton"), true);
     setLock(gui.getController("pitchButton"), module.rhythm);
-    
   }
   setLock(gui.getController("previousButton"), (view == SHOW_TEXT && module.currentLine==0));
 }
@@ -136,7 +145,7 @@ void practiceToggle (boolean v)
 {
   practiceMode = !v;
   gui.getController("practiceLabel")
-    .setStringValue( practiceMode ? "PRACTICE MODE ON" : "PRACTICE MODE OFF");
+    .setStringValue( practiceMode ? "ON" : "OFF");
   setLock(gui.getController("nextButton"), false);
 }
 
@@ -233,6 +242,13 @@ void moduleCallback(File f)
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
     userProgress.updateInfo(module.currentLine, module.getName());
     music.load(module.getImage());
+    exerciseList.clear();
+    for (int i=0; i<module.numMelodies; i++) {
+      module.loadSpecific(i);
+      exerciseList.addItem(module.getName(), i);
+      //lbi.setColorBackground(0xffff0000);
+    }
+    module.loadSpecific(0);
     setView(SHOW_TEXT);
     gui.getController("tempoSlider").setValue(module.getTempo());
     progressSlider.setRange(0, module.numMelodies);
