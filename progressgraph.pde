@@ -1,3 +1,4 @@
+/*
 public class ProgressGraph
 {
   float x, y, w, h;
@@ -40,3 +41,4 @@ public class ProgressGraph
     }
   }
 }
+*/

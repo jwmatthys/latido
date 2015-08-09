@@ -1,191 +1,239 @@
 void keyPressed()
 {
-  OscMessage myMessage = new OscMessage("/rhy");
-  myMessage.add(library.rhythm ? 1 : 0);
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/rhy", module.rhythm ? 1 : 0);
 }
 
-void mousePressed()
+void mouseWheel(MouseEvent event)
 {
-  if (splash.active)
+  if (exerciseList.isMouseOver() && exerciseList.isOpen() && exerciseList.isVisible())
   {
-    libraryButton.visibility(false);
-    splash.active = false;
-    music.showBirdie = true;
-    next.active = true;
-    loadProgress.active = true;
-    saveProgress.active = true;
-    notifyPd(library.rhythm);
+    scroll = constrain(scroll+(event.getCount()*0.01), 0, 1);
+    exerciseList.scroll(scroll);
   }
 }
 
 void nextButton (int v)
 {
-  previous.active = true;
-  scorecard.active = false;
-  redo.active = false;
-  if (music.showBirdie)
+  setLock(gui.getController("redoButton"), true);
+  gui.getGroup("scorecard").hide();
+  optionGroup.close();
+  if (gui.getGroup("splash") != null && gui.getGroup("splash").isVisible())
   {
-    music.showBirdie = false;
-    play.active = true;
-    stop.active = false;
-    pitch.active = !library.rhythm;
-    replay.active = false;
-    libraryButton.visibility(false);
-    next.active = (userProgress.getCurrentStars(library.currentLine)>3);
+    gui.getGroup("splash").hide();
+    gui.getGroup("splash").remove();
+    optionGroup.show();
+    setView(SHOW_TEXT);
+    setLock(gui.getController("nextButton"), false);
+    notifyPd(module.rhythm);
   } else
   {
-    music.showBirdie = true;
-    replay.active = false;
-
-    library.loadNext();
-    music.load(library.getImage());
-    music.showBirdie = true;
-    music.setText(library.getText());
-    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-    tempoLabel.set(library.getTempo()+" bpm");
-    notifyPd(library.rhythm);
-    userProgress.updateInfo(library.currentLine, library.getName());
-    next.active = true;
-  }
-}
-
-void prevButton (int v)
-{
-  if (music.showBirdie || scorecard.active)
-  {
-    scorecard.active = false;
-    music.showBirdie = true;
-    replay.active = false;
-
-    library.loadPrevious();
-    music.load(library.getImage());
-    music.showBirdie = true;
-    music.setText(library.getText());
-    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-    tempoLabel.set(library.getTempo()+" bpm");
-    notifyPd(library.rhythm);
-    userProgress.updateInfo(library.currentLine, library.getName());
-    next.active = (userProgress.getCurrentStars(library.currentLine)>3);
-  } else
-  {
-    music.showBirdie = true;
-    play.active = false;
-    stop.active = false;
-    pitch.active = !library.rhythm;
-    scorecard.active = false;
-    next.active = true;
-  }
-  if (music.showBirdie && library.currentLine==0) previous.active = false;
-}
-
-void transportButton (int v)
-{
-  OscMessage myMessage = new OscMessage("/latido/transport");
-  switch (v)
-  {
-  case 0:
-    myMessage.add("play");
-    stop.active = true;
-    scorecard.active = false;
-    break;
-  case 1:
-    myMessage.add("stop");
-    break;
-  case 2:
-    myMessage.add("pitch");
-    break;
-  case 3:
-    myMessage.add("replay");
-    stop.active = true;
-  }
-  oscP5.send(myMessage, latidoPD);
-}
-
-void libraryButton (int v)
-{
-  if (v==0)
-  {
-    selectFolder("Choose your latido library folder...", "folderCallback");
-  } else
-  {
-    if (v==2) //redo
+    if (view == SHOW_TEXT)
     {
-      scorecard.active = false;
-      music.showBirdie = false;
-      play.active = true;
-      stop.active = false;
-      pitch.active = !library.rhythm;
-      replay.active = false;
-      libraryButton.visibility(false);
+      setView(SHOW_MUSIC);
+      progressGroup.hide();
+      setLock(gui.getController("playButton"), false);
+      setLock(gui.getController("stopButton"), false);
+      setLock(gui.getController("pitchButton"), module.rhythm);
+      setLock(gui.getController("playbackButton"), true);
+      setLock(gui.getController("nextButton"), cantAdvance());
+      setLock(gui.getController("previousButton"), false);
     } else
     {
-      scorecard.active = false;
-      music.showBirdie = true;
-      replay.active = false;
-
-      library.loadPrevious();
-      music.load(library.getImage());
-      music.showBirdie = true;
-      music.setText(library.getText());
-      tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-      tempoLabel.set(library.getTempo()+" bpm");
-      notifyPd(library.rhythm);
-      userProgress.updateInfo(library.currentLine, library.getName());
+      setView(SHOW_TEXT);
+      setLock(gui.getController("playbackButton"), true);
+      progressGroup.show();
+      module.loadNext();
+      music.load(module.getImage());
+      setText(module.getText());
+      gui.getController("tempoSlider").setValue(module.getTempo());
+      notifyPd(module.rhythm);
+      userProgress.updateInfo(module.currentLine, module.getName());
+      setLock(gui.getController("nextButton"), false);
+      setLock(gui.getController("previousButton"), false);
+      gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+      progressSlider.setValue(module.currentLine);
     }
   }
 }
 
-void userPrefs (int v)
+void previousButton (int v)
 {
-  if (v == 0)
+  setLock(gui.getController("nextButton"), false);
+  gui.getGroup("scorecard").hide();
+  if ( scorecardGroup.isVisible() )
   {
-    selectInput("Choose your Latido user progress file...", "loadCallback");
-  } else
+    scorecardGroup.hide();
+  } else if (view == SHOW_TEXT)
   {
-    selectOutput("Choose where to save your Latido user progress file...", "saveCallback");
+    setLock(gui.getController("playbackButton"), true);
+    module.loadPrevious();
+    music.load(module.getImage());
+    setText(module.getText());
+    //setView(SHOW_TEXT);
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    notifyPd(module.rhythm);
+    userProgress.updateInfo(module.currentLine, module.getName());
+    setLock(gui.getController("nextButton"), cantAdvance());
+  } else // if view == SHOW_MUSIC
+  {
+    setView(SHOW_TEXT);
+    setLock(gui.getController("playButton"), true);
+    setLock(gui.getController("stopButton"), true);
+    setLock(gui.getController("pitchButton"), module.rhythm);
   }
+  setLock(gui.getController("previousButton"), (view == SHOW_TEXT && module.currentLine==0));
+}
+
+public void playButton (int value)
+{
+  sendOscString("/latido/transport", "play");
+  setLock(gui.getController("stopButton"), false);
+  gui.getGroup("scorecard").hide();
+}
+
+public void stopButton (int value)
+{
+  sendOscString("/latido/transport", "stop");
+}
+
+public void pitchButton (int value)
+{
+  sendOscString("/latido/transport", "pitch");
+}
+
+public void playbackButton (int value)
+{
+  sendOscString("/latido/transport", "replay");
+  setLock(gui.getController("stopButton"), false);
+} 
+
+void redoButton (int value)
+{
+  gui.getGroup("scorecard").hide();
+  setView(SHOW_MUSIC);
+  setLock(gui.getController("playButton"), false);
+  setLock(gui.getController("stopButton"), true);
+  setLock(gui.getController("pitchButton"), module.rhythm);
+  setLock(gui.getController("playbackButton"), false);
+}
+
+void moduleButton (int v)
+{
+  selectInput("Choose your latido module file...", "moduleCallback");
+}
+
+void loadButton (int v)
+{
+  selectInput("Choose your Latido user progress file...", "loadCallback");
+}
+
+void saveButton (int v)
+{
+  selectOutput("Choose where to save your Latido user progress file...", "saveCallback");
 }
 
 void volumeSlider (float v)
 {
-  OscMessage myMessage = new OscMessage("/latido/vol");
-  myMessage.add(v);
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/latido/vol", v*0.01);
 }
 
 void tempoSlider (float v)
 {
-  tempoVal = (int)map (v, 0, 1, TEMPO_LOW, TEMPO_HIGH);
-  String l = tempoVal + " bpm";
-  tempoLabel.set (l);
-  OscMessage myMessage = new OscMessage("/latido/tempo");
-  myMessage.add(tempoVal);
-  oscP5.send(myMessage, latidoPD);
+  sendOscFloat("/latido/tempo", v);
 }
+
+void practiceToggle (boolean v)
+{
+  practiceMode = !v;
+  gui.getController("practiceLabel")
+    .setStringValue( practiceMode ? "ON" : "OFF");
+  setLock(gui.getController("nextButton"), false);
+  if (practiceMode) exerciseList.show();
+  else 
+  {
+    exerciseList.hide();
+    int nextUnpassed = userProgress.getNextUnpassed();
+    if (module.currentLine > nextUnpassed)
+    {
+      module.loadSpecific(nextUnpassed);
+      music.load(module.getImage());
+      setText(module.getText());
+      setView(SHOW_TEXT);
+      gui.getController("tempoSlider").setValue(module.getTempo());
+      notifyPd(module.rhythm);
+      userProgress.updateInfo(module.currentLine, module.getName());
+    }
+  }
+}
+
+void controlEvent(ControlEvent theEvent)
+{
+  if (theEvent.isGroup() && theEvent.name().equals("Jump"))
+  {
+    int val = (int)theEvent.group().value();
+    module.loadSpecific(val);
+    music.load(module.getImage());
+    setText(module.getText());
+    progressSlider.setRange(0, module.numMelodies);
+    setView(SHOW_TEXT);
+    exerciseList.close();
+    optionGroup.close();
+  }
+}
+
+void progress (int v)
+{
+  println("progress bar touched! "+v);
+}
+
+boolean cantAdvance ()
+{
+  if (practiceMode) return false;
+  else if (userProgress.getCurrentStars(module.currentLine)>3) return false;
+  return true;
+}
+
+//---------------------------------------------------------------
+// OSC Communication with Pd - plug methods
 
 public void micPD (float f)
 {
-  micLevel.set(sqrt(f*0.01));
+  gui.getController("micLevel").setValue(f);
 }
 
 public void tempoPD (float f)
 {
-  int t = int(f);
-  tempoLabel.set(t+" BPM");
-  tempo.set(map(t, TEMPO_LOW, TEMPO_HIGH, 0, 1));
+  gui.getController("tempoSlider").setValue(f);
 }
 
 public void metroPD (float f)
 {
-  int b = int(f);
-  metro.bang(b);
+  metro.activate(0);
+  metroOff = frameCount+5;
+  metro.getItem(0).setLabel(nf(f, 0, 0));
 }
 
 public void metroStatePD (float f)
 {
   int s = int(f);
-  metro.setState(s);
+  switch(s)
+  {
+  case 0:
+    metro.hide();
+    break;
+  case 1:
+    metro.show();
+    metro.setColorActive(color(200, 0, 0)); //on - should be lighter
+    metro.setColorBackground(color(100, 0, 0)); //off - should be darker
+    metro.setColorForeground(color(100, 0, 0)); //mouseover - should be same as background
+    break;
+  case 2:
+  default:
+    metro.show();
+    metro.setColorActive(color(0, 200, 0)); //on - should be lighter
+    metro.setColorBackground(color(0, 100, 0)); //off - should be darker
+    metro.setColorForeground(color(0, 100, 0)); //mouseover - should be same as background
+  }
 }
 
 public void watchdogPD ()
@@ -196,43 +244,57 @@ public void watchdogPD ()
 
 public void scorePD (float theScore)
 {
-  play.active = false;
-  stop.active = false;
-  pitch.active = false;
-  replay.active = true;
-  scorecard.setScore(theScore);
-  redo.active = true;
-  if (theScore >= 0.7 || userProgress.getCurrentStars(library.currentLine)>3)
+  setLock(gui.getController("playButton"), true);
+  setLock(gui.getController("stopButton"), true);
+  setLock(gui.getController("pitchButton"), true);
+  setLock(gui.getController("playbackButton"), false);
+  setLock(gui.getController("redoButton"), false);
+  int stars = score.get(theScore);
+  //println("theScore: "+theScore+", stars: "+stars);
+  if (!practiceMode)
   {
-    next.active = true;
+    userProgress.updateScore(module.currentLine, stars);
   }
-  userProgress.updateScore(library.currentLine, scorecard.stars);
-  tree.updateGraph(userProgress.getTotalScore());
-  treeLabel.set(userProgress.getTotalScore()+" Stars");
+  setLock(gui.getController("nextButton"), cantAdvance());
+  //tree.updateGraph(userProgress.getTotalScore());
+  //treeLabel.set(userProgress.getTotalScore()+" Stars");
   if (saving) userProgress.save(savePath);
+  showScorecard (stars);
 }
 
-void folderCallback(File f)
+void showScorecard(int stars)
+{
+  HACK_STARS = stars; // :( we have to use a global variable and create a new controlP5 canvas
+  scorecardGroup.removeCanvas(starCanvas);
+  starCanvas = new StarCanvas();
+  scorecardGroup.addCanvas(starCanvas);
+  gui.getGroup("scorecard").show();
+}
+
+void moduleCallback(File f)
 {
   try
   {
-    String s = f.getAbsolutePath();
-    String libName = library.load(s);
+    String libName = module.load(f);
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
-    userProgress.updateInfo(library.currentLine, library.getName());
-    music.load(library.getImage());
-    music.showBirdie = true;
-    music.setText(library.getText());
-    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-    tempoLabel.set(library.getTempo()+" bpm");
-    tree.setMaxScore(library.numMelodies*5);
-    notifyPd(library.rhythm);
-    showMessageDialog(null, "Loaded new library:\n"+library.getDescription(), "New Latido Library Loaded", INFORMATION_MESSAGE);
-
+    userProgress.updateInfo(module.currentLine, module.getName());
+    music.load(module.getImage());
+    exerciseList.clear();
+    for (int i=0; i<module.numMelodies; i++) {
+      module.loadSpecific(i);
+      exerciseList.addItem(module.getName(), i);
+      //lbi.setColorBackground(0xffff0000);
+    }
+    module.loadSpecific(0);
+    setView(SHOW_TEXT);
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    progressSlider.setRange(0, module.numMelodies);
+    notifyPd(module.rhythm);
+    showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
   }
   catch (Exception e)
   {
-    showMessageDialog(null, "Could not load Latido library", "Alert", ERROR_MESSAGE);
+    showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
   }
 }
 
@@ -243,22 +305,17 @@ void loadCallback(File f)
   {
     savePath = s;
     saving = true;
-    scorecard.active = false;
-    music.showBirdie = true;
-    replay.active = false;
-
-    library.loadSpecific(userProgress.nextUnpassed);
-    music.load(library.getImage());
-    music.showBirdie = true;
-    music.setText(library.getText());
-    tempo.set(map(library.getTempo(), TEMPO_LOW, TEMPO_HIGH, 0, 1));
-    tempoLabel.set(library.getTempo()+" bpm");
-    notifyPd(library.rhythm);
-    userProgress.updateInfo(library.currentLine, library.getName());
-    tree.updateGraph(userProgress.getTotalScore());
-    treeLabel.set(userProgress.getTotalScore()+" Stars");
-    next.active = true;
-    if (library.currentLine>0) previous.active = true;
+    gui.getGroup("scorecard").hide();
+    setLock(gui.getController("playbackButton"), true);
+    module.loadSpecific(userProgress.getNextUnpassed());
+    music.load(module.getImage());
+    setText(module.getText());
+    setView(SHOW_TEXT);
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    notifyPd(module.rhythm);
+    userProgress.updateInfo(module.currentLine, module.getName());
+    setLock(gui.getController("nextButton"), false);
+    setLock(gui.getController("previousButton"), (module.currentLine<=0));
   }
 }
 
@@ -274,3 +331,19 @@ void websiteLink (int v)
 {
   link("http://joel.matthysmusic.com/contact/");
 }
+
+void setLock(Controller theController, boolean theValue)
+{
+
+  if (theValue) {
+    theController.setColorBackground(color(100, 100));
+    theController.setMouseOver(false);
+    theController.lock();
+    theController.getCaptionLabel().setColor(color(0));
+  } else {
+    theController.unlock();
+    theController.setColorBackground(color(0, 45, 90));
+    theController.getCaptionLabel().setColor(color(255));
+  }
+}
+

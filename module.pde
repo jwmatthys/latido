@@ -1,4 +1,4 @@
-class MelodyLibraryXML
+class MelodyModuleXML
 {
   String indexPath, midiPath, imagePath, textPath, filename;
   XML indexFile, shortname, image, midi, progress;
@@ -9,24 +9,25 @@ class MelodyLibraryXML
   int numMelodies;
   int currentLine;
 
-  MelodyLibraryXML ()
+  MelodyModuleXML ()
   {
   }
 
-  String load (String path)
+  String load (File index)
   {
     try 
     {
-      indexFile = loadXML(dataPath(path)+"/latido.xml");
+      indexPath = index.getAbsolutePath();
+      indexFile = loadXML(indexPath);
+      String folder = index.getParentFile().getAbsolutePath();
       shortname = indexFile.getChild("shortname");
       image = indexFile.getChild("imageextension");
       midi = indexFile.getChild("midiextension");
       progress = indexFile.getChild("progress");
       exercises = progress.getChildren("exercise");
-      indexPath = dataPath(path)+"/latido.xml";
-      midiPath = dataPath(path)+"/midi/";
-      imagePath = dataPath(path)+"/image/";
-      textPath = dataPath(path)+"/text/";
+      midiPath = folder+"/midi/";
+      imagePath = folder+"/image/";
+      textPath = folder+"/text/";
       currentLine = 0;
       numMelodies = exercises.length;
       parse (0);
@@ -34,7 +35,7 @@ class MelodyLibraryXML
     } 
     catch (Exception e)
     {
-      showMessageDialog(null, "Could not load Latido library", "Alert", ERROR_MESSAGE);
+      showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
       return "";
     }
   }
@@ -50,7 +51,7 @@ class MelodyLibraryXML
     }
     catch (Exception e)
     {
-      showMessageDialog(null, "Could not parse Latido library", "Alert", ERROR_MESSAGE);
+      showMessageDialog(null, "Could not parse Latido module", "Alert", ERROR_MESSAGE);
     }
   }
 
