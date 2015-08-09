@@ -21,8 +21,9 @@ void nextButton (int v)
     if (view == SHOW_TEXT)
     {
       setView(SHOW_MUSIC);
-      setLock(gui.getController("playButton"), false);//.unlock();
-      setLock(gui.getController("stopButton"), false);//.lock();
+      progressGroup.hide();
+      setLock(gui.getController("playButton"), false);
+      setLock(gui.getController("stopButton"), false);
       setLock(gui.getController("pitchButton"), module.rhythm);
       setLock(gui.getController("playbackButton"), true);
       setLock(gui.getController("nextButton"), cantAdvance());
@@ -31,6 +32,7 @@ void nextButton (int v)
     {
       setView(SHOW_TEXT);
       setLock(gui.getController("playbackButton"), true);
+      progressGroup.show();
       module.loadNext();
       music.load(module.getImage());
       setText(module.getText());
@@ -39,35 +41,35 @@ void nextButton (int v)
       userProgress.updateInfo(module.currentLine, module.getName());
       setLock(gui.getController("nextButton"), false);
       setLock(gui.getController("previousButton"), false);
+      gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+      gui.getController("progressSlider").setValue(module.currentLine);
     }
   }
 }
 
 void previousButton (int v)
 {
+  setLock(gui.getController("nextButton"), false);
+  gui.getGroup("scorecard").hide();
   if (view == SHOW_TEXT ||   gui.getGroup("scorecard").isVisible())
   {
-    gui.getGroup("scorecard").hide();
-    //music.showBirdie = true;
-    setLock(gui.getController("playbackButton"), true);//.lock();
+    setView(SHOW_TEXT);
+    setLock(gui.getController("playbackButton"), true);
 
     module.loadPrevious();
     music.load(module.getImage());
-    //music.showBirdie = true;
-    //music.setText(module.getText());
+    setText(module.getText());
     gui.getController("tempoSlider").setValue(module.getTempo());
     notifyPd(module.rhythm);
     userProgress.updateInfo(module.currentLine, module.getName());
-    setLock(gui.getController("nextButton"), (userProgress.getCurrentStars(module.currentLine)<=3));
+    setLock(gui.getController("nextButton"), cantAdvance());
   } else
   {
-    setView(SHOW_TEXT);
-    setLock(gui.getController("playButton"), true);//.lock();
-    setLock(gui.getController("stopButton"), true);//.lock();
+    setView(SHOW_MUSIC);
+    setLock(gui.getController("playButton"), true);
+    setLock(gui.getController("stopButton"), true);
     setLock(gui.getController("pitchButton"), module.rhythm);
-
-    setLock(gui.getController("nextButton"), false);
-    gui.getGroup("scorecard").hide();
+    
   }
   setLock(gui.getController("previousButton"), (view == SHOW_TEXT && module.currentLine==0));
 }
@@ -99,8 +101,8 @@ void redoButton (int value)
 {
   gui.getGroup("scorecard").hide();
   setView(SHOW_MUSIC);
-  setLock(gui.getController("playButton"), false);//.unlock();
-  setLock(gui.getController("stopButton"), true);//.lock();
+  setLock(gui.getController("playButton"), false);
+  setLock(gui.getController("stopButton"), true);
   setLock(gui.getController("pitchButton"), module.rhythm);
   setLock(gui.getController("playbackButton"), false);
 }
@@ -203,7 +205,10 @@ public void scorePD (float theScore)
   setLock(gui.getController("redoButton"), false);
   int stars = score.get(theScore);
   //println("theScore: "+theScore+", stars: "+stars);
-  if (!practiceMode) userProgress.updateScore(module.currentLine, stars);
+  if (!practiceMode)
+  {
+    userProgress.updateScore(module.currentLine, stars);
+  }
   setLock(gui.getController("nextButton"), cantAdvance());
   //tree.updateGraph(userProgress.getTotalScore());
   //treeLabel.set(userProgress.getTotalScore()+" Stars");
@@ -230,7 +235,7 @@ void moduleCallback(File f)
     music.load(module.getImage());
     setView(SHOW_TEXT);
     gui.getController("tempoSlider").setValue(module.getTempo());
-    //tree.setMaxScore(module.numMelodies*5);
+    progressSlider.setRange(0, module.numMelodies);
     notifyPd(module.rhythm);
     showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
   }

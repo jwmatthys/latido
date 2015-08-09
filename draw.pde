@@ -37,7 +37,7 @@ void setText (String path)
   } 
   catch (Exception e)
   {
-    textbox.setText(module.getDescription()+"\n"+module.getName());
+    textbox.setText(module.getDescription()+"\n\nExercise "+module.getName());
   }
 }
 

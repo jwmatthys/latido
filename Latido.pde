@@ -47,6 +47,7 @@ Group scorecardGroup;
 Group splashGroup;
 Group optionGroup;
 Group progressGroup;
+Slider progressSlider;
 Textarea textbox;
 Canvas starCanvas;
 boolean view;

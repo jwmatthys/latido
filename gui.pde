@@ -117,36 +117,65 @@ void createGui()
 
   gui.getController("tempoSlider").setValue((int)module.getTempo());
 
+
+  progressGroup = gui.addGroup("progress")
+    .open()
+      .hideBar()
+        .setBackgroundColor(#E8E8E8)
+          .setPosition(SIDEBAR_WIDTH, height-TOPBAR_HEIGHT)
+            .setSize(width-SIDEBAR_WIDTH, TOPBAR_HEIGHT)
+              //.hide()
+              ;
+
+  progressSlider = gui.addSlider("progressSlider")
+    .setLabel("Progress")
+      .setPosition(PADDING, 25)
+        .setSize(width-SIDEBAR_WIDTH-2*PADDING, 10)
+          .lock()
+            .setGroup(progressGroup)
+              .setDecimalPrecision(0)
+                ;
+
+  gui.addTextlabel("progressLabel")
+    .setText("0 Stars Earned")
+      .setPosition(PADDING, 45)
+        .setGroup(progressGroup)
+          .setColor(color(0))
+            ;
+
+  gui.getController("progressSlider").getCaptionLabel()
+    .setColor(color(0))
+      .align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE)
+        ;
+
+  gui.getController("progressSlider").getValueLabel()
+    .setVisible(false);
+
+
+
   metro = gui.addCheckBox("metroBangFoo")
     .setPosition(SIDEBAR_WIDTH+(width-SIDEBAR_WIDTH)/2-250, height-120)
       .setSize(500, 100)
         .setItemsPerRow(1)
           .addItem("1", 0)
-            .hide()
-              ;
-
-  progressGroup = gui.addGroup("progress")
-  .open()
-    .hideBar()
-      .setBackgroundColor(#E5E6E8)
-        .setPosition(SIDEBAR_WIDTH, height/2+2*PADDING)
-          .setSize(width-SIDEBAR_WIDTH, height/2-2*PADDING)
-            ;
+            .bringToFront()
+              .hide()
+                ;
 
   scorecardGroup = gui.addGroup("scorecard")
     .hideBar()
       .setSize(width*2/3, height*2/3)
         .setPosition(width/6, height/6)
-          .setBackgroundColor(#E5E6E8)
+          .setBackgroundColor(#E8E8E8)
             .hide()
               ;
 
   optionGroup = gui.addGroup("options")
     .setLabel ("User and Module Options")
       .setPosition(width-220, 30)
-        .setSize(220, 300)
+        .setSize(220, 235)
           .setBarHeight(20)
-            .setBackgroundColor(#E5E6E8)
+            .setBackgroundColor(#E8E8E8)
               //.setColorForeground(color(255))
               .close()
                 .hide()

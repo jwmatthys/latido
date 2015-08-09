@@ -45,7 +45,7 @@ class StarCanvas extends Canvas
 
   public void setup(PApplet p)
   {
-    stars = new Stars(HACK_STARS, 0, width*2/3, 165, 20, 500);
+    stars = new Stars(HACK_STARS, 0, width*2/3, 165, 25, 500);
     theText = resultText[HACK_STARS][(int)random(3)];
     biggerFont = loadFont("Inconsolata-72.vlw");
     textFont(biggerFont,36);

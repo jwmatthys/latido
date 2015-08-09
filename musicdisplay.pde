@@ -22,31 +22,4 @@ class MusicDisplay
       image (music, SIDEBAR_WIDTH+PADDING, TOPBAR_HEIGHT+PADDING, music.width*rescale, music.height*rescale);
     }
   }
-
-
-  /*
-  void setText (String s)
-   {
-   text = loadStrings(s);
-   }
-   */
-
-  /*
-  void drawText()
-   {
-   textFont(font);
-   textSize(18);
-   noStroke();
-   fill(0);
-   float y = TOPBAR_HEIGHT+2*PADDING;
-   if (text.length>0)
-   {
-   for (int i=0; i<text.length; i++)
-   {
-   text(text[i], (SIDEBAR_WIDTH+width)*0.55, y);
-   y += (textAscent()+textDescent())*1.5;
-   }
-   }
-   }*/
 }
-
