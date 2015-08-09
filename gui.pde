@@ -78,6 +78,7 @@ void createGui()
     .setPaddingX(5)
       .align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
         .setColor(color(0));
+
   gui.getController("tempoSlider").getValueLabel()
     .setPaddingX(0)
       .align(ControlP5.CENTER, -200)
@@ -95,6 +96,7 @@ void createGui()
     .align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
       .setPaddingX(0)
         .setColor(color(0));
+
   gui.getController("volumeSlider").getValueLabel()
     .setPaddingX(0)
       .align(ControlP5.CENTER, -200)
@@ -117,32 +119,38 @@ void createGui()
 
   gui.getController("tempoSlider").setValue((int)module.getTempo());
 
+  progressGroup = gui.addGroup("prog")
+    .hideBar()
+      .setBackgroundColor(#E8E8E8)
+        .setPosition(SIDEBAR_WIDTH, height-TOPBAR_HEIGHT)
+          .setSize(width-SIDEBAR_WIDTH, TOPBAR_HEIGHT)
+            ;
 
-  progressGroup = gui.addGroup("progress")
-    .open()
-      .hideBar()
-        .setBackgroundColor(#E8E8E8)
-          .setPosition(SIDEBAR_WIDTH, height-TOPBAR_HEIGHT)
-            .setSize(width-SIDEBAR_WIDTH, TOPBAR_HEIGHT)
-              //.hide()
-              ;
+  progressGroup.getCaptionLabel()
+    .setVisible(false)
+      ;
 
-  progressSlider = gui.addSlider("progressSlider")
+  progressSlider = gui.addSlider("ps")
     .setLabel("Progress")
-      .setPosition(PADDING, 25)
+      .setPosition(PADDING, 28)
         .setSize(width-SIDEBAR_WIDTH-2*PADDING, 10)
           .lock()
             .setGroup(progressGroup)
               .setDecimalPrecision(0)
                 ;
 
-  progressSlider.getCaptionLabel()
-    .setColor(color(0))
-      .align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE)
-        ;
-
-  gui.getController("progressSlider").getValueLabel()
+  progressSlider.getValueLabel()
     .setVisible(false);
+
+  progressSlider.getCaptionLabel()
+    .setVisible(false);
+
+  gui.addTextlabel("pslabel")
+    .setText("Progress")
+      .setPosition(PADDING, 12)
+        .setColor(color(0))
+          .setGroup(progressGroup)
+            ;
 
   gui.addTextlabel("progressLabel")
     .setText("0 Stars Earned")

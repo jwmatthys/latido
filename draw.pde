@@ -8,7 +8,7 @@ void draw()
 
 void paintSidebar()
 {
-  fill(#E5E6E8);
+  fill(#E8E8E8);
   noStroke();
   rect(0, 0, SIDEBAR_WIDTH, height);
   rect(70, 0, width, TOPBAR_HEIGHT);

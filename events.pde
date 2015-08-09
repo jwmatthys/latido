@@ -51,7 +51,7 @@ void nextButton (int v)
       setLock(gui.getController("nextButton"), false);
       setLock(gui.getController("previousButton"), false);
       gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
-      gui.getController("progressSlider").setValue(module.currentLine);
+      progressSlider.setValue(module.currentLine);
     }
   }
 }
@@ -181,6 +181,11 @@ void controlEvent(ControlEvent theEvent)
   }
 }
 
+void progress (int v)
+{
+  println("progress bar touched! "+v);
+}
+
 boolean cantAdvance ()
 {
   if (practiceMode) return false;
@@ -286,8 +291,6 @@ void moduleCallback(File f)
     progressSlider.setRange(0, module.numMelodies);
     notifyPd(module.rhythm);
     showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
-    //gui.getController("moduleButton").setMouseOver(false);
-    //optionGroup.close();
   }
   catch (Exception e)
   {
@@ -303,20 +306,16 @@ void loadCallback(File f)
     savePath = s;
     saving = true;
     gui.getGroup("scorecard").hide();
-    setView(SHOW_TEXT);
     setLock(gui.getController("playbackButton"), true);
     module.loadSpecific(userProgress.getNextUnpassed());
     music.load(module.getImage());
-    //music.setText(module.getText());
+    setText(module.getText());
+    setView(SHOW_TEXT);
     gui.getController("tempoSlider").setValue(module.getTempo());
     notifyPd(module.rhythm);
     userProgress.updateInfo(module.currentLine, module.getName());
-    //tree.updateGraph(userProgress.getTotalScore());
-    //treeLabel.set(userProgress.getTotalScore()+" Stars");
     setLock(gui.getController("nextButton"), false);
     setLock(gui.getController("previousButton"), (module.currentLine<=0));
-    //gui.getController("loadButton").setMouseOver(false);
-    //optionGroup.close();
   }
 }
 
@@ -326,8 +325,6 @@ void saveCallback(File f)
   userProgress.save(s);
   savePath = s;
   saving = true;
-  //gui.getController("saveButton").setMouseOver(false);
-  //optionGroup.close();
 }
 
 void websiteLink (int v)

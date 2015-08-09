@@ -114,7 +114,7 @@ void stop()
 
 void setupFrame()
 {
-  frame.setTitle("Latido 0.9-alpha");
+  frame.setTitle("Latido 0.9-beta");
   if (frame != null) {
     frame.setResizable(true);
   }
