@@ -22,7 +22,6 @@ void nextButton (int v)
     gui.getGroup("splash").hide();
     gui.getGroup("splash").remove();
     optionGroup.show();
-    exerciseList.show();
     setView(SHOW_TEXT);
     setLock(gui.getController("nextButton"), false);
     notifyPd(module.rhythm);
@@ -61,21 +60,23 @@ void previousButton (int v)
 {
   setLock(gui.getController("nextButton"), false);
   gui.getGroup("scorecard").hide();
-  if (view == SHOW_TEXT ||   gui.getGroup("scorecard").isVisible())
+  if ( scorecardGroup.isVisible() )
   {
-    setView(SHOW_TEXT);
+    scorecardGroup.hide();
+  } else if (view == SHOW_TEXT)
+  {
     setLock(gui.getController("playbackButton"), true);
-
     module.loadPrevious();
     music.load(module.getImage());
     setText(module.getText());
+    //setView(SHOW_TEXT);
     gui.getController("tempoSlider").setValue(module.getTempo());
     notifyPd(module.rhythm);
     userProgress.updateInfo(module.currentLine, module.getName());
     setLock(gui.getController("nextButton"), cantAdvance());
-  } else
+  } else // if view == SHOW_MUSIC
   {
-    setView(SHOW_MUSIC);
+    setView(SHOW_TEXT);
     setLock(gui.getController("playButton"), true);
     setLock(gui.getController("stopButton"), true);
     setLock(gui.getController("pitchButton"), module.rhythm);
@@ -147,6 +148,37 @@ void practiceToggle (boolean v)
   gui.getController("practiceLabel")
     .setStringValue( practiceMode ? "ON" : "OFF");
   setLock(gui.getController("nextButton"), false);
+  if (practiceMode) exerciseList.show();
+  else 
+  {
+    exerciseList.hide();
+    int nextUnpassed = userProgress.getNextUnpassed();
+    if (module.currentLine > nextUnpassed)
+    {
+      module.loadSpecific(nextUnpassed);
+      music.load(module.getImage());
+      setText(module.getText());
+      setView(SHOW_TEXT);
+      gui.getController("tempoSlider").setValue(module.getTempo());
+      notifyPd(module.rhythm);
+      userProgress.updateInfo(module.currentLine, module.getName());
+    }
+  }
+}
+
+void controlEvent(ControlEvent theEvent)
+{
+  if (theEvent.isGroup() && theEvent.name().equals("Jump"))
+  {
+    int val = (int)theEvent.group().value();
+    module.loadSpecific(val);
+    music.load(module.getImage());
+    setText(module.getText());
+    progressSlider.setRange(0, module.numMelodies);
+    setView(SHOW_TEXT);
+    exerciseList.close();
+    optionGroup.close();
+  }
 }
 
 boolean cantAdvance ()
@@ -254,7 +286,8 @@ void moduleCallback(File f)
     progressSlider.setRange(0, module.numMelodies);
     notifyPd(module.rhythm);
     showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE);
-    optionGroup.close();
+    //gui.getController("moduleButton").setMouseOver(false);
+    //optionGroup.close();
   }
   catch (Exception e)
   {
@@ -272,7 +305,7 @@ void loadCallback(File f)
     gui.getGroup("scorecard").hide();
     setView(SHOW_TEXT);
     setLock(gui.getController("playbackButton"), true);
-    module.loadSpecific(userProgress.nextUnpassed);
+    module.loadSpecific(userProgress.getNextUnpassed());
     music.load(module.getImage());
     //music.setText(module.getText());
     gui.getController("tempoSlider").setValue(module.getTempo());
@@ -282,6 +315,8 @@ void loadCallback(File f)
     //treeLabel.set(userProgress.getTotalScore()+" Stars");
     setLock(gui.getController("nextButton"), false);
     setLock(gui.getController("previousButton"), (module.currentLine<=0));
+    //gui.getController("loadButton").setMouseOver(false);
+    //optionGroup.close();
   }
 }
 
@@ -291,6 +326,8 @@ void saveCallback(File f)
   userProgress.save(s);
   savePath = s;
   saving = true;
+  //gui.getController("saveButton").setMouseOver(false);
+  //optionGroup.close();
 }
 
 void websiteLink (int v)

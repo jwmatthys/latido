@@ -75,7 +75,7 @@ void setup()
   module = new MelodyModuleXML();
   music = new MusicDisplay();
   libName = module.load(new File(dataPath("eyes_and_ears/latido.xml")));
-  music.load(module.getImage());
+  
 
   score = new CalculateScore();
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
@@ -92,6 +92,7 @@ void setup()
     //lbi.setColorBackground(0xffff0000);
   }
   module.loadSpecific(0);
+  music.load(module.getImage());
   setText(module.getText());
   progressSlider.setRange(0, module.numMelodies);
 

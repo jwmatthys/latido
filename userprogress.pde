@@ -6,7 +6,6 @@ class UserProgress
   XML progress;
   XML score;
   XML[] exercise;
-  int nextUnpassed;
   String secretKey;
   String extension=".latido";
 
@@ -20,7 +19,6 @@ class UserProgress
     exercise = progress.getChildren("exercise");
     username.setContent(playerName);
     module.setContent(libName);
-    nextUnpassed = 0;
     secretKey = libName.substring(0, 8);
   }
 
@@ -38,16 +36,6 @@ class UserProgress
       progress = user.getChild("progress");
       score = user.getChild("score");
       exercise = progress.getChildren("exercise");
-      int id;
-      for (id = 0; id<exercise.length; id++)
-      {
-        int testval = exercise[id].getIntContent();
-        if (testval < 4)
-        {
-          break;
-        }
-      }
-      nextUnpassed = id;
       secretKey = module.getContent().substring(0, 8);
       return true;
     } 
@@ -118,6 +106,19 @@ class UserProgress
   String timeStamp()
   {
     return nf(hour(), 2)+":"+nf(minute(), 2)+" "+nf(month(), 2)+"/"+nf(day(), 2)+"/"+nf(year(), 2);
+  }
+
+  int getNextUnpassed()
+  {
+    for (int id = 0; id<exercise.length; id++)
+    {
+      int testval = exercise[id].getIntContent();
+      if (testval < 4)
+      {
+        return id;
+      }
+    }
+    return exercise.length - 1;
   }
 
   /**
