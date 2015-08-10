@@ -300,11 +300,11 @@ void moduleCallback(File f)
     progressSlider.setRange(0, module.numMelodies * 5);
     gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
     progressSlider.setValue(userProgress.getTotalScore());
-    showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", INFORMATION_MESSAGE); 
+    JOptionPane.showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", JOptionPane.INFORMATION_MESSAGE); 
     if (saving)
     {
       saving = false;
-      showMessageDialog(null, "You must save a separate\bprogress file for each module", "Warning", WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null, "You must save a separate\bprogress file for each module", "Warning", JOptionPane.WARNING_MESSAGE);
     }
   }
   catch (Exception e)
