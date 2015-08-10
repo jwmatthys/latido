@@ -442,9 +442,9 @@
 #X obj 25 19 table current-audio 2.646e+06;
 #X obj 207 19 table current-synth 2.646e+06;
 #X restore 31 45 pd recording-arrays;
-#N canvas 136 233 936 444 networking 0;
+#N canvas 136 233 936 444 networking 1;
 #X obj 149 235 netsend -u -b;
-#X obj 149 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 149 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 34 38 oscformat mic;
 #X obj 34 64 list prepend send;

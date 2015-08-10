@@ -47,8 +47,8 @@ Group scorecardGroup;
 Group splashGroup;
 Group optionGroup;
 Group progressGroup;
-ListBox exerciseList;
-float scroll = 0;
+ScrollableList exerciseList;
+//float scroll = 0;
 Slider progressSlider;
 Textarea textbox;
 Canvas starCanvas;
@@ -59,7 +59,7 @@ void setup()
   font = loadFont("Inconsolata-18.vlw");
   String p = dataPath("");
   try {
-    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-alsa", "-r", "44100", p+"/pd/latido.pd").start();
+    pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-pa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
   } 
   catch (Exception e) {
     showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", ERROR_MESSAGE);
@@ -97,6 +97,7 @@ void setup()
   notifyPd(module.rhythm);
   userProgress.updateInfo(module.currentLine, module.getName());
   progressSlider.setRange(0, module.numMelodies * 5);
+  
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
   oscP5.plug(this, "metroPD", "/metro");
@@ -115,19 +116,8 @@ void stop()
 
 void setupFrame()
 {
-  frame.setTitle("Latido 0.9-beta");
-  if (frame != null) {
-    frame.setResizable(true);
+  surface.setTitle("Latido 0.9-beta");
+  if (surface != null) {
+    surface.setResizable(true);
   }
-  frame.addComponentListener(new ComponentAdapter() {
-    public void componentResized(ComponentEvent e) {
-      if (e.getSource()==frame) {
-        //gui.getController("options").setPosition(width-230, 20);
-        //gui.getController("websiteLink").setPosition(width-80, height-30);
-        //println("resized to:" + width+" x "+height+" mouse: "+mouseY +" "+mouseY);
-      }
-    }
-  }
-  );
 }
-

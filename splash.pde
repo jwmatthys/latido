@@ -1,20 +1,26 @@
 class Splash extends Canvas
 {
   PImage splashImage;
+  boolean loaded = false;
 
-  public void setup(PApplet p)
+  public void setup(PGraphics pg)
   {
-    splashImage = loadImage("images/splash.png");
   }
 
-  public void draw(PApplet pg)
+  public void draw(PGraphics pg)
   {
-    image (splashImage, 0, 0, (width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING));
-    noFill();
-    stroke(0);
-    strokeWeight(3);
-    rect(0, 0, (width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING));
-    strokeWeight(1);
+    if (!loaded)
+    {
+      splashImage = loadImage("images/splash.png");
+      loaded = true;
+    } else
+    {
+      image (splashImage, 0, 0, (width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING));
+      noFill();
+      stroke(0);
+      strokeWeight(3);
+      rect(0, 0, (width-SIDEBAR_WIDTH-4*PADDING), (int)(height-4*PADDING));
+      strokeWeight(1);
+    }
   }
 }
-

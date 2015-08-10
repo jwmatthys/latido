@@ -3,25 +3,31 @@ void keyPressed()
   sendOscFloat("/rhy", module.rhythm ? 1 : 0);
 }
 
+/*
 void mouseWheel(MouseEvent event)
-{
-  if (exerciseList.isMouseOver() && exerciseList.isOpen() && exerciseList.isVisible())
-  {
-    scroll = constrain(scroll+(event.getCount()*0.01), 0, 1);
-    exerciseList.scroll(scroll);
-  }
-}
+ {
+ if (exerciseList.isMouseOver() && exerciseList.isOpen() && exerciseList.isVisible())
+ {
+ scroll = constrain(scroll+(event.getCount()*0.01), 0, 1);
+ exerciseList.scroll(scroll);
+ }
+ }
+ */
 
 void nextButton (int v)
 {
   setLock(gui.getController("redoButton"), true);
   gui.getGroup("scorecard").hide();
-  optionGroup.close();
+  if (!optionGroup.isVisible())
+  {
+    optionGroup.show();
+  }
   if (gui.getGroup("splash") != null && gui.getGroup("splash").isVisible())
   {
     gui.getGroup("splash").hide();
     gui.getGroup("splash").remove();
-    optionGroup.show();
+    gui.getController("loadButton").unlock();
+    gui.getController("practiceToggle").unlock();
     setView(SHOW_TEXT);
     setLock(gui.getController("nextButton"), false);
   } else
@@ -86,6 +92,7 @@ public void playButton (int value)
 public void stopButton (int value)
 {
   sendOscString("/latido/transport", "stop");
+  setLock(gui.getController("playbackButton"), false);
   setLock(gui.getController("previousButton"), false);
   setLock(gui.getController("redoButton"), false);
   setLock(gui.getController("nextButton"), cantAdvance());
@@ -159,21 +166,26 @@ void practiceToggle (boolean v)
   }
 }
 
+/*
 void controlEvent(ControlEvent theEvent)
-{
-  if (theEvent.isGroup() && theEvent.name().equals("Jump"))
-  {
-    int val = (int)theEvent.group().value();
-    module.loadSpecific(val);
-    loadExercise();
-    exerciseList.close();
-    optionGroup.close();
-  }
-}
+ {
+ if (theEvent.isGroup() && theEvent.name().equals("Jump"))
+ {
+ int val = (int)theEvent.group().value();
+ module.loadSpecific(val);
+ loadExercise();
+ exerciseList.close();
+ optionGroup.close();
+ }
+ }
+ */
 
-void progress (int v)
+void jump (int v)
 {
-  println("progress bar touched! "+v);
+  module.loadSpecific(v);
+  loadExercise();
+  exerciseList.close();
+  optionGroup.close();
 }
 
 boolean cantAdvance ()
@@ -362,4 +374,3 @@ void loadExercise()
   setLock(gui.getController("stopButton"), true);
   setLock(gui.getController("pitchButton"), true);
 }
-

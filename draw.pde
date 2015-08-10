@@ -62,4 +62,3 @@ void sendOscFloat (String tag, float f)
   myMessage.add(f);
   oscP5.send(myMessage, latidoPD);
 }
-

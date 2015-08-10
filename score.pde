@@ -1,5 +1,6 @@
 class StarCanvas extends Canvas
 {
+  boolean loaded = false;
   final int w = width;
   Stars stars;
   PFont biggerFont;
@@ -43,22 +44,31 @@ class StarCanvas extends Canvas
     }
   };
 
-  public void setup(PApplet p)
+  public void setup(PGraphics p)
   {
-    stars = new Stars(HACK_STARS, 0, width*2/3, 165, 25, 500);
-    theText = resultText[HACK_STARS][(int)random(3)];
-    biggerFont = loadFont("Inconsolata-72.vlw");
-    textFont(biggerFont,36);
-    textAlign(CENTER);
   }
 
-  public void draw(PApplet p)
+  public void draw(PGraphics p)
   {
-    noStroke();
-    fill (0);
-    text("Score",w/3,70);
-    text(theText,w/3,300);
-    stars.draw();
+    if (!loaded)
+    {
+      stars = new Stars(HACK_STARS, 0, width*2/3, 165, 25, 500);
+      theText = resultText[HACK_STARS][(int)random(3)];
+      biggerFont = loadFont("Inconsolata-72.vlw");
+      textFont(biggerFont, 36);
+      textAlign(CENTER);
+      loaded = true;
+    } else
+    {
+    textFont(biggerFont, 36);
+    textAlign(CENTER);
+      if (theText == null) theText = resultText[HACK_STARS][(int)random(3)];
+      noStroke();
+      fill (0);
+      text("Score", w/3, 70);
+      text(theText, w/3, 300);
+      stars.draw();
+    }
   }
 }
 
