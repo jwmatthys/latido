@@ -71,7 +71,7 @@ void setup()
         pd = new ProcessBuilder(p+"/pdbin/pd-linux32", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     } else //assume OSX (for now)
     {
-      pd = new ProcessBuilder(p+"/pdbin/pd-osx", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+      pd = new ProcessBuilder(p+"/pdbin/pd-osx", "-nogui", "-noprefs", "-pa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     }
   } 
   catch (Exception e) {
