@@ -1,4 +1,0 @@
-Now let's try putting them all
-together. This next example has
-all four of the common patterns
-we just practiced.

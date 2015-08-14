@@ -1,2 +1,0 @@
-#!/bin/bash
-pd -rt -nogui -r 44100 latido.pd

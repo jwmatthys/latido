@@ -1,3 +1,0 @@
-There are four common patterns
-in minor mode. The first is the
-lower neighbor of the tonic.
