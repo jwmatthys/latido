@@ -35,7 +35,7 @@ class MelodyModuleXML
     } 
     catch (Exception e)
     {
-      showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Could not load Latido module", "Alert", JOptionPane.ERROR_MESSAGE);
       return "";
     }
   }
@@ -51,7 +51,7 @@ class MelodyModuleXML
     }
     catch (Exception e)
     {
-      showMessageDialog(null, "Could not parse Latido module", "Alert", ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Could not parse Latido module", "Alert", JOptionPane.ERROR_MESSAGE);
     }
   }
 

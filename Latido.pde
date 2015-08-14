@@ -59,7 +59,17 @@ void setup()
   font = loadFont("Inconsolata-18.vlw");
   String p = dataPath("");
   try {
-    pd = new ProcessBuilder(p+"/pdbin/bin/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+    String os = System.getProperty("os.name");
+    if (match(os, "Windows") != null)
+    {
+      pd = new ProcessBuilder(p+"/pdbin/bin/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+    } else if (match(os, "Linux") != null)
+    {
+      pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+    } else //assume OSX (for now)
+    {
+      pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+    }
   } 
   catch (Exception e) {
     JOptionPane.showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", JOptionPane.ERROR_MESSAGE);
@@ -97,7 +107,7 @@ void setup()
   notifyPd(module.rhythm);
   userProgress.updateInfo(module.currentLine, module.getName());
   progressSlider.setRange(0, module.numMelodies * 5);
-  
+
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
   oscP5.plug(this, "metroPD", "/metro");

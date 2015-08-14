@@ -40,7 +40,7 @@ class UserProgress
       return true;
     } 
     catch (Exception e) {
-      showMessageDialog(null, "Could not load Latido user file", "Alert", ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Could not load Latido user file", "Alert", JOptionPane.ERROR_MESSAGE);
     }
     return false;
   }
@@ -57,7 +57,7 @@ class UserProgress
       saveBytes(f, cipher(secretKey, data));
     } 
     catch (Exception e) {
-      showMessageDialog(null, "Could not save Latido user file", "Alert", ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Could not save Latido user file", "Alert", JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -159,4 +159,3 @@ class UserProgress
     return cipher.doFinal(data);
   }
 }
-

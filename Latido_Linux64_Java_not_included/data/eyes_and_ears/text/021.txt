@@ -1,0 +1,6 @@
+Exercise 21: Compound meter
+
+The next example is in 6/8 time,
+which means there are two beats
+per bar, and the dotted quarter
+note gets the beat.
