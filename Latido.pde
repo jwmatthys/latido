@@ -56,6 +56,9 @@ boolean view;
 
 void setup()
 {
+  PImage icon = loadImage("icons/thumbsdown.png");
+  frame.setIconImage((Image) icon.getNative());
+
   font = loadFont("Inconsolata-18.vlw");
   String p = dataPath("");
   try {
