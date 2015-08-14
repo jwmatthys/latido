@@ -62,7 +62,7 @@ void setup()
     String os = System.getProperty("os.name");
     if (match(os, "Windows") != null)
     {
-      pd = new ProcessBuilder(p+"/pdbin/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+      pd = new ProcessBuilder(p+"/pdbin/pd-win/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     } else if (match(os, "Linux") != null)
     {
       if (match(System.getProperty("os.arch"), "amd") != null)
