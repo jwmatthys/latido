@@ -62,13 +62,16 @@ void setup()
     String os = System.getProperty("os.name");
     if (match(os, "Windows") != null)
     {
-      pd = new ProcessBuilder(p+"/pdbin/bin/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+      pd = new ProcessBuilder(p+"/pdbin/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     } else if (match(os, "Linux") != null)
     {
-      pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+      if (match(System.getProperty("os.arch"), "amd") != null)
+        pd = new ProcessBuilder(p+"/pdbin/pd-linux64", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+      else
+        pd = new ProcessBuilder(p+"/pdbin/pd-linux32", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     } else //assume OSX (for now)
     {
-      pd = new ProcessBuilder(p+"/pdbin/bin/pd", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
+      pd = new ProcessBuilder(p+"/pdbinpd-osx", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     }
   } 
   catch (Exception e) {
