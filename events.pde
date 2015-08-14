@@ -149,6 +149,7 @@ void tempoSlider (float v)
 
 void practiceToggle (boolean v)
 {
+  gui.getGroup("scorecard").hide();
   practiceMode = !v;
   gui.getController("practiceLabel")
     .setStringValue( practiceMode ? "ON" : "OFF");
