@@ -3,7 +3,6 @@ class StarCanvas extends Canvas
   boolean loaded = false;
   final int w = width;
   Stars stars;
-  PFont biggerFont;
   String theText;
   final String[][] resultText =
   {
@@ -54,7 +53,6 @@ class StarCanvas extends Canvas
     {
       stars = new Stars(HACK_STARS, 0, width*2/3, 165, 25, 500);
       theText = resultText[HACK_STARS][(int)random(3)];
-      biggerFont = loadFont("Inconsolata-72.vlw");
       textFont(biggerFont, 36);
       textAlign(CENTER);
       loaded = true;
@@ -217,4 +215,3 @@ class Stars
     return (angleInDegrees*TWO_PI)/360;
   }
 }
-

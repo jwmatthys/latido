@@ -24,7 +24,6 @@ boolean practiceMode = false;
 
 public int HACK_STARS = 0;
 
-OscP5 oscP5tcpClient;
 OscP5 oscP5;
 NetAddress latidoPD;
 
@@ -33,8 +32,6 @@ PFont font;
 PFont biggerFont;
 
 ControlP5 gui;
-Group group;
-CheckBox metro;
 
 MusicDisplay music;
 CalculateScore score;
@@ -44,11 +41,10 @@ String libName;
 String savePath;
 boolean saving;
 Group scorecardGroup;
-Group splashGroup;
 Group optionGroup;
 Group progressGroup;
+CheckBox metro;
 ScrollableList exerciseList;
-//float scroll = 0;
 Slider progressSlider;
 Textarea textbox;
 Canvas starCanvas;
@@ -60,6 +56,7 @@ void setup()
   frame.setIconImage((Image) icon.getNative());
 
   font = loadFont("Inconsolata-18.vlw");
+  biggerFont = loadFont("Inconsolata-72.vlw");
   String p = dataPath("");
   try {
     String os = System.getProperty("os.name");

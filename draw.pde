@@ -1,5 +1,6 @@
 void draw()
 {
+  
   background(255);
   paintSidebar();
   if (frameCount == metroOff) metro.deactivate(0);
@@ -8,7 +9,7 @@ void draw()
 
 void paintSidebar()
 {
-  fill(#E8E8E8);
+  fill(#E8E8E8); //<>//
   noStroke();
   rect(0, 0, SIDEBAR_WIDTH, height);
   rect(70, 0, width, TOPBAR_HEIGHT);
