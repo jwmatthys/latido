@@ -1,7 +1,7 @@
 class MelodyModuleXML
 {
   String indexPath, midiPath, imagePath, textPath, filename;
-  XML indexFile, shortname, image, midi, progress;
+  XML indexFile, modulekey, image, midi, progress;
   XML[] exercises;
   int tempo;
   float countin;
@@ -15,12 +15,13 @@ class MelodyModuleXML
 
   String load (File index)
   {
-    try 
+    try
     {
       indexPath = index.getAbsolutePath();
       indexFile = loadXML(indexPath);
       String folder = index.getParentFile().getAbsolutePath();
-      shortname = indexFile.getChild("shortname");
+      modulekey = indexFile.getChild("modulekey");
+      if (null == modulekey) modulekey = indexFile.getChild("shortname"); // shortname is now deprecated!
       image = indexFile.getChild("imageextension");
       midi = indexFile.getChild("midiextension");
       progress = indexFile.getChild("progress");
@@ -31,8 +32,8 @@ class MelodyModuleXML
       currentLine = 0;
       numMelodies = exercises.length;
       parse (0);
-      return shortname.getContent();
-    } 
+      return modulekey.getContent();
+    }
     catch (Exception e)
     {
       JOptionPane.showMessageDialog(null, "Could not load Latido module", "Alert", JOptionPane.ERROR_MESSAGE);
