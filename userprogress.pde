@@ -118,7 +118,7 @@ class UserProgress
         return id;
       }
     }
-    return exercise.length - 1;
+    return exercise.length;
   }
 
   /**

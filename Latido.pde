@@ -49,12 +49,10 @@ Slider progressSlider;
 Textarea textbox;
 Canvas starCanvas;
 boolean view;
+Config config;
 
 void setup()
 {
-  PImage icon = loadImage("icons/thumbsdown.png");
-  frame.setIconImage((Image) icon.getNative());
-
   font = loadFont("Inconsolata-18.vlw");
   biggerFont = loadFont("Inconsolata-72.vlw");
   String p = dataPath("");
@@ -87,30 +85,32 @@ void setup()
 
   module = new MelodyModuleXML();
   music = new MusicDisplay();
-  libName = module.load(new File(dataPath("eyes_and_ears/latido.xml")));
+  gui = new ControlP5(this);
+  createGui();
 
+  config = new Config();
+  /*
+  config.load();
+  savePath = config.getUserfilePath();
+  saving = (!savePath.equals(""));
+  libName = module.load(new File(config.getModulePath()));
 
   score = new CalculateScore();
   userProgress = new UserProgress(System.getProperty("user.name"), libName);
   userProgress.updateInfo(module.currentLine, module.getName());
-  savePath = "";
-  saving = false;
 
-  gui = new ControlP5(this);
-  createGui();
   for (int i=0; i<module.numMelodies; i++) {
     module.loadSpecific(i);
     exerciseList.addItem(module.getName(), i);
-    //lbi.setColorBackground(0xffff0000);
   }
-  module.loadSpecific(0);
+  module.loadSpecific(userProgress.getNextUnpassed());
   music.load(module.getImage());
   setText(module.getText());
   gui.getController("tempoSlider").setValue(module.getTempo());
   notifyPd(module.rhythm);
   userProgress.updateInfo(module.currentLine, module.getName());
   progressSlider.setRange(0, module.numMelodies * 5);
-
+*/
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
   oscP5.plug(this, "metroPD", "/metro");
@@ -129,7 +129,7 @@ void stop()
 
 void setupFrame()
 {
-  surface.setTitle("Latido 0.9-beta");
+  surface.setTitle("Latido 0.91-beta");
   if (surface != null) {
     surface.setResizable(true);
   }

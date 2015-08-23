@@ -16,6 +16,8 @@ void mouseWheel(MouseEvent event)
 
 void nextButton (int v)
 {
+  exerciseList.close();
+  optionGroup.close();
   setLock(gui.getController("redoButton"), true);
   gui.getGroup("scorecard").hide();
   if (!optionGroup.isVisible())
@@ -24,6 +26,36 @@ void nextButton (int v)
   }
   if (gui.getGroup("splash") != null && gui.getGroup("splash").isVisible())
   {
+    boolean reload = config.askReload();
+    if (reload)
+      config.load();
+    else
+      config.create();
+    savePath = config.getUserfilePath();
+    saving = (!savePath.equals(""));
+    libName = module.load(new File(config.getModulePath()));
+
+    score = new CalculateScore();
+    userProgress = new UserProgress(System.getProperty("user.name"), libName);
+    if (reload)
+      loadCallback(new File(config.getUserfilePath()));
+    else
+    {
+      userProgress.updateInfo(module.currentLine, module.getName());
+    }
+
+    for (int i=0; i<module.numMelodies; i++) {
+      module.loadSpecific(i);
+      exerciseList.addItem(module.getName(), i);
+    }
+    module.loadSpecific(userProgress.getNextUnpassed());
+    music.load(module.getImage());
+    setText(module.getText());
+    gui.getController("tempoSlider").setValue(module.getTempo());
+    notifyPd(module.rhythm);
+    userProgress.updateInfo(module.currentLine, module.getName());
+    progressSlider.setRange(0, module.numMelodies * 5);
+
     gui.getGroup("splash").hide();
     gui.getGroup("splash").remove();
     gui.getController("loadButton").unlock();
@@ -149,37 +181,28 @@ void tempoSlider (float v)
 
 void practiceToggle (boolean v)
 {
-  gui.getGroup("scorecard").hide();
-  practiceMode = !v;
-  gui.getController("practiceLabel")
-    .setStringValue( practiceMode ? "ON" : "OFF");
-  setLock(gui.getController("nextButton"), false);
-  if (practiceMode) exerciseList.show();
-  else 
+  try
   {
-    exerciseList.hide();
-    int nextUnpassed = userProgress.getNextUnpassed();
-    if (module.currentLine > nextUnpassed)
+    gui.getGroup("scorecard").hide();
+    practiceMode = !v;
+    gui.getController("practiceLabel")
+      .setStringValue( practiceMode ? "ON" : "OFF");
+    setLock(gui.getController("nextButton"), false);
+    if (practiceMode) exerciseList.show();
+    else 
     {
-      module.loadSpecific(nextUnpassed);
-      loadExercise();
+      exerciseList.hide();
+      int nextUnpassed = userProgress.getNextUnpassed();
+      if (module.currentLine > nextUnpassed)
+      {
+        module.loadSpecific(nextUnpassed);
+        loadExercise();
+      }
     }
+  } 
+  catch (Exception e) {
   }
 }
-
-/*
-void controlEvent(ControlEvent theEvent)
- {
- if (theEvent.isGroup() && theEvent.name().equals("Jump"))
- {
- int val = (int)theEvent.group().value();
- module.loadSpecific(val);
- loadExercise();
- exerciseList.close();
- optionGroup.close();
- }
- }
- */
 
 void jump (int v)
 {
@@ -302,6 +325,8 @@ void moduleCallback(File f)
     gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
     progressSlider.setValue(userProgress.getTotalScore());
     JOptionPane.showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", JOptionPane.INFORMATION_MESSAGE); 
+    setLock(gui.getController("nextButton"), false);
+    config.setModulePath(f.getAbsolutePath());
     if (saving)
     {
       saving = false;
@@ -330,6 +355,7 @@ void loadCallback(File f)
     progressSlider.setValue(userProgress.getTotalScore());
     setLock(gui.getController("nextButton"), false);
     setLock(gui.getController("previousButton"), (module.currentLine<=0));
+    config.setUserfilePath(s);
   }
 }
 
@@ -338,6 +364,7 @@ void saveCallback(File f)
   gui.getGroup("scorecard").hide();
   String s = f.getAbsolutePath();
   userProgress.save(s);
+  config.setUserfilePath(s);
   savePath = s;
   saving = true;
 }
