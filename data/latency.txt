@@ -1,0 +1,5 @@
+Latency is the time lag between the audio input (microphone) and output (speakers or headphones) of your computer. All computers have latency, but on some operating systems it is greater than others. Windows in particular is known to have a very high latency with its built-in audio.
+
+Latency can have a serious impact on your Latido progress, because a high latency makes it seem like you are singing behind the beat. Fortunately, Latido automatically accounts for the typical latency of your operating system. But in rare circumstances you may want to override the built-in value. If you sing an exercise and you felt sure that you were right on the beat, but when you play it back it sounds like you're behind the beat, you may want to increase the latency setting.
+
+You can test the latency of your system by clicking the toggle box below. You will need to use external speakers, or place your headphones very close to your computer's microphone. Latido will calculate the average latency using the clicking metronome. The value shown is average latency in milliseconds.

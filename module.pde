@@ -5,7 +5,7 @@ class MelodyModuleXML
   XML[] exercises;
   int tempo;
   float countin;
-  boolean rhythm;
+  boolean rhythm, extracredit;
   int numMelodies;
   int currentLine;
 
@@ -13,7 +13,7 @@ class MelodyModuleXML
   {
   }
 
-  String load (File index)
+  boolean load (File index)
   {
     try
     {
@@ -32,13 +32,22 @@ class MelodyModuleXML
       currentLine = 0;
       numMelodies = exercises.length;
       parse (0);
-      return modulekey.getContent();
+    }
+    catch (NullPointerException e)
+    {
+      return false;
     }
     catch (Exception e)
     {
-      JOptionPane.showMessageDialog(null, "Could not load Latido module", "Alert", JOptionPane.ERROR_MESSAGE);
-      return "";
+      JOptionPane.showMessageDialog(null, "Could not load Latido module\n"+e, "Alert", JOptionPane.ERROR_MESSAGE);
+      return false;
     }
+    return true;
+  }
+
+  String getLibName()
+  {
+    return modulekey.getContent();
   }
 
   void parse (int line)
@@ -49,6 +58,7 @@ class MelodyModuleXML
       tempo = exercises[line].getInt("tempo");
       countin = exercises[line].getFloat("countin");
       rhythm = exercises[line].hasAttribute("rhythm");
+      extracredit = exercises[line].hasAttribute("extracredit") || exercises[line].hasAttribute("ec");
     }
     catch (Exception e)
     {
