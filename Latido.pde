@@ -11,6 +11,7 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
+final String OS = System.getProperty("os.name");
 final boolean SHOW_MUSIC = true;
 final boolean SHOW_TEXT = false;
 final int SIDEBAR_WIDTH = 70;
@@ -57,11 +58,10 @@ void setup()
   biggerFont = loadFont("Inconsolata-72.vlw");
   String p = dataPath("");
   try {
-    String os = System.getProperty("os.name");
-    if (match(os, "Windows") != null)
+    if (match(OS, "Windows") != null)
     {
       pd = new ProcessBuilder(p+"/pdbin/pd-win/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
-    } else if (match(os, "Linux") != null)
+    } else if (match(OS, "Linux") != null)
     {
       if (match(System.getProperty("os.arch"), "amd") != null)
         pd = new ProcessBuilder(p+"/pdbin/pd-linux64", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
@@ -129,7 +129,7 @@ void stop()
 
 void setupFrame()
 {
-  surface.setTitle("Latido 0.91-beta");
+  surface.setTitle("Latido 0.92-beta");
   if (surface != null) {
     surface.setResizable(true);
   }

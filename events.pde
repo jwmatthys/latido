@@ -19,6 +19,7 @@ void nextButton (int v)
   exerciseList.close();
   optionGroup.close();
   setLock(gui.getController("redoButton"), true);
+  setLock(gui.getController("playbackButton"), true);
   gui.getGroup("scorecard").hide();
   if (!optionGroup.isVisible())
   {
@@ -37,7 +38,7 @@ void nextButton (int v)
 
     score = new CalculateScore();
     userProgress = new UserProgress(System.getProperty("user.name"), libName);
-    if (reload)
+    if (reload && saving)
       loadCallback(new File(config.getUserfilePath()));
     else
     {
@@ -71,7 +72,6 @@ void nextButton (int v)
       setLock(gui.getController("playButton"), false);
       setLock(gui.getController("stopButton"), false);
       setLock(gui.getController("pitchButton"), module.rhythm);
-      setLock(gui.getController("playbackButton"), true);
       setLock(gui.getController("nextButton"), cantAdvance());
       setLock(gui.getController("previousButton"), false);
     } else
