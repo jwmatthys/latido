@@ -57,6 +57,11 @@ class UserProgress
       progressFile = new File(filename);
     }
   }
+  
+  String getUserFile ()
+  {
+    return progressFile.getAbsolutePath();
+  }
 
   void save ()
   {
@@ -76,7 +81,8 @@ class UserProgress
     {
       XML newEntry = progress.addChild("exercise");
       newEntry.setString("id", n);
-      newEntry.setString("started", timeStamp());
+      if (!newEntry.hasAttribute("started"))
+        newEntry.setString("started", timeStamp());
       newEntry.setIntContent(0);
       exercise = progress.getChildren("exercise");
     }

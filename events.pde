@@ -347,8 +347,7 @@ void saveCallback(File f)
   gui.getGroup("scorecard").hide();
   userProgress.setUserFile(f);
   userProgress.save();
-  String s = f.getAbsolutePath();
-  config.setUserfilePath(s);
+  config.setUserfilePath(userProgress.getUserFile());
 }
 
 void websiteLink (int v)
