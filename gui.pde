@@ -69,7 +69,7 @@ void createGui()
     .setPosition(10, 80)
     .setSize(20, 200)
     .setRange(40, 280)
-    .setValue(40)
+    .setValue(120)
     .setDecimalPrecision(0)
     .setColorForeground(color(0, 128, 0))
     .setColorActive(color(0, 200, 0));
@@ -281,7 +281,7 @@ void createGui()
   latencyGroup.addCanvas(new Latency());
 
   gui.addTextarea("latencyText")
-    .setPosition(PADDING+SIDEBAR_WIDTH, 20)
+    .setPosition(PADDING+SIDEBAR_WIDTH, 30)
     .setSize(500,140)
     .setColorBackground(color(255))
     .setColorForeground(color(0))
@@ -289,20 +289,9 @@ void createGui()
     .setText(PApplet.join(loadStrings("latency.txt"), '\n'))
     .setGroup(latencyGroup);
     
-    gui.addToggle("latencyToggle")
-    .setLabel("Toggle on/off latency test")
-    .setPosition(PADDING+SIDEBAR_WIDTH, 180)
-    .setGroup(latencyGroup)
-    ;
-    
-    gui.getController("latencyToggle").getCaptionLabel()
-    .setPaddingX(5)
-    .align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER)
-    .setColor(color(0));
-    
   gui.addSlider("latencyInSlider")
     .setLabel("Estimated Latency")
-    .setPosition(PADDING+SIDEBAR_WIDTH, 230)
+    .setPosition(PADDING+SIDEBAR_WIDTH, 200)
     .setSize(500, 20)
     .setRange(0, 500)
     .setValue(40)
@@ -314,7 +303,7 @@ void createGui()
 
   gui.addSlider("latencyOutSlider")
     .setLabel("Set this to your desired latency setting.")
-    .setPosition(PADDING+SIDEBAR_WIDTH, 280)
+    .setPosition(PADDING+SIDEBAR_WIDTH, 250)
     .setSize(500, 20)
     .setRange(0, 500)
     .setValue(40)
@@ -323,6 +312,17 @@ void createGui()
     .setColorActive(color(0, 200, 0))
     .setGroup(latencyGroup);
 
+    gui.addToggle("latencyToggle")
+    .setLabel("Toggle on/off latency test")
+    .setPosition(PADDING+SIDEBAR_WIDTH, 300)
+    .setGroup(latencyGroup)
+    ;
+    
+    gui.getController("latencyToggle").getCaptionLabel()
+    .setPaddingX(5)
+    .align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER)
+    .setColor(color(0));
+    
   gui.getController("latencyInSlider").getCaptionLabel()
     .setPaddingX(5)
     .align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE)

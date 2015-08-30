@@ -313,7 +313,7 @@ void moduleCallback(File f)
     catch (Exception e)
     {
       JOptionPane.showMessageDialog(null, "Yikes! Something went mysteriously wrong.\n"+e+"\nPlease report this bug!", "Latido", JOptionPane.ERROR_MESSAGE);
-      link("http://joel.matthysmusic.com/contact/");
+      link("http://joel.matthysmusic.com/contact.html");
     }
   }
 }
