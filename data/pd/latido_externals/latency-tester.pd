@@ -6,7 +6,7 @@
 #X obj 248 237 timer;
 #X obj 192 179 route 0;
 #X msg 275 213 bang;
-#X msg 6 32 minvel 80 \, read template.txt;
+#X msg 6 32 minvel 80;
 #X obj 6 7 loadbang;
 #X obj 33 186 switch~;
 #X obj 249 55 t b b;

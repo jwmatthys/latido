@@ -244,10 +244,13 @@ public void watchdogPD ()
   oscP5.send(myMessage, latidoPD);
 }
 
+/*
 public void latencyPD(float f)
 {
+  println(f);
   gui.getController("latencyInSlider").setValue(int(f));
 }
+*/
 
 public void scorePD (float theScore)
 {

@@ -282,13 +282,13 @@ void createGui()
 
   gui.addTextarea("latencyText")
     .setPosition(PADDING+SIDEBAR_WIDTH, 30)
-    .setSize(500,140)
+    .setSize(500, 140)
     .setColorBackground(color(255))
     .setColorForeground(color(0))
     .setColor(0) // text color
     .setText(PApplet.join(loadStrings("latency.txt"), '\n'))
     .setGroup(latencyGroup);
-    
+
   gui.addSlider("latencyInSlider")
     .setLabel("Estimated Latency")
     .setPosition(PADDING+SIDEBAR_WIDTH, 200)
@@ -312,17 +312,17 @@ void createGui()
     .setColorActive(color(0, 200, 0))
     .setGroup(latencyGroup);
 
-    gui.addToggle("latencyToggle")
+  gui.addToggle("latencyToggle")
     .setLabel("Toggle on/off latency test")
     .setPosition(PADDING+SIDEBAR_WIDTH, 300)
     .setGroup(latencyGroup)
     ;
-    
-    gui.getController("latencyToggle").getCaptionLabel()
+
+  gui.getController("latencyToggle").getCaptionLabel()
     .setPaddingX(5)
     .align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER)
     .setColor(color(0));
-    
+
   gui.getController("latencyInSlider").getCaptionLabel()
     .setPaddingX(5)
     .align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE)
@@ -342,6 +342,7 @@ void createGui()
     }
   }
   , ALT, SHIFT, '1');
+
   //gui.getTooltip().register("playButton", "Play the exercise");
   //gui.getTooltip().register("stopButton", "Stop playback");
   //gui.getTooltip().register("pitchButton", "Hear your starting pitch");

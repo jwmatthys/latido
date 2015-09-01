@@ -11,7 +11,7 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
-final int WINDOWS_LATENCY = 200;
+final int WINDOWS_LATENCY = 120;
 final int OSX_LATENCY = 60;
 final int LINUX_LATENCY = 42;
 final String OS = System.getProperty("os.name");
@@ -109,7 +109,7 @@ void setup()
   oscP5.plug(this, "metroStatePD", "/metrostate");
   oscP5.plug(this, "scorePD", "/score");
   oscP5.plug(this, "watchdogPD", "/watchdog");
-  oscP5.plug(this, "latencyPD", "/latency");
+  //oscP5.plug(this, "latencyPD", "/latency");
 }
 
 void stop()
