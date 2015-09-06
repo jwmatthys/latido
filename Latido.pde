@@ -11,6 +11,10 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
+final int WINDOWS_LATENCY = 120;
+final int OSX_LATENCY = 60;
+final int LINUX_LATENCY = 42;
+final String OS = System.getProperty("os.name");
 final boolean SHOW_MUSIC = true;
 final boolean SHOW_TEXT = false;
 final int SIDEBAR_WIDTH = 70;
@@ -38,11 +42,12 @@ CalculateScore score;
 MelodyModuleXML module;
 UserProgress userProgress;
 String libName;
-String savePath;
-boolean saving;
+File saveFile;
+final String extension=".latido";
 Group scorecardGroup;
 Group optionGroup;
 Group progressGroup;
+Group latencyGroup;
 CheckBox metro;
 ScrollableList exerciseList;
 Slider progressSlider;
@@ -57,15 +62,15 @@ void setup()
   biggerFont = loadFont("Inconsolata-72.vlw");
   String p = dataPath("");
   try {
-    String os = System.getProperty("os.name");
-    if (match(os, "Windows") != null)
+    if (match(OS, "Windows") != null)
     {
       pd = new ProcessBuilder(p+"/pdbin/pd-win/pd.exe", "-nogui", "-noprefs", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
-    } else if (match(os, "Linux") != null)
+    } else if (match(OS, "Linux") != null)
     {
       if (match(System.getProperty("os.arch"), "amd") != null)
+      {
         pd = new ProcessBuilder(p+"/pdbin/pd-linux64", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
-      else
+      } else
         pd = new ProcessBuilder(p+"/pdbin/pd-linux32", "-nogui", "-noprefs", "-alsa", "-inchannels", "2", "-outchannels", "2", "-r", "44100", p+"/pd/latido.pd").start();
     } else //assume OSX (for now)
     {
@@ -73,7 +78,7 @@ void setup()
     }
   } 
   catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Can't open Pd Audio Engine", "Alert", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, "Can't open Pd Audio Engine", "Latido", JOptionPane.ERROR_MESSAGE);
   }
   oscP5 = new OscP5 (this, 12000);
   latidoPD = new NetAddress("127.0.0.1", 12001);
@@ -87,36 +92,24 @@ void setup()
   music = new MusicDisplay();
   gui = new ControlP5(this);
   createGui();
-
-  config = new Config();
-  /*
-  config.load();
-  savePath = config.getUserfilePath();
-  saving = (!savePath.equals(""));
-  libName = module.load(new File(config.getModulePath()));
-
-  score = new CalculateScore();
-  userProgress = new UserProgress(System.getProperty("user.name"), libName);
-  userProgress.updateInfo(module.currentLine, module.getName());
-
-  for (int i=0; i<module.numMelodies; i++) {
-    module.loadSpecific(i);
-    exerciseList.addItem(module.getName(), i);
+  try 
+  {
+    saveFile = File.createTempFile("savefile", ".latido");
+  } 
+  catch (Exception e)
+  {
+    JOptionPane.showMessageDialog(null, "Couldn't create progress temp file. Please report this bug!", "Latido", JOptionPane.ERROR_MESSAGE);
+    link("http://joel.matthysmusic.com/contact/");
   }
-  module.loadSpecific(userProgress.getNextUnpassed());
-  music.load(module.getImage());
-  setText(module.getText());
-  gui.getController("tempoSlider").setValue(module.getTempo());
-  notifyPd(module.rhythm);
-  userProgress.updateInfo(module.currentLine, module.getName());
-  progressSlider.setRange(0, module.numMelodies * 5);
-*/
+  config = new Config();
+
   oscP5.plug(this, "micPD", "/mic");
   oscP5.plug(this, "tempoPD", "/tempo");
   oscP5.plug(this, "metroPD", "/metro");
   oscP5.plug(this, "metroStatePD", "/metrostate");
   oscP5.plug(this, "scorePD", "/score");
   oscP5.plug(this, "watchdogPD", "/watchdog");
+  //oscP5.plug(this, "latencyPD", "/latency");
 }
 
 void stop()
@@ -129,7 +122,7 @@ void stop()
 
 void setupFrame()
 {
-  surface.setTitle("Latido 0.91-beta");
+  surface.setTitle("Latido 0.92-beta");
   if (surface != null) {
     surface.setResizable(true);
   }

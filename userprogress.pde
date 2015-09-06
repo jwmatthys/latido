@@ -7,9 +7,10 @@ class UserProgress
   XML score;
   XML[] exercise;
   String secretKey;
-  String extension=".latido";
+  File progressFile;
+  String filename;
 
-  UserProgress (String playerName, String libName)
+  UserProgress (String playerName, String libName, File progFile)
   {
     user = loadXML("newuser.xml");
     username = user.getChild("name");
@@ -20,6 +21,8 @@ class UserProgress
     username.setContent(playerName);
     module.setContent(libName);
     secretKey = libName.substring(0, 8);
+    progressFile = progFile;
+    filename = progFile.getAbsolutePath();
   }
 
   boolean load (String f)
@@ -27,10 +30,9 @@ class UserProgress
     try
     {
       byte[] data = loadBytes(f);
-      File tempFile = File.createTempFile("guido", "arrezo");
+      File tempFile = File.createTempFile("guido", "d.arrezo");
       saveBytes(tempFile, decipher(secretKey, data));
       user=loadXML(tempFile.getAbsolutePath());
-      tempFile.delete();
       username = user.getChild("name");
       module = user.getChild("module");
       progress = user.getChild("progress");
@@ -38,23 +40,35 @@ class UserProgress
       exercise = progress.getChildren("exercise");
       secretKey = module.getContent().substring(0, 8);
       return true;
-    } 
+    }
     catch (Exception e) {
-      JOptionPane.showMessageDialog(null, "Could not load Latido user file", "Alert", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "The Latido user file "+f+"\nis not valid with the current module.", "Alert", JOptionPane.ERROR_MESSAGE);
     }
     return false;
   }
 
-  void save (String f)
+  void setUserFile (File f)
+  {
+    progressFile = f;
+    filename = f.getAbsolutePath();
+    if (!filename.substring(filename.length()-extension.length(), filename.length()).equals(".latido"))
+    {
+      filename += extension;
+      progressFile = new File(filename);
+    }
+  }
+  
+  String getUserFile ()
+  {
+    return progressFile.getAbsolutePath();
+  }
+
+  void save ()
   {
     try
     {
-      if (!f.substring(f.length()-extension.length(), f.length()).equals(".latido"))
-      {
-        f += extension;
-      }
       byte[] data = user.toString().getBytes();
-      saveBytes(f, cipher(secretKey, data));
+      saveBytes(progressFile, cipher(secretKey, data));
     } 
     catch (Exception e) {
       JOptionPane.showMessageDialog(null, "Could not save Latido user file", "Alert", JOptionPane.ERROR_MESSAGE);
@@ -67,7 +81,8 @@ class UserProgress
     {
       XML newEntry = progress.addChild("exercise");
       newEntry.setString("id", n);
-      newEntry.setString("started", timeStamp());
+      if (!newEntry.hasAttribute("started"))
+        newEntry.setString("started", timeStamp());
       newEntry.setIntContent(0);
       exercise = progress.getChildren("exercise");
     }

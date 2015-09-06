@@ -11,7 +11,7 @@ class Splash extends Canvas
   {
     if (!loaded)
     {
-      splashImage = loadImage("images/splash.png");
+      splashImage = loadImage("images/newsplash.png");
       loaded = true;
     } else
     {

@@ -19,6 +19,7 @@ void nextButton (int v)
   exerciseList.close();
   optionGroup.close();
   setLock(gui.getController("redoButton"), true);
+  setLock(gui.getController("playbackButton"), true);
   gui.getGroup("scorecard").hide();
   if (!optionGroup.isVisible())
   {
@@ -26,42 +27,7 @@ void nextButton (int v)
   }
   if (gui.getGroup("splash") != null && gui.getGroup("splash").isVisible())
   {
-    boolean reload = config.askReload();
-    if (reload)
-      config.load();
-    else
-      config.create();
-    savePath = config.getUserfilePath();
-    saving = (!savePath.equals(""));
-    libName = module.load(new File(config.getModulePath()));
-
-    score = new CalculateScore();
-    userProgress = new UserProgress(System.getProperty("user.name"), libName);
-    if (reload)
-      loadCallback(new File(config.getUserfilePath()));
-    else
-    {
-      userProgress.updateInfo(module.currentLine, module.getName());
-    }
-
-    for (int i=0; i<module.numMelodies; i++) {
-      module.loadSpecific(i);
-      exerciseList.addItem(module.getName(), i);
-    }
-    module.loadSpecific(userProgress.getNextUnpassed());
-    music.load(module.getImage());
-    setText(module.getText());
-    gui.getController("tempoSlider").setValue(module.getTempo());
-    notifyPd(module.rhythm);
-    userProgress.updateInfo(module.currentLine, module.getName());
-    progressSlider.setRange(0, module.numMelodies * 5);
-
-    gui.getGroup("splash").hide();
-    gui.getGroup("splash").remove();
-    gui.getController("loadButton").unlock();
-    gui.getController("practiceToggle").unlock();
-    setView(SHOW_TEXT);
-    setLock(gui.getController("nextButton"), false);
+    loadAfterSplash();
   } else
   {
     if (view == SHOW_TEXT)
@@ -71,7 +37,6 @@ void nextButton (int v)
       setLock(gui.getController("playButton"), false);
       setLock(gui.getController("stopButton"), false);
       setLock(gui.getController("pitchButton"), module.rhythm);
-      setLock(gui.getController("playbackButton"), true);
       setLock(gui.getController("nextButton"), cantAdvance());
       setLock(gui.getController("previousButton"), false);
     } else
@@ -179,6 +144,16 @@ void tempoSlider (float v)
   sendOscFloat("/latido/tempo", v);
 }
 
+void latencyOutSlider (float v)
+{
+  sendOscFloat("/latido/latency", v);
+}
+
+void latencyToggle (float v)
+{
+  sendOscFloat("/latido/testlatency", v);
+}
+
 void practiceToggle (boolean v)
 {
   try
@@ -215,6 +190,7 @@ void jump (int v)
 boolean cantAdvance ()
 {
   if (practiceMode) return false;
+  if (module.extracredit) return false;
   else if (userProgress.getCurrentStars(module.currentLine)>3) return false;
   return true;
 }
@@ -268,6 +244,14 @@ public void watchdogPD ()
   oscP5.send(myMessage, latidoPD);
 }
 
+/*
+public void latencyPD(float f)
+{
+  println(f);
+  gui.getController("latencyInSlider").setValue(int(f));
+}
+*/
+
 public void scorePD (float theScore)
 {
   setLock(gui.getController("playButton"), true);
@@ -285,7 +269,7 @@ public void scorePD (float theScore)
   setLock(gui.getController("nextButton"), cantAdvance());
   //tree.updateGraph(userProgress.getTotalScore());
   //treeLabel.set(userProgress.getTotalScore()+" Stars");
-  if (saving) userProgress.save(savePath);
+  userProgress.save();
   gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
   progressSlider.setValue(userProgress.getTotalScore());
   progressGroup.show();
@@ -303,70 +287,70 @@ void showScorecard(int stars)
 
 void moduleCallback(File f)
 {
-  if (saving)
+  userProgress.save();
+  gui.getGroup("scorecard").hide();
+  if (module.load(f))
   {
-    userProgress.save(savePath);
-  }
-  try
-  {
-    gui.getGroup("scorecard").hide();
-    String libName = module.load(f);
-    userProgress = new UserProgress(System.getProperty("user.name"), libName);
-    userProgress.updateInfo(module.currentLine, module.getName());
-    exerciseList.clear();
-    for (int i=0; i<module.numMelodies; i++) {
-      module.loadSpecific(i);
-      exerciseList.addItem(module.getName(), i);
-      //lbi.setColorBackground(0xffff0000);
-    }
-    module.loadSpecific(0);
-    loadExercise();
-    progressSlider.setRange(0, module.numMelodies * 5);
-    gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
-    progressSlider.setValue(userProgress.getTotalScore());
-    JOptionPane.showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", JOptionPane.INFORMATION_MESSAGE); 
-    setLock(gui.getController("nextButton"), false);
-    config.setModulePath(f.getAbsolutePath());
-    if (saving)
+    try
     {
-      saving = false;
-      JOptionPane.showMessageDialog(null, "You must save a separate\bprogress file for each module", "Warning", JOptionPane.WARNING_MESSAGE);
+      libName = module.getLibName();
+      userProgress = new UserProgress(System.getProperty("user.name"), libName, saveFile);
+      userProgress.updateInfo(module.currentLine, module.getName());
+      exerciseList.clear();
+      for (int i=0; i<module.numMelodies; i++) {
+        module.loadSpecific(i);
+        exerciseList.addItem(module.getName(), i);
+      }
+      module.loadSpecific(0);
+      loadExercise();
+      progressSlider.setRange(0, module.numMelodies * 5);
+      gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+      progressSlider.setValue(userProgress.getTotalScore());
+      JOptionPane.showMessageDialog(null, "Loaded new module:\n"+module.getDescription(), "New Latido Module Loaded", JOptionPane.INFORMATION_MESSAGE); 
+      setLock(gui.getController("nextButton"), false);
+      config.setModulePath(f.getAbsolutePath());
+      saveFile = File.createTempFile("guido", "arrezo");
+      userProgress.setUserFile(saveFile);
+      userProgress.save();
     }
-  }
-  catch (Exception e)
-  {
-    //showMessageDialog(null, "Could not load Latido module", "Alert", ERROR_MESSAGE);
+    catch (Exception e)
+    {
+      JOptionPane.showMessageDialog(null, "Yikes! Something went mysteriously wrong.\n"+e+"\nPlease report this bug!", "Latido", JOptionPane.ERROR_MESSAGE);
+      link("http://joel.matthysmusic.com/contact.html");
+    }
   }
 }
 
 void loadCallback(File f)
 {
   String s = f.getAbsolutePath();
-  if (userProgress.load(s))
+  if (!s.substring(s.length()-extension.length(), s.length()).equals(".latido"))
   {
-    gui.getGroup("scorecard").hide();
-    savePath = s;
-    saving = true;
-    gui.getGroup("scorecard").hide();
-    setLock(gui.getController("playbackButton"), true);
-    module.loadSpecific(userProgress.getNextUnpassed());
-    loadExercise();
-    gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
-    progressSlider.setValue(userProgress.getTotalScore());
-    setLock(gui.getController("nextButton"), false);
-    setLock(gui.getController("previousButton"), (module.currentLine<=0));
-    config.setUserfilePath(s);
+    JOptionPane.showMessageDialog(null, f.getName()+"\nis not a valid Latido progress file.", "Alert", JOptionPane.ERROR_MESSAGE);
+  } else
+  {
+    if (userProgress.load(s))
+    {
+      userProgress.setUserFile(f);
+      config.setUserfilePath(s);
+      gui.getGroup("scorecard").hide();
+      setLock(gui.getController("playbackButton"), true);
+      module.loadSpecific(userProgress.getNextUnpassed());
+      loadExercise();
+      gui.getController("progressLabel").setStringValue(userProgress.getTotalScore()+" stars earned");
+      progressSlider.setValue(userProgress.getTotalScore());
+      setLock(gui.getController("nextButton"), false);
+      setLock(gui.getController("previousButton"), (module.currentLine<=0));
+    }
   }
 }
 
 void saveCallback(File f)
 {
   gui.getGroup("scorecard").hide();
-  String s = f.getAbsolutePath();
-  userProgress.save(s);
-  config.setUserfilePath(s);
-  savePath = s;
-  saving = true;
+  userProgress.setUserFile(f);
+  userProgress.save();
+  config.setUserfilePath(userProgress.getUserFile());
 }
 
 void websiteLink (int v)
@@ -401,4 +385,60 @@ void loadExercise()
   setLock(gui.getController("playButton"), true);
   setLock(gui.getController("stopButton"), true);
   setLock(gui.getController("pitchButton"), true);
+}
+
+void loadAfterSplash()
+{
+  float latency = OSX_LATENCY;
+  if (match(OS, "Windows") != null) latency=WINDOWS_LATENCY;
+  else if (match(OS, "Linux") != null) latency=LINUX_LATENCY;
+  gui.getController("latencyOutSlider").setValue(latency);
+  sendOscFloat("/latido/latency", latency); // is this redundant?
+  boolean reload = config.askReload();
+  if (reload)
+  {
+    config.load();
+    saveFile = new File(config.getUserfilePath());
+  } else
+  {
+    config.create();
+  }
+
+  if (module.load(new File(config.getModulePath()))) libName = module.getLibName();
+  score = new CalculateScore();
+
+  userProgress = new UserProgress(System.getProperty("user.name"), libName, saveFile);
+  if (reload) loadCallback(saveFile);
+  userProgress.updateInfo(module.currentLine, module.getName());
+
+  for (int i=0; i<module.numMelodies; i++) {
+    module.loadSpecific(i);
+    exerciseList.addItem(module.getName(), i);
+  }
+  module.loadSpecific(userProgress.getNextUnpassed());
+  music.load(module.getImage());
+  setText(module.getText());
+  gui.getController("tempoSlider").setValue(module.getTempo());
+  notifyPd(module.rhythm);
+  userProgress.updateInfo(module.currentLine, module.getName());
+  progressSlider.setRange(0, module.numMelodies * 5);
+
+  gui.getGroup("splash").hide();
+  gui.getGroup("splash").remove();
+  gui.getController("loadButton").unlock();
+  gui.getController("practiceToggle").unlock();
+  setView(SHOW_TEXT);
+  setLock(gui.getController("nextButton"), false);
+}
+
+public void showLatency()
+{
+  if (latencyGroup.isVisible())
+  {
+    latencyGroup.hide();
+    sendOscFloat("/latido/testlatency", 0);
+  } else
+  {
+    latencyGroup.show();
+  }
 }
